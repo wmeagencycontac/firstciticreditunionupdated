@@ -2,6 +2,9 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { handleLogin, handleProfile } from "./routes/auth";
+import { handleGetAccounts, handleGetAccountDetails, handleGetTransactions } from "./routes/accounts";
+import { handleGetDashboard } from "./routes/dashboard";
 
 export function createServer() {
   const app = express();
@@ -18,6 +21,14 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Banking API routes
+  app.post("/api/auth/login", handleLogin);
+  app.get("/api/auth/profile", handleProfile);
+  app.get("/api/dashboard", handleGetDashboard);
+  app.get("/api/accounts", handleGetAccounts);
+  app.get("/api/accounts/:accountId", handleGetAccountDetails);
+  app.get("/api/accounts/:accountId/transactions", handleGetTransactions);
 
   return app;
 }
