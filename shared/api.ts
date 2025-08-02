@@ -10,3 +10,69 @@
 export interface DemoResponse {
   message: string;
 }
+
+/**
+ * Banking API Types
+ */
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdAt: string;
+}
+
+export interface Account {
+  id: string;
+  userId: string;
+  accountNumber: string;
+  accountType: 'checking' | 'savings' | 'credit';
+  balance: number;
+  currency: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface Transaction {
+  id: string;
+  accountId: string;
+  type: 'debit' | 'credit' | 'transfer';
+  amount: number;
+  description: string;
+  category: string;
+  merchant?: string;
+  createdAt: string;
+  status: 'pending' | 'completed' | 'failed';
+}
+
+export interface TransferRequest {
+  fromAccountId: string;
+  toAccountId: string;
+  amount: number;
+  description: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  user: User;
+  token: string;
+}
+
+export interface AccountSummary {
+  account: Account;
+  recentTransactions: Transaction[];
+  monthlySpending: number;
+  monthlyIncome: number;
+}
+
+export interface DashboardData {
+  user: User;
+  accounts: AccountSummary[];
+  totalBalance: number;
+  recentActivity: Transaction[];
+}
