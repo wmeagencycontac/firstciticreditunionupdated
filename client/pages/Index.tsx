@@ -1,10 +1,25 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield, Smartphone, CreditCard, TrendingUp, Lock, Users, Globe, Phone } from "lucide-react";
+import {
+  Shield,
+  Smartphone,
+  CreditCard,
+  TrendingUp,
+  Lock,
+  Users,
+  Globe,
+  Phone,
+} from "lucide-react";
 
 export default function Index() {
   const [email, setEmail] = useState("");
@@ -18,13 +33,35 @@ export default function Index() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <CreditCard className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">SecureBank</span>
+            <span className="text-xl font-bold text-foreground">
+              SecureBank
+            </span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/personal" className="text-muted-foreground hover:text-foreground transition-colors">Personal</Link>
-            <Link to="/business" className="text-muted-foreground hover:text-foreground transition-colors">Business</Link>
-            <Link to="/investments" className="text-muted-foreground hover:text-foreground transition-colors">Investments</Link>
-            <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
+            <Link
+              to="/personal"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Personal
+            </Link>
+            <Link
+              to="/business"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Business
+            </Link>
+            <Link
+              to="/investments"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Investments
+            </Link>
+            <Link
+              to="/about"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              About
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             <Link to="/login">
@@ -41,11 +78,13 @@ export default function Index() {
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-            Banking made <span className="text-primary">simple</span> and <span className="text-primary">secure</span>
+            Banking made <span className="text-primary">simple</span> and{" "}
+            <span className="text-primary">secure</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Experience the future of banking with our comprehensive digital platform. 
-            Manage your finances, make payments, and grow your wealth with confidence.
+            Experience the future of banking with our comprehensive digital
+            platform. Manage your finances, make payments, and grow your wealth
+            with confidence.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
             <Link to="/register">
@@ -59,7 +98,7 @@ export default function Index() {
               </Button>
             </Link>
           </div>
-          
+
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
             <div className="text-center">
@@ -89,7 +128,8 @@ export default function Index() {
             Everything you need to manage your money
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Our comprehensive banking platform provides all the tools you need for modern financial management.
+            Our comprehensive banking platform provides all the tools you need
+            for modern financial management.
           </p>
         </div>
 
@@ -101,7 +141,8 @@ export default function Index() {
               </div>
               <CardTitle>Mobile Banking</CardTitle>
               <CardDescription>
-                Bank on the go with our award-winning mobile app. Check balances, transfer money, and deposit checks.
+                Bank on the go with our award-winning mobile app. Check
+                balances, transfer money, and deposit checks.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -113,7 +154,8 @@ export default function Index() {
               </div>
               <CardTitle>Bank-Level Security</CardTitle>
               <CardDescription>
-                Your money and data are protected with military-grade encryption and multi-factor authentication.
+                Your money and data are protected with military-grade encryption
+                and multi-factor authentication.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -125,7 +167,8 @@ export default function Index() {
               </div>
               <CardTitle>Investment Tools</CardTitle>
               <CardDescription>
-                Grow your wealth with our investment platform. Access stocks, bonds, and expert financial advice.
+                Grow your wealth with our investment platform. Access stocks,
+                bonds, and expert financial advice.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -137,7 +180,8 @@ export default function Index() {
               </div>
               <CardTitle>Fraud Protection</CardTitle>
               <CardDescription>
-                Advanced AI monitors your accounts 24/7 for suspicious activity and unauthorized transactions.
+                Advanced AI monitors your accounts 24/7 for suspicious activity
+                and unauthorized transactions.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -149,7 +193,8 @@ export default function Index() {
               </div>
               <CardTitle>Expert Support</CardTitle>
               <CardDescription>
-                Get help when you need it with 24/7 customer support from real banking professionals.
+                Get help when you need it with 24/7 customer support from real
+                banking professionals.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -161,7 +206,8 @@ export default function Index() {
               </div>
               <CardTitle>Global Access</CardTitle>
               <CardDescription>
-                Access your accounts from anywhere in the world with no foreign transaction fees.
+                Access your accounts from anywhere in the world with no foreign
+                transaction fees.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -176,14 +222,15 @@ export default function Index() {
               Ready to get started?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Join millions of customers who trust SecureBank with their financial future. 
-              Open your account in minutes and start banking smarter today.
+              Join millions of customers who trust SecureBank with their
+              financial future. Open your account in minutes and start banking
+              smarter today.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <div className="flex gap-2 w-full sm:w-auto">
-                <Input 
-                  type="email" 
-                  placeholder="Enter your email" 
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white text-foreground border-0 w-full sm:w-64"
@@ -215,27 +262,83 @@ export default function Index() {
                 Your trusted partner for modern banking and financial services.
               </p>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Banking</h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li><Link to="/checking" className="hover:text-foreground transition-colors">Checking</Link></li>
-                <li><Link to="/savings" className="hover:text-foreground transition-colors">Savings</Link></li>
-                <li><Link to="/credit-cards" className="hover:text-foreground transition-colors">Credit Cards</Link></li>
-                <li><Link to="/loans" className="hover:text-foreground transition-colors">Loans</Link></li>
+                <li>
+                  <Link
+                    to="/checking"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Checking
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/savings"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Savings
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/credit-cards"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Credit Cards
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/loans"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Loans
+                  </Link>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li><Link to="/help" className="hover:text-foreground transition-colors">Help Center</Link></li>
-                <li><Link to="/contact" className="hover:text-foreground transition-colors">Contact Us</Link></li>
-                <li><Link to="/security" className="hover:text-foreground transition-colors">Security</Link></li>
-                <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy</Link></li>
+                <li>
+                  <Link
+                    to="/help"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Help Center
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contact"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/security"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Security
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/privacy"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Privacy
+                  </Link>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-muted-foreground">
@@ -250,7 +353,7 @@ export default function Index() {
               </div>
             </div>
           </div>
-          
+
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
             <p>&copy; 2024 SecureBank. All rights reserved. Member FDIC.</p>
           </div>

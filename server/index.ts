@@ -3,7 +3,11 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleLogin, handleProfile } from "./routes/auth";
-import { handleGetAccounts, handleGetAccountDetails, handleGetTransactions } from "./routes/accounts";
+import {
+  handleGetAccounts,
+  handleGetAccountDetails,
+  handleGetTransactions,
+} from "./routes/accounts";
 import { handleGetDashboard } from "./routes/dashboard";
 
 export function createServer() {

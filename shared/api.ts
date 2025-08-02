@@ -27,7 +27,7 @@ export interface Account {
   id: string;
   userId: string;
   accountNumber: string;
-  accountType: 'checking' | 'savings' | 'credit';
+  accountType: "checking" | "savings" | "credit";
   balance: number;
   currency: string;
   isActive: boolean;
@@ -37,13 +37,13 @@ export interface Account {
 export interface Transaction {
   id: string;
   accountId: string;
-  type: 'debit' | 'credit' | 'transfer';
+  type: "debit" | "credit" | "transfer";
   amount: number;
   description: string;
   category: string;
   merchant?: string;
   createdAt: string;
-  status: 'pending' | 'completed' | 'failed';
+  status: "pending" | "completed" | "failed";
 }
 
 export interface TransferRequest {

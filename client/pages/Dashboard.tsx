@@ -1,27 +1,35 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { 
-  CreditCard, 
-  ArrowUpRight, 
-  ArrowDownRight, 
-  Plus, 
-  Send, 
-  PiggyBank, 
+import {
+  CreditCard,
+  ArrowUpRight,
+  ArrowDownRight,
+  Plus,
+  Send,
+  PiggyBank,
   TrendingUp,
   Bell,
   Settings,
   LogOut,
   Eye,
-  EyeOff
+  EyeOff,
 } from "lucide-react";
 import { DashboardData, Transaction } from "@shared/api";
 
 export default function Dashboard() {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const navigate = useNavigate();
@@ -40,7 +48,7 @@ export default function Dashboard() {
 
       const response = await fetch("/api/dashboard", {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -114,7 +122,7 @@ export default function Dashboard() {
               </div>
               <span className="text-xl font-bold">SecureBank</span>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm">
                 <Bell className="w-4 h-4" />
@@ -128,16 +136,15 @@ export default function Dashboard() {
               <div className="flex items-center space-x-2">
                 <Avatar>
                   <AvatarFallback>
-                    {dashboardData.user.firstName[0]}{dashboardData.user.lastName[0]}
+                    {dashboardData.user.firstName[0]}
+                    {dashboardData.user.lastName[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block">
                   <p className="text-sm font-medium">
                     {dashboardData.user.firstName} {dashboardData.user.lastName}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    Welcome back
-                  </p>
+                  <p className="text-xs text-muted-foreground">Welcome back</p>
                 </div>
               </div>
             </div>
@@ -151,10 +158,14 @@ export default function Dashboard() {
           <CardContent className="p-8">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <p className="text-primary-foreground/80 text-sm">Total Balance</p>
+                <p className="text-primary-foreground/80 text-sm">
+                  Total Balance
+                </p>
                 <div className="flex items-center space-x-2">
                   <h1 className="text-4xl font-bold">
-                    {balanceVisible ? formatCurrency(dashboardData.totalBalance) : "••••••"}
+                    {balanceVisible
+                      ? formatCurrency(dashboardData.totalBalance)
+                      : "••••••"}
                   </h1>
                   <Button
                     variant="ghost"
@@ -162,7 +173,11 @@ export default function Dashboard() {
                     onClick={() => setBalanceVisible(!balanceVisible)}
                     className="text-primary-foreground hover:bg-primary-foreground/10"
                   >
-                    {balanceVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {balanceVisible ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </Button>
                 </div>
               </div>
@@ -181,13 +196,25 @@ export default function Dashboard() {
               <div>
                 <p className="text-primary-foreground/80 text-xs">This Month</p>
                 <p className="text-lg font-semibold">
-                  +{formatCurrency(dashboardData.accounts.reduce((sum, acc) => sum + acc.monthlyIncome, 0))}
+                  +
+                  {formatCurrency(
+                    dashboardData.accounts.reduce(
+                      (sum, acc) => sum + acc.monthlyIncome,
+                      0,
+                    ),
+                  )}
                 </p>
               </div>
               <div>
                 <p className="text-primary-foreground/80 text-xs">Spent</p>
                 <p className="text-lg font-semibold">
-                  -{formatCurrency(dashboardData.accounts.reduce((sum, acc) => sum + acc.monthlySpending, 0))}
+                  -
+                  {formatCurrency(
+                    dashboardData.accounts.reduce(
+                      (sum, acc) => sum + acc.monthlySpending,
+                      0,
+                    ),
+                  )}
                 </p>
               </div>
             </div>
@@ -201,14 +228,19 @@ export default function Dashboard() {
               <h2 className="text-2xl font-bold mb-4">Your Accounts</h2>
               <div className="space-y-4">
                 {dashboardData.accounts.map((accountSummary) => (
-                  <Card key={accountSummary.account.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+                  <Card
+                    key={accountSummary.account.id}
+                    className="border-0 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  >
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                            {accountSummary.account.accountType === "checking" ? (
+                            {accountSummary.account.accountType ===
+                            "checking" ? (
                               <CreditCard className="w-5 h-5 text-primary" />
-                            ) : accountSummary.account.accountType === "savings" ? (
+                            ) : accountSummary.account.accountType ===
+                              "savings" ? (
                               <PiggyBank className="w-5 h-5 text-primary" />
                             ) : (
                               <TrendingUp className="w-5 h-5 text-primary" />
@@ -225,23 +257,37 @@ export default function Dashboard() {
                         </div>
                         <div className="text-right">
                           <p className="text-2xl font-bold">
-                            {balanceVisible ? formatCurrency(accountSummary.account.balance) : "••••••"}
+                            {balanceVisible
+                              ? formatCurrency(accountSummary.account.balance)
+                              : "••••••"}
                           </p>
-                          <Badge variant={accountSummary.account.isActive ? "default" : "secondary"}>
-                            {accountSummary.account.isActive ? "Active" : "Inactive"}
+                          <Badge
+                            variant={
+                              accountSummary.account.isActive
+                                ? "default"
+                                : "secondary"
+                            }
+                          >
+                            {accountSummary.account.isActive
+                              ? "Active"
+                              : "Inactive"}
                           </Badge>
                         </div>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <p className="text-muted-foreground">Monthly Income</p>
+                          <p className="text-muted-foreground">
+                            Monthly Income
+                          </p>
                           <p className="font-semibold text-success">
                             +{formatCurrency(accountSummary.monthlyIncome)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-muted-foreground">Monthly Spending</p>
+                          <p className="text-muted-foreground">
+                            Monthly Spending
+                          </p>
                           <p className="font-semibold text-destructive">
                             -{formatCurrency(accountSummary.monthlySpending)}
                           </p>
@@ -260,28 +306,41 @@ export default function Dashboard() {
             <Card className="border-0 shadow-lg">
               <CardHeader>
                 <CardTitle className="text-lg">Latest Transactions</CardTitle>
-                <CardDescription>Your most recent account activity</CardDescription>
+                <CardDescription>
+                  Your most recent account activity
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {dashboardData.recentActivity.map((transaction) => (
-                    <div key={transaction.id} className="flex items-center justify-between">
+                    <div
+                      key={transaction.id}
+                      className="flex items-center justify-between"
+                    >
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
                           {getTransactionIcon(transaction)}
                         </div>
                         <div>
-                          <p className="font-medium text-sm">{transaction.description}</p>
+                          <p className="font-medium text-sm">
+                            {transaction.description}
+                          </p>
                           <p className="text-xs text-muted-foreground">
-                            {transaction.merchant} • {formatDate(transaction.createdAt)}
+                            {transaction.merchant} •{" "}
+                            {formatDate(transaction.createdAt)}
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className={`font-semibold text-sm ${
-                          transaction.amount > 0 ? "text-success" : "text-foreground"
-                        }`}>
-                          {transaction.amount > 0 ? "+" : ""}{formatCurrency(transaction.amount)}
+                        <p
+                          className={`font-semibold text-sm ${
+                            transaction.amount > 0
+                              ? "text-success"
+                              : "text-foreground"
+                          }`}
+                        >
+                          {transaction.amount > 0 ? "+" : ""}
+                          {formatCurrency(transaction.amount)}
                         </p>
                         <Badge variant="outline" className="text-xs">
                           {transaction.status}

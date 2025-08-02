@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -37,11 +43,11 @@ export default function Login() {
       }
 
       const data: LoginResponse = await response.json();
-      
+
       // Store token in localStorage (in real app, use secure storage)
       localStorage.setItem("auth_token", data.token);
       localStorage.setItem("user_data", JSON.stringify(data.user));
-      
+
       // Redirect to dashboard
       navigate("/dashboard");
     } catch (err) {
@@ -60,7 +66,9 @@ export default function Login() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <CreditCard className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">SecureBank</span>
+            <span className="text-xl font-bold text-foreground">
+              SecureBank
+            </span>
           </Link>
         </div>
 

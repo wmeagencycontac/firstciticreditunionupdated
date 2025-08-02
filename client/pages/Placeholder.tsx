@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { CreditCard, ArrowLeft, MessageSquare } from "lucide-react";
 
 interface PlaceholderProps {
@@ -9,10 +15,10 @@ interface PlaceholderProps {
   suggestedPrompt?: string;
 }
 
-export default function Placeholder({ 
-  title, 
-  description, 
-  suggestedPrompt = "Can you help me build out this page?" 
+export default function Placeholder({
+  title,
+  description,
+  suggestedPrompt = "Can you help me build out this page?",
 }: PlaceholderProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
@@ -52,7 +58,8 @@ export default function Placeholder({
             <CardContent>
               <div className="space-y-4">
                 <p className="text-muted-foreground">
-                  This page is ready to be built! Continue the conversation to add content and functionality to this section.
+                  This page is ready to be built! Continue the conversation to
+                  add content and functionality to this section.
                 </p>
                 <div className="bg-muted/50 rounded-lg p-4">
                   <p className="text-sm font-medium mb-2">💡 Try asking:</p>
