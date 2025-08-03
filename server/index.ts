@@ -24,6 +24,10 @@ import {
 export function createServer() {
   const app = express();
 
+  // Initialize and verify email service
+  const emailService = getEmailService();
+  emailService.verifyConnection();
+
   // Middleware
   app.use(cors());
   app.use(express.json());
