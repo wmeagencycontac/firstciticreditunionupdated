@@ -147,16 +147,7 @@ const App = () => (
               />
             }
           />
-          <Route
-            path="/transactions"
-            element={
-              <Placeholder
-                title="Transaction History"
-                description="View and manage your complete transaction history."
-                suggestedPrompt="Can you build a transaction history page with filtering, search, and export capabilities?"
-              />
-            }
-          />
+          <Route path="/transactions" element={<Transactions />} />
           <Route
             path="/demo"
             element={
