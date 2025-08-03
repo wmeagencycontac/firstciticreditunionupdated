@@ -14,6 +14,11 @@ import {
   handleGetTransactions,
   handleCreateTransaction,
 } from "./routes/transactions";
+import {
+  handleRequestOTP,
+  handleVerifyOTP,
+  handleGetOTPUser,
+} from "./routes/otp-auth";
 
 export function createServer() {
   const app = express();
