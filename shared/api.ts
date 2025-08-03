@@ -76,3 +76,22 @@ export interface DashboardData {
   totalBalance: number;
   recentActivity: Transaction[];
 }
+
+export interface TransactionFilters {
+  search?: string;
+  type?: "all" | "debit" | "credit" | "transfer";
+  status?: "all" | "pending" | "completed" | "failed";
+  category?: string;
+  amountRange?: "all" | "under-50" | "50-200" | "200-1000" | "over-1000";
+  dateFrom?: string;
+  dateTo?: string;
+  sortBy?: "date" | "amount";
+  sortOrder?: "asc" | "desc";
+}
+
+export interface TransactionResponse {
+  transactions: Transaction[];
+  total: number;
+  page: number;
+  limit: number;
+}
