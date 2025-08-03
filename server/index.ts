@@ -33,7 +33,11 @@ export function createServer() {
   app.get("/api/dashboard", handleGetDashboard);
   app.get("/api/accounts", handleGetAccounts);
   app.get("/api/accounts/:accountId", handleGetAccountDetails);
-  app.get("/api/accounts/:accountId/transactions", handleGetTransactions);
+  app.get("/api/accounts/:accountId/transactions", handleGetAccountTransactions);
+
+  // All transactions endpoints
+  app.get("/api/transactions", handleGetTransactions);
+  app.post("/api/transactions", handleCreateTransaction);
 
   return app;
 }
