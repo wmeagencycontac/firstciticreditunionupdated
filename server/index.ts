@@ -5,7 +5,7 @@ import { createServer as createHttpServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { getEmailService } from "./email";
 import { handleDemo } from "./routes/demo";
-import { handleLogin, handleProfile } from "./routes/auth";
+import { handleLogin, handleProfile, handleLogout } from "./routes/auth";
 import { handleRegistration } from "./routes/registration";
 import {
   handleGetAccounts,
