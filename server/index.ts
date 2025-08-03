@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { createServer as createHttpServer } from "http";
+import { Server as SocketIOServer } from "socket.io";
 import { getEmailService } from "./email";
 import { handleDemo } from "./routes/demo";
 import { handleLogin, handleProfile } from "./routes/auth";
@@ -26,8 +28,41 @@ import {
   handleEmailVerification,
 } from "./routes/enhanced-registration";
 
+// Global Socket.IO server instance
+export let io: SocketIOServer;
+
 export function createServer() {
   const app = express();
+  const httpServer = createHttpServer(app);
+
+  // Initialize Socket.IO
+  io = new SocketIOServer(httpServer, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+  });
+
+  // Socket.IO connection handling
+  io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
+
+    // Join user-specific room for personalized notifications
+    socket.on("join-user-room", (userId: string) => {
+      socket.join(`user:${userId}`);
+      console.log(`User ${userId} joined their room`);
+    });
+
+    // Join admin room for admin notifications
+    socket.on("join-admin-room", () => {
+      socket.join("admin");
+      console.log("Admin joined admin room");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+    });
+  });
 
   // Initialize and verify email service
   const emailService = getEmailService();
