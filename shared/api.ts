@@ -141,3 +141,40 @@ export interface TransactionResponse {
   page: number;
   limit: number;
 }
+
+/**
+ * OTP Authentication Types
+ */
+
+export interface OTPRequestRequest {
+  email: string;
+}
+
+export interface OTPRequestResponse {
+  message: string;
+}
+
+export interface OTPVerifyRequest {
+  email: string;
+  code: string;
+}
+
+export interface OTPVerifyResponse {
+  success: boolean;
+  user_id: number;
+  message?: string;
+}
+
+export interface OTPUser {
+  id: number;
+  email: string;
+}
+
+export interface OTPRecord {
+  id: string;
+  user_id: number;
+  otp_hash: string;
+  expires_at: number;
+  failed_attempts: number;
+  used: number;
+}
