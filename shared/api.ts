@@ -232,3 +232,81 @@ export interface EnhancedUser {
   created_at: string;
   updated_at: string;
 }
+
+/**
+ * New Banking API Response Types
+ */
+
+export interface AccountSummaryResponse {
+  accounts: (Account & { recent_transactions: Transaction[] })[];
+  total_balance: number;
+}
+
+export interface TransactionsResponse {
+  transactions: Transaction[];
+  total: number;
+}
+
+export interface CardsResponse {
+  cards: Card[];
+}
+
+export interface TransferResponse {
+  message: string;
+  from_account: Account;
+  to_account: Account;
+}
+
+export interface AdminVerifyUserRequest {
+  user_id: number;
+}
+
+export interface AdminVerifyUserResponse {
+  message: string;
+  user: User;
+  accounts: Account[];
+  card: Card;
+}
+
+/**
+ * Socket.IO Event Types
+ */
+
+export interface TransactionEvent {
+  transactionId: number;
+  accountId: number;
+  userId: number;
+  type: "credit" | "debit";
+  amount: number;
+  description: string;
+  timestamp: string;
+}
+
+export interface BalanceUpdateEvent {
+  accountId: number;
+  userId: number;
+  newBalance: number;
+  accountType: "savings" | "checking";
+}
+
+export interface AccountCreatedEvent {
+  userId: number;
+  accounts: {
+    accountId: number;
+    accountNumber: string;
+    accountType: "savings" | "checking";
+    balance: number;
+  }[];
+  cards: {
+    cardId: number;
+    cardNumber: string;
+  }[];
+}
+
+export interface AdminAlertEvent {
+  type: "user-verified" | "account-created" | "transaction-alert";
+  userId: number;
+  userEmail: string;
+  message: string;
+  timestamp: string;
+}
