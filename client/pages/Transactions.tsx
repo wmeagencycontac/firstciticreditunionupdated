@@ -41,10 +41,7 @@ import {
 import {
   ArrowUpRight,
   ArrowDownRight,
-  Search,
-  Filter,
   Download,
-  Calendar as CalendarIcon,
   RefreshCw,
   CreditCard,
   Bell,
@@ -56,9 +53,10 @@ import {
 } from "lucide-react";
 import { Transaction } from "@shared/api";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 import io from "socket.io-client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import TransactionFilters from "@/components/TransactionFilters";
+import LiveTransactionFeed from "@/components/LiveTransactionFeed";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -374,46 +372,7 @@ export default function Transactions() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       {/* Live Transactions Feed */}
-      {liveTransactions.length > 0 && (
-        <div className="container mx-auto px-4 pt-4">
-          <Card className="mb-4 border-success bg-success/5">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Bell className="w-5 h-5 text-success" />
-                Live Transaction Updates
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {liveTransactions.map((tx) => (
-                  <div
-                    key={tx.id}
-                    className="flex items-center justify-between p-2 bg-background rounded border animate-fade-in"
-                  >
-                    <div className="flex items-center gap-2">
-                      {getTransactionIcon(tx)}
-                      <span className="font-medium">{tx.description}</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span
-                        className={`font-semibold ${
-                          tx.amount > 0 ? "text-success" : "text-foreground"
-                        }`}
-                      >
-                        {tx.amount > 0 ? "+" : ""}
-                        {formatCurrency(tx.amount)}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {format(new Date(tx.createdAt), "HH:mm:ss")}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      <LiveTransactionFeed transactions={liveTransactions} />
 
       {/* Header */}
       <header className="border-b bg-card/50 backdrop-blur">
@@ -495,148 +454,26 @@ export default function Transactions() {
           </div>
 
           {/* Filters */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Filter className="w-5 h-5" />
-                Filters & Search
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                {/* Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search transactions..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9"
-                  />
-                </div>
-
-                {/* Type Filter */}
-                <Select value={typeFilter} onValueChange={setTypeFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Transaction Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="credit">Credit</SelectItem>
-                    <SelectItem value="debit">Debit</SelectItem>
-                    <SelectItem value="transfer">Transfer</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Status Filter */}
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="failed">Failed</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Category Filter */}
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Amount Filter */}
-                <Select value={amountFilter} onValueChange={setAmountFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Amount Range" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Amounts</SelectItem>
-                    <SelectItem value="under-50">Under $50</SelectItem>
-                    <SelectItem value="50-200">$50 - $200</SelectItem>
-                    <SelectItem value="200-1000">$200 - $1,000</SelectItem>
-                    <SelectItem value="over-1000">Over $1,000</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Date Range */}
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "justify-start text-left font-normal",
-                        !dateRange.from && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {dateRange.from ? (
-                        dateRange.to ? (
-                          <>
-                            {format(dateRange.from, "LLL dd, y")} -{" "}
-                            {format(dateRange.to, "LLL dd, y")}
-                          </>
-                        ) : (
-                          format(dateRange.from, "LLL dd, y")
-                        )
-                      ) : (
-                        "Date range"
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      initialFocus
-                      mode="range"
-                      defaultMonth={dateRange.from}
-                      selected={{ from: dateRange.from, to: dateRange.to }}
-                      onSelect={(range) => setDateRange(range || {})}
-                      numberOfMonths={2}
-                    />
-                  </PopoverContent>
-                </Popover>
-
-                <Button onClick={clearFilters} variant="outline">
-                  Clear Filters
-                </Button>
-              </div>
-
-              {/* Sort Options */}
-              <div className="flex gap-2 mt-4">
-                <Select value={sortBy} onValueChange={(value: "date" | "amount") => setSortBy(value)}>
-                  <SelectTrigger className="w-40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="date">Sort by Date</SelectItem>
-                    <SelectItem value="amount">Sort by Amount</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select value={sortOrder} onValueChange={(value: "asc" | "desc") => setSortOrder(value)}>
-                  <SelectTrigger className="w-40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="desc">Descending</SelectItem>
-                    <SelectItem value="asc">Ascending</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
+          <TransactionFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            typeFilter={typeFilter}
+            setTypeFilter={setTypeFilter}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
+            amountFilter={amountFilter}
+            setAmountFilter={setAmountFilter}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            categories={categories}
+            onClearFilters={clearFilters}
+          />
         </div>
 
         {/* Results Summary */}
