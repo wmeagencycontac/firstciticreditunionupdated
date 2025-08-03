@@ -211,18 +211,45 @@ export default function Register() {
 
   const handleSubmit = async () => {
     if (!validateStep(4)) return;
-    
+
     setLoading(true);
     setError("");
 
     try {
-      // TODO: Implement registration API call
+      const registrationData: RegistrationRequest = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        dateOfBirth: formData.dateOfBirth,
+        ssn: formData.ssn,
+        street: formData.street,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        country: formData.country,
+        accountType: formData.accountType as "personal" | "business" | "investment",
+        initialDeposit: formData.initialDeposit,
+        businessName: formData.businessName,
+        businessType: formData.businessType,
+        ein: formData.ein,
+        businessAddress: formData.businessAddress,
+        documentType: formData.documentType as "drivers_license" | "passport" | "state_id",
+        documentNumber: formData.documentNumber,
+        documentExpiry: formData.documentExpiry,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        agreeToTerms: formData.agreeToTerms,
+        agreeToPrivacy: formData.agreeToPrivacy,
+        optInMarketing: formData.optInMarketing
+      };
+
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(registrationData),
       });
 
       if (!response.ok) {
@@ -230,11 +257,14 @@ export default function Register() {
         throw new Error(errorData.error || "Registration failed");
       }
 
-      // Success - redirect to login or dashboard
-      navigate("/login", { 
-        state: { 
-          message: "Registration successful! Please sign in to your account." 
-        } 
+      const data: RegistrationResponse = await response.json();
+
+      // Success - redirect to login with success message
+      navigate("/login", {
+        state: {
+          message: data.message || "Registration successful! Please sign in to your account.",
+          email: formData.email // Pre-fill email on login page
+        }
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred during registration");
