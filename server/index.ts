@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { getEmailService } from "./email";
 import { handleDemo } from "./routes/demo";
 import { handleLogin, handleProfile } from "./routes/auth";
 import { handleRegistration } from "./routes/registration";
@@ -22,6 +23,10 @@ import {
 
 export function createServer() {
   const app = express();
+
+  // Initialize and verify email service
+  const emailService = getEmailService();
+  emailService.verifyConnection();
 
   // Middleware
   app.use(cors());
