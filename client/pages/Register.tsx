@@ -14,7 +14,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -28,7 +34,7 @@ import {
   CheckCircle,
   Upload,
   Calendar,
-  MapPin
+  MapPin,
 } from "lucide-react";
 import { RegistrationRequest, RegistrationResponse } from "@shared/api";
 
@@ -40,33 +46,33 @@ interface RegistrationFormData {
   phoneNumber: string;
   dateOfBirth: string;
   ssn: string;
-  
+
   // Address Information
   street: string;
   city: string;
   state: string;
   zipCode: string;
   country: string;
-  
+
   // Account Selection
   accountType: "personal" | "business" | "investment" | "";
   initialDeposit: string;
-  
+
   // Business Information (if applicable)
   businessName?: string;
   businessType?: string;
   ein?: string;
   businessAddress?: string;
-  
+
   // Identity Verification
   documentType: "drivers_license" | "passport" | "state_id" | "";
   documentNumber: string;
   documentExpiry: string;
-  
+
   // Security
   password: string;
   confirmPassword: string;
-  
+
   // Legal
   agreeToTerms: boolean;
   agreeToPrivacy: boolean;
@@ -77,35 +83,97 @@ const accountTypes = [
   {
     id: "personal" as const,
     title: "Personal Banking",
-    description: "Individual checking and savings accounts with personal banking features",
+    description:
+      "Individual checking and savings accounts with personal banking features",
     icon: User,
-    features: ["Mobile banking", "Debit card", "Online transfers", "24/7 support"],
-    minDeposit: "$25"
+    features: [
+      "Mobile banking",
+      "Debit card",
+      "Online transfers",
+      "24/7 support",
+    ],
+    minDeposit: "$25",
   },
   {
     id: "business" as const,
     title: "Business Banking",
     description: "Business accounts with commercial banking services and tools",
     icon: Building,
-    features: ["Business checks", "Merchant services", "Payroll services", "Business loans"],
-    minDeposit: "$100"
+    features: [
+      "Business checks",
+      "Merchant services",
+      "Payroll services",
+      "Business loans",
+    ],
+    minDeposit: "$100",
   },
   {
     id: "investment" as const,
     title: "Investment Account",
-    description: "Investment and wealth management services with portfolio tools",
+    description:
+      "Investment and wealth management services with portfolio tools",
     icon: TrendingUp,
-    features: ["Portfolio management", "Trading platform", "Investment advisory", "Research tools"],
-    minDeposit: "$1,000"
-  }
+    features: [
+      "Portfolio management",
+      "Trading platform",
+      "Investment advisory",
+      "Research tools",
+    ],
+    minDeposit: "$1,000",
+  },
 ];
 
 const states = [
-  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+  "AL",
+  "AK",
+  "AZ",
+  "AR",
+  "CA",
+  "CO",
+  "CT",
+  "DE",
+  "FL",
+  "GA",
+  "HI",
+  "ID",
+  "IL",
+  "IN",
+  "IA",
+  "KS",
+  "KY",
+  "LA",
+  "ME",
+  "MD",
+  "MA",
+  "MI",
+  "MN",
+  "MS",
+  "MO",
+  "MT",
+  "NE",
+  "NV",
+  "NH",
+  "NJ",
+  "NM",
+  "NY",
+  "NC",
+  "ND",
+  "OH",
+  "OK",
+  "OR",
+  "PA",
+  "RI",
+  "SC",
+  "SD",
+  "TN",
+  "TX",
+  "UT",
+  "VT",
+  "VA",
+  "WA",
+  "WV",
+  "WI",
+  "WY",
 ];
 
 export default function Register() {
@@ -131,24 +199,26 @@ export default function Register() {
     confirmPassword: "",
     agreeToTerms: false,
     agreeToPrivacy: false,
-    optInMarketing: false
+    optInMarketing: false,
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
   const navigate = useNavigate();
 
   const totalSteps = 4;
   const progressPercentage = (currentStep / totalSteps) * 100;
 
   const updateFormData = (updates: Partial<RegistrationFormData>) => {
-    setFormData(prev => ({ ...prev, ...updates }));
-    setValidationErrors(prev => {
+    setFormData((prev) => ({ ...prev, ...updates }));
+    setValidationErrors((prev) => {
       const newErrors = { ...prev };
-      Object.keys(updates).forEach(key => {
+      Object.keys(updates).forEach((key) => {
         delete newErrors[key];
       });
       return newErrors;
@@ -157,56 +227,73 @@ export default function Register() {
 
   const validateStep = (step: number): boolean => {
     const errors: Record<string, string> = {};
-    
+
     switch (step) {
       case 1: // Personal Information
-        if (!formData.firstName.trim()) errors.firstName = "First name is required";
-        if (!formData.lastName.trim()) errors.lastName = "Last name is required";
+        if (!formData.firstName.trim())
+          errors.firstName = "First name is required";
+        if (!formData.lastName.trim())
+          errors.lastName = "Last name is required";
         if (!formData.email.trim()) errors.email = "Email is required";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errors.email = "Invalid email format";
-        if (!formData.phoneNumber.trim()) errors.phoneNumber = "Phone number is required";
-        if (!formData.dateOfBirth) errors.dateOfBirth = "Date of birth is required";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+          errors.email = "Invalid email format";
+        if (!formData.phoneNumber.trim())
+          errors.phoneNumber = "Phone number is required";
+        if (!formData.dateOfBirth)
+          errors.dateOfBirth = "Date of birth is required";
         if (!formData.ssn.trim()) errors.ssn = "SSN is required";
-        else if (!/^\d{3}-?\d{2}-?\d{4}$/.test(formData.ssn)) errors.ssn = "Invalid SSN format";
+        else if (!/^\d{3}-?\d{2}-?\d{4}$/.test(formData.ssn))
+          errors.ssn = "Invalid SSN format";
         break;
-        
+
       case 2: // Address & Account Type
-        if (!formData.street.trim()) errors.street = "Street address is required";
+        if (!formData.street.trim())
+          errors.street = "Street address is required";
         if (!formData.city.trim()) errors.city = "City is required";
         if (!formData.state) errors.state = "State is required";
         if (!formData.zipCode.trim()) errors.zipCode = "ZIP code is required";
-        else if (!/^\d{5}(-\d{4})?$/.test(formData.zipCode)) errors.zipCode = "Invalid ZIP code format";
-        if (!formData.accountType) errors.accountType = "Account type is required";
-        if (!formData.initialDeposit.trim()) errors.initialDeposit = "Initial deposit is required";
+        else if (!/^\d{5}(-\d{4})?$/.test(formData.zipCode))
+          errors.zipCode = "Invalid ZIP code format";
+        if (!formData.accountType)
+          errors.accountType = "Account type is required";
+        if (!formData.initialDeposit.trim())
+          errors.initialDeposit = "Initial deposit is required";
         break;
-        
+
       case 3: // Identity Verification
-        if (!formData.documentType) errors.documentType = "Document type is required";
-        if (!formData.documentNumber.trim()) errors.documentNumber = "Document number is required";
-        if (!formData.documentExpiry) errors.documentExpiry = "Document expiry date is required";
+        if (!formData.documentType)
+          errors.documentType = "Document type is required";
+        if (!formData.documentNumber.trim())
+          errors.documentNumber = "Document number is required";
+        if (!formData.documentExpiry)
+          errors.documentExpiry = "Document expiry date is required";
         if (!formData.password) errors.password = "Password is required";
-        else if (formData.password.length < 8) errors.password = "Password must be at least 8 characters";
-        if (formData.password !== formData.confirmPassword) errors.confirmPassword = "Passwords do not match";
+        else if (formData.password.length < 8)
+          errors.password = "Password must be at least 8 characters";
+        if (formData.password !== formData.confirmPassword)
+          errors.confirmPassword = "Passwords do not match";
         break;
-        
+
       case 4: // Review & Submit
-        if (!formData.agreeToTerms) errors.agreeToTerms = "You must agree to the terms and conditions";
-        if (!formData.agreeToPrivacy) errors.agreeToPrivacy = "You must agree to the privacy policy";
+        if (!formData.agreeToTerms)
+          errors.agreeToTerms = "You must agree to the terms and conditions";
+        if (!formData.agreeToPrivacy)
+          errors.agreeToPrivacy = "You must agree to the privacy policy";
         break;
     }
-    
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const nextStep = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, totalSteps));
+      setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
     }
   };
 
   const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async () => {
@@ -228,20 +315,26 @@ export default function Register() {
         state: formData.state,
         zipCode: formData.zipCode,
         country: formData.country,
-        accountType: formData.accountType as "personal" | "business" | "investment",
+        accountType: formData.accountType as
+          | "personal"
+          | "business"
+          | "investment",
         initialDeposit: formData.initialDeposit,
         businessName: formData.businessName,
         businessType: formData.businessType,
         ein: formData.ein,
         businessAddress: formData.businessAddress,
-        documentType: formData.documentType as "drivers_license" | "passport" | "state_id",
+        documentType: formData.documentType as
+          | "drivers_license"
+          | "passport"
+          | "state_id",
         documentNumber: formData.documentNumber,
         documentExpiry: formData.documentExpiry,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
         agreeToTerms: formData.agreeToTerms,
         agreeToPrivacy: formData.agreeToPrivacy,
-        optInMarketing: formData.optInMarketing
+        optInMarketing: formData.optInMarketing,
       };
 
       const response = await fetch("/api/auth/register", {
@@ -262,12 +355,18 @@ export default function Register() {
       // Success - redirect to login with success message
       navigate("/login", {
         state: {
-          message: data.message || "Registration successful! Please sign in to your account.",
-          email: formData.email // Pre-fill email on login page
-        }
+          message:
+            data.message ||
+            "Registration successful! Please sign in to your account.",
+          email: formData.email, // Pre-fill email on login page
+        },
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred during registration");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred during registration",
+      );
     } finally {
       setLoading(false);
     }
@@ -277,7 +376,9 @@ export default function Register() {
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold">Account Registration</h2>
-        <Badge variant="outline">{currentStep} of {totalSteps}</Badge>
+        <Badge variant="outline">
+          {currentStep} of {totalSteps}
+        </Badge>
       </div>
       <Progress value={progressPercentage} className="h-2" />
       <div className="flex justify-between mt-2 text-xs text-muted-foreground">
@@ -302,7 +403,9 @@ export default function Register() {
             className={validationErrors.firstName ? "border-destructive" : ""}
           />
           {validationErrors.firstName && (
-            <p className="text-sm text-destructive">{validationErrors.firstName}</p>
+            <p className="text-sm text-destructive">
+              {validationErrors.firstName}
+            </p>
           )}
         </div>
         <div className="space-y-2">
@@ -315,7 +418,9 @@ export default function Register() {
             className={validationErrors.lastName ? "border-destructive" : ""}
           />
           {validationErrors.lastName && (
-            <p className="text-sm text-destructive">{validationErrors.lastName}</p>
+            <p className="text-sm text-destructive">
+              {validationErrors.lastName}
+            </p>
           )}
         </div>
       </div>
@@ -346,7 +451,9 @@ export default function Register() {
           className={validationErrors.phoneNumber ? "border-destructive" : ""}
         />
         {validationErrors.phoneNumber && (
-          <p className="text-sm text-destructive">{validationErrors.phoneNumber}</p>
+          <p className="text-sm text-destructive">
+            {validationErrors.phoneNumber}
+          </p>
         )}
       </div>
 
@@ -361,7 +468,9 @@ export default function Register() {
             className={validationErrors.dateOfBirth ? "border-destructive" : ""}
           />
           {validationErrors.dateOfBirth && (
-            <p className="text-sm text-destructive">{validationErrors.dateOfBirth}</p>
+            <p className="text-sm text-destructive">
+              {validationErrors.dateOfBirth}
+            </p>
           )}
         </div>
         <div className="space-y-2">
@@ -400,7 +509,9 @@ export default function Register() {
               className={validationErrors.street ? "border-destructive" : ""}
             />
             {validationErrors.street && (
-              <p className="text-sm text-destructive">{validationErrors.street}</p>
+              <p className="text-sm text-destructive">
+                {validationErrors.street}
+              </p>
             )}
           </div>
 
@@ -415,23 +526,34 @@ export default function Register() {
                 className={validationErrors.city ? "border-destructive" : ""}
               />
               {validationErrors.city && (
-                <p className="text-sm text-destructive">{validationErrors.city}</p>
+                <p className="text-sm text-destructive">
+                  {validationErrors.city}
+                </p>
               )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="state">State *</Label>
-              <Select value={formData.state} onValueChange={(value) => updateFormData({ state: value })}>
-                <SelectTrigger className={validationErrors.state ? "border-destructive" : ""}>
+              <Select
+                value={formData.state}
+                onValueChange={(value) => updateFormData({ state: value })}
+              >
+                <SelectTrigger
+                  className={validationErrors.state ? "border-destructive" : ""}
+                >
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent>
-                  {states.map(state => (
-                    <SelectItem key={state} value={state}>{state}</SelectItem>
+                  {states.map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               {validationErrors.state && (
-                <p className="text-sm text-destructive">{validationErrors.state}</p>
+                <p className="text-sm text-destructive">
+                  {validationErrors.state}
+                </p>
               )}
             </div>
           </div>
@@ -447,7 +569,9 @@ export default function Register() {
                 className={validationErrors.zipCode ? "border-destructive" : ""}
               />
               {validationErrors.zipCode && (
-                <p className="text-sm text-destructive">{validationErrors.zipCode}</p>
+                <p className="text-sm text-destructive">
+                  {validationErrors.zipCode}
+                </p>
               )}
             </div>
             <div className="space-y-2">
@@ -469,19 +593,27 @@ export default function Register() {
         <h3 className="text-lg font-medium mb-4">Choose Your Account Type *</h3>
         <RadioGroup
           value={formData.accountType}
-          onValueChange={(value) => updateFormData({ accountType: value as RegistrationFormData["accountType"] })}
+          onValueChange={(value) =>
+            updateFormData({
+              accountType: value as RegistrationFormData["accountType"],
+            })
+          }
           className="space-y-4"
         >
-          {accountTypes.map(account => {
+          {accountTypes.map((account) => {
             const Icon = account.icon;
             return (
               <div key={account.id} className="relative">
-                <RadioGroupItem value={account.id} id={account.id} className="sr-only" />
+                <RadioGroupItem
+                  value={account.id}
+                  id={account.id}
+                  className="sr-only"
+                />
                 <Label
                   htmlFor={account.id}
                   className={`block p-4 border-2 rounded-lg cursor-pointer transition-all hover:border-primary/50 ${
-                    formData.accountType === account.id 
-                      ? "border-primary bg-primary/5" 
+                    formData.accountType === account.id
+                      ? "border-primary bg-primary/5"
                       : "border-border"
                   }`}
                 >
@@ -490,14 +622,20 @@ export default function Register() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="font-medium">{account.title}</h4>
-                        <Badge variant="secondary">Min: {account.minDeposit}</Badge>
+                        <Badge variant="secondary">
+                          Min: {account.minDeposit}
+                        </Badge>
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">
                         {account.description}
                       </p>
                       <div className="flex flex-wrap gap-1">
-                        {account.features.map(feature => (
-                          <Badge key={feature} variant="outline" className="text-xs">
+                        {account.features.map((feature) => (
+                          <Badge
+                            key={feature}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {feature}
                           </Badge>
                         ))}
@@ -510,7 +648,9 @@ export default function Register() {
           })}
         </RadioGroup>
         {validationErrors.accountType && (
-          <p className="text-sm text-destructive mt-2">{validationErrors.accountType}</p>
+          <p className="text-sm text-destructive mt-2">
+            {validationErrors.accountType}
+          </p>
         )}
 
         <div className="mt-4 space-y-2">
@@ -523,10 +663,14 @@ export default function Register() {
             value={formData.initialDeposit}
             onChange={(e) => updateFormData({ initialDeposit: e.target.value })}
             placeholder="0.00"
-            className={validationErrors.initialDeposit ? "border-destructive" : ""}
+            className={
+              validationErrors.initialDeposit ? "border-destructive" : ""
+            }
           />
           {validationErrors.initialDeposit && (
-            <p className="text-sm text-destructive">{validationErrors.initialDeposit}</p>
+            <p className="text-sm text-destructive">
+              {validationErrors.initialDeposit}
+            </p>
           )}
         </div>
       </div>
@@ -544,19 +688,28 @@ export default function Register() {
               <Input
                 id="businessName"
                 value={formData.businessName || ""}
-                onChange={(e) => updateFormData({ businessName: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ businessName: e.target.value })
+                }
                 placeholder="Your Business Name"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="businessType">Business Type</Label>
-                <Select value={formData.businessType || ""} onValueChange={(value) => updateFormData({ businessType: value })}>
+                <Select
+                  value={formData.businessType || ""}
+                  onValueChange={(value) =>
+                    updateFormData({ businessType: value })
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select business type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="sole_proprietorship">Sole Proprietorship</SelectItem>
+                    <SelectItem value="sole_proprietorship">
+                      Sole Proprietorship
+                    </SelectItem>
                     <SelectItem value="llc">LLC</SelectItem>
                     <SelectItem value="corporation">Corporation</SelectItem>
                     <SelectItem value="partnership">Partnership</SelectItem>
@@ -590,18 +743,33 @@ export default function Register() {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="documentType">ID Document Type *</Label>
-            <Select value={formData.documentType} onValueChange={(value) => updateFormData({ documentType: value as RegistrationFormData["documentType"] })}>
-              <SelectTrigger className={validationErrors.documentType ? "border-destructive" : ""}>
+            <Select
+              value={formData.documentType}
+              onValueChange={(value) =>
+                updateFormData({
+                  documentType: value as RegistrationFormData["documentType"],
+                })
+              }
+            >
+              <SelectTrigger
+                className={
+                  validationErrors.documentType ? "border-destructive" : ""
+                }
+              >
                 <SelectValue placeholder="Select document type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="drivers_license">Driver's License</SelectItem>
+                <SelectItem value="drivers_license">
+                  Driver's License
+                </SelectItem>
                 <SelectItem value="passport">Passport</SelectItem>
                 <SelectItem value="state_id">State ID</SelectItem>
               </SelectContent>
             </Select>
             {validationErrors.documentType && (
-              <p className="text-sm text-destructive">{validationErrors.documentType}</p>
+              <p className="text-sm text-destructive">
+                {validationErrors.documentType}
+              </p>
             )}
           </div>
 
@@ -611,12 +779,18 @@ export default function Register() {
               <Input
                 id="documentNumber"
                 value={formData.documentNumber}
-                onChange={(e) => updateFormData({ documentNumber: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ documentNumber: e.target.value })
+                }
                 placeholder="Document number"
-                className={validationErrors.documentNumber ? "border-destructive" : ""}
+                className={
+                  validationErrors.documentNumber ? "border-destructive" : ""
+                }
               />
               {validationErrors.documentNumber && (
-                <p className="text-sm text-destructive">{validationErrors.documentNumber}</p>
+                <p className="text-sm text-destructive">
+                  {validationErrors.documentNumber}
+                </p>
               )}
             </div>
             <div className="space-y-2">
@@ -625,11 +799,17 @@ export default function Register() {
                 id="documentExpiry"
                 type="date"
                 value={formData.documentExpiry}
-                onChange={(e) => updateFormData({ documentExpiry: e.target.value })}
-                className={validationErrors.documentExpiry ? "border-destructive" : ""}
+                onChange={(e) =>
+                  updateFormData({ documentExpiry: e.target.value })
+                }
+                className={
+                  validationErrors.documentExpiry ? "border-destructive" : ""
+                }
               />
               {validationErrors.documentExpiry && (
-                <p className="text-sm text-destructive">{validationErrors.documentExpiry}</p>
+                <p className="text-sm text-destructive">
+                  {validationErrors.documentExpiry}
+                </p>
               )}
             </div>
           </div>
@@ -662,7 +842,9 @@ export default function Register() {
                 value={formData.password}
                 onChange={(e) => updateFormData({ password: e.target.value })}
                 placeholder="Create a strong password"
-                className={validationErrors.password ? "border-destructive" : ""}
+                className={
+                  validationErrors.password ? "border-destructive" : ""
+                }
               />
               <Button
                 type="button"
@@ -671,11 +853,17 @@ export default function Register() {
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </Button>
             </div>
             {validationErrors.password && (
-              <p className="text-sm text-destructive">{validationErrors.password}</p>
+              <p className="text-sm text-destructive">
+                {validationErrors.password}
+              </p>
             )}
           </div>
 
@@ -686,9 +874,13 @@ export default function Register() {
                 id="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 value={formData.confirmPassword}
-                onChange={(e) => updateFormData({ confirmPassword: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ confirmPassword: e.target.value })
+                }
                 placeholder="Confirm your password"
-                className={validationErrors.confirmPassword ? "border-destructive" : ""}
+                className={
+                  validationErrors.confirmPassword ? "border-destructive" : ""
+                }
               />
               <Button
                 type="button"
@@ -697,11 +889,17 @@ export default function Register() {
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
-                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </Button>
             </div>
             {validationErrors.confirmPassword && (
-              <p className="text-sm text-destructive">{validationErrors.confirmPassword}</p>
+              <p className="text-sm text-destructive">
+                {validationErrors.confirmPassword}
+              </p>
             )}
           </div>
 
@@ -720,8 +918,10 @@ export default function Register() {
   );
 
   const renderReviewStep = () => {
-    const selectedAccount = accountTypes.find(acc => acc.id === formData.accountType);
-    
+    const selectedAccount = accountTypes.find(
+      (acc) => acc.id === formData.accountType,
+    );
+
     return (
       <div className="space-y-6">
         <div>
@@ -730,7 +930,8 @@ export default function Register() {
             Review Your Information
           </h3>
           <p className="text-sm text-muted-foreground mb-6">
-            Please review all the information you provided. Once submitted, some details cannot be changed.
+            Please review all the information you provided. Once submitted, some
+            details cannot be changed.
           </p>
         </div>
 
@@ -742,16 +943,19 @@ export default function Register() {
           <CardContent className="space-y-2">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="font-medium">Name:</span> {formData.firstName} {formData.lastName}
+                <span className="font-medium">Name:</span> {formData.firstName}{" "}
+                {formData.lastName}
               </div>
               <div>
                 <span className="font-medium">Email:</span> {formData.email}
               </div>
               <div>
-                <span className="font-medium">Phone:</span> {formData.phoneNumber}
+                <span className="font-medium">Phone:</span>{" "}
+                {formData.phoneNumber}
               </div>
               <div>
-                <span className="font-medium">Date of Birth:</span> {formData.dateOfBirth}
+                <span className="font-medium">Date of Birth:</span>{" "}
+                {formData.dateOfBirth}
               </div>
             </div>
           </CardContent>
@@ -764,8 +968,10 @@ export default function Register() {
           </CardHeader>
           <CardContent>
             <div className="text-sm">
-              {formData.street}<br />
-              {formData.city}, {formData.state} {formData.zipCode}<br />
+              {formData.street}
+              <br />
+              {formData.city}, {formData.state} {formData.zipCode}
+              <br />
               {formData.country}
             </div>
           </CardContent>
@@ -794,48 +1000,71 @@ export default function Register() {
             <Checkbox
               id="agreeToTerms"
               checked={formData.agreeToTerms}
-              onCheckedChange={(checked) => updateFormData({ agreeToTerms: !!checked })}
-              className={validationErrors.agreeToTerms ? "border-destructive" : ""}
+              onCheckedChange={(checked) =>
+                updateFormData({ agreeToTerms: !!checked })
+              }
+              className={
+                validationErrors.agreeToTerms ? "border-destructive" : ""
+              }
             />
             <Label htmlFor="agreeToTerms" className="text-sm leading-5">
               I agree to the{" "}
-              <Link to="/terms" className="text-primary hover:underline" target="_blank">
+              <Link
+                to="/terms"
+                className="text-primary hover:underline"
+                target="_blank"
+              >
                 Terms and Conditions
               </Link>{" "}
               *
             </Label>
           </div>
           {validationErrors.agreeToTerms && (
-            <p className="text-sm text-destructive ml-6">{validationErrors.agreeToTerms}</p>
+            <p className="text-sm text-destructive ml-6">
+              {validationErrors.agreeToTerms}
+            </p>
           )}
 
           <div className="flex items-start space-x-2">
             <Checkbox
               id="agreeToPrivacy"
               checked={formData.agreeToPrivacy}
-              onCheckedChange={(checked) => updateFormData({ agreeToPrivacy: !!checked })}
-              className={validationErrors.agreeToPrivacy ? "border-destructive" : ""}
+              onCheckedChange={(checked) =>
+                updateFormData({ agreeToPrivacy: !!checked })
+              }
+              className={
+                validationErrors.agreeToPrivacy ? "border-destructive" : ""
+              }
             />
             <Label htmlFor="agreeToPrivacy" className="text-sm leading-5">
               I agree to the{" "}
-              <Link to="/privacy" className="text-primary hover:underline" target="_blank">
+              <Link
+                to="/privacy"
+                className="text-primary hover:underline"
+                target="_blank"
+              >
                 Privacy Policy
               </Link>{" "}
               *
             </Label>
           </div>
           {validationErrors.agreeToPrivacy && (
-            <p className="text-sm text-destructive ml-6">{validationErrors.agreeToPrivacy}</p>
+            <p className="text-sm text-destructive ml-6">
+              {validationErrors.agreeToPrivacy}
+            </p>
           )}
 
           <div className="flex items-start space-x-2">
             <Checkbox
               id="optInMarketing"
               checked={formData.optInMarketing}
-              onCheckedChange={(checked) => updateFormData({ optInMarketing: !!checked })}
+              onCheckedChange={(checked) =>
+                updateFormData({ optInMarketing: !!checked })
+              }
             />
             <Label htmlFor="optInMarketing" className="text-sm leading-5">
-              I would like to receive marketing communications and product updates (optional)
+              I would like to receive marketing communications and product
+              updates (optional)
             </Label>
           </div>
         </div>
@@ -881,17 +1110,20 @@ export default function Register() {
 
         <Card className="border-0 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-center text-2xl">Create Your Account</CardTitle>
+            <CardTitle className="text-center text-2xl">
+              Create Your Account
+            </CardTitle>
             <CardDescription className="text-center">
-              Join thousands of customers who trust SecureBank for their financial needs
+              Join thousands of customers who trust SecureBank for their
+              financial needs
             </CardDescription>
           </CardHeader>
           <CardContent>
             {renderStepIndicator()}
-            
+
             <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
               {renderStepContent()}
-              
+
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-6">
                 <Button
@@ -902,15 +1134,15 @@ export default function Register() {
                 >
                   Previous
                 </Button>
-                
+
                 {currentStep < totalSteps ? (
                   <Button type="button" onClick={nextStep}>
                     Next
                   </Button>
                 ) : (
-                  <Button 
-                    type="button" 
-                    onClick={handleSubmit} 
+                  <Button
+                    type="button"
+                    onClick={handleSubmit}
                     disabled={loading}
                     className="min-w-[120px]"
                   >
@@ -934,7 +1166,8 @@ export default function Register() {
         {/* Security Notice */}
         <div className="mt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            Your information is protected with bank-level security and 256-bit SSL encryption
+            Your information is protected with bank-level security and 256-bit
+            SSL encryption
           </p>
         </div>
       </div>
