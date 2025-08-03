@@ -93,6 +93,7 @@ export function createServer() {
   app.post("/api/auth/login", handleLogin);
   app.post("/api/auth/register", handleRegistration);
   app.get("/api/auth/profile", handleProfile);
+  app.post("/api/auth/logout", handleLogout);
   app.get("/api/dashboard", handleGetDashboard);
   app.get("/api/accounts", handleGetAccounts);
   app.get("/api/accounts/:accountId", handleGetAccountDetails);
