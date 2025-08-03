@@ -26,6 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/otp-login" element={<OtpLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Banking Pages */}
