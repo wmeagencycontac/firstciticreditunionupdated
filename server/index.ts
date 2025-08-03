@@ -6,9 +6,10 @@ import { handleLogin, handleProfile } from "./routes/auth";
 import {
   handleGetAccounts,
   handleGetAccountDetails,
-  handleGetTransactions,
+  handleGetTransactions as handleGetAccountTransactions,
 } from "./routes/accounts";
 import { handleGetDashboard } from "./routes/dashboard";
+import { handleGetTransactions, handleCreateTransaction } from "./routes/transactions";
 
 export function createServer() {
   const app = express();
