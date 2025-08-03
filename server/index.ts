@@ -118,5 +118,14 @@ export function createServer() {
   );
   app.get("/api/verify-email", handleEmailVerification);
 
+  // Banking API endpoints (protected)
+  app.get("/api/account-summary", authenticateToken, handleAccountSummary);
+  app.get("/api/all-transactions", authenticateToken, handleGetAllTransactions);
+  app.post("/api/send-transfer", authenticateToken, handleSendTransfer);
+  app.get("/api/cards", authenticateToken, handleGetCards);
+
+  // Admin banking endpoints
+  app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
+
   return { app, httpServer, io };
 }
