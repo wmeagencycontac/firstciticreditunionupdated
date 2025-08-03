@@ -9,7 +9,7 @@ export class EnhancedDatabase {
     // Create data and uploads directories
     const dataDir = path.join(process.cwd(), "data");
     const uploadsDir = path.join(process.cwd(), "uploads");
-    
+
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
@@ -18,7 +18,7 @@ export class EnhancedDatabase {
     }
 
     const dbPath = path.join(dataDir, "auth.db");
-    
+
     this.db = new sqlite3.Database(dbPath, (err) => {
       if (err) {
         console.error("Error opening enhanced database:", err);
@@ -72,10 +72,18 @@ export class EnhancedDatabase {
 
       // Create indexes for better performance
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_verifications_token ON verifications(token)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_verifications_user_expires ON verifications(user_id, expires_at DESC)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_sessions_token ON user_sessions(token)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_sessions_user_expires ON user_sessions(user_id, expires_at DESC)`);
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_verifications_token ON verifications(token)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_verifications_user_expires ON verifications(user_id, expires_at DESC)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_sessions_token ON user_sessions(token)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_sessions_user_expires ON user_sessions(user_id, expires_at DESC)`,
+      );
     });
   }
 
@@ -103,7 +111,7 @@ export class EnhancedDatabase {
           } else {
             resolve(this.lastID);
           }
-        }
+        },
       );
     });
   }
@@ -119,24 +127,20 @@ export class EnhancedDatabase {
           } else {
             resolve(row);
           }
-        }
+        },
       );
     });
   }
 
   public async getUserById(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.db.get(
-        `SELECT * FROM users WHERE id = ?`,
-        [userId],
-        (err, row) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(row);
-          }
+      this.db.get(`SELECT * FROM users WHERE id = ?`, [userId], (err, row) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(row);
         }
-      );
+      });
     });
   }
 
@@ -151,7 +155,7 @@ export class EnhancedDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -175,7 +179,7 @@ export class EnhancedDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -191,7 +195,7 @@ export class EnhancedDatabase {
           } else {
             resolve(row);
           }
-        }
+        },
       );
     });
   }
@@ -207,7 +211,7 @@ export class EnhancedDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -231,7 +235,7 @@ export class EnhancedDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -250,7 +254,7 @@ export class EnhancedDatabase {
           } else {
             resolve(row);
           }
-        }
+        },
       );
     });
   }
@@ -266,7 +270,7 @@ export class EnhancedDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -278,7 +282,7 @@ export class EnhancedDatabase {
       this.db.serialize(() => {
         this.db.run(
           `DELETE FROM verifications WHERE expires_at < ? AND used = 0`,
-          [now]
+          [now],
         );
         this.db.run(
           `DELETE FROM user_sessions WHERE expires_at < ?`,
@@ -289,7 +293,7 @@ export class EnhancedDatabase {
             } else {
               resolve();
             }
-          }
+          },
         );
       });
     });

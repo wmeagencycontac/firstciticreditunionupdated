@@ -15,43 +15,51 @@ import {
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/');
+    cb(null, "./uploads/");
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-  }
+    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
+  },
 });
 
 const upload = multer({
   storage: storage,
-  limits: { 
-    fileSize: 5 * 1024 * 1024 // 5MB limit
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
   },
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    if (!['.jpg', '.jpeg', '.png'].includes(ext)) {
-      return cb(new Error('Only JPG/PNG files are allowed'));
+    if (![".jpg", ".jpeg", ".png"].includes(ext)) {
+      return cb(new Error("Only JPG/PNG files are allowed"));
     }
     cb(null, true);
-  }
+  },
 });
 
 // Netlify webhook URL (configurable via environment variable)
-const NETLIFY_WEBHOOK_URL = process.env.NETLIFY_WEBHOOK_URL || 'https://your-site.netlify.app/.netlify/functions/register-hook';
+const NETLIFY_WEBHOOK_URL =
+  process.env.NETLIFY_WEBHOOK_URL ||
+  "https://your-site.netlify.app/.netlify/functions/register-hook";
 
-export const uploadMiddleware = upload.single('profile_picture');
+export const uploadMiddleware = upload.single("profile_picture");
 
 export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
   try {
-    const { name, email, bio, password, confirmPassword }: EnhancedRegistrationRequest = req.body;
+    const {
+      name,
+      email,
+      bio,
+      password,
+      confirmPassword,
+    }: EnhancedRegistrationRequest = req.body;
     const file = req.file;
 
     // Validate required fields
     if (!name || !email) {
       return res.status(400).json({
-        error: 'Name and email are required'
+        error: "Name and email are required",
       });
     }
 
@@ -59,7 +67,7 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
-        error: 'Invalid email format'
+        error: "Invalid email format",
       });
     }
 
@@ -67,19 +75,19 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
     if (password) {
       if (!confirmPassword) {
         return res.status(400).json({
-          error: 'Password confirmation is required'
+          error: "Password confirmation is required",
         });
       }
 
       if (password !== confirmPassword) {
         return res.status(400).json({
-          error: 'Passwords do not match'
+          error: "Passwords do not match",
         });
       }
 
       if (password.length < 8) {
         return res.status(400).json({
-          error: 'Password must be at least 8 characters long'
+          error: "Password must be at least 8 characters long",
         });
       }
     }
@@ -91,7 +99,7 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
     const existingUser = await db.getUserByEmail(email.toLowerCase());
     if (existingUser) {
       return res.status(409).json({
-        error: 'User with this email already exists'
+        error: "User with this email already exists",
       });
     }
 
@@ -107,30 +115,30 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
       name,
       bio,
       picture: file ? file.filename : undefined,
-      passwordHash
+      passwordHash,
     });
 
     // Create email verification token
     const verificationToken = uuid();
     const verificationId = uuid();
-    const expiresAt = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
     await db.createVerificationToken({
       id: verificationId,
       userId,
       token: verificationToken,
-      expiresAt
+      expiresAt,
     });
 
     // Send verification email
-    const verifyUrl = `${req.protocol}://${req.get('host')}/api/verify-email?token=${verificationToken}`;
-    
+    const verifyUrl = `${req.protocol}://${req.get("host")}/api/verify-email?token=${verificationToken}`;
+
     try {
       // Create a custom verification email
       const mailOptions = {
         from: `"Secure Registration" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
         to: email,
-        subject: 'Please verify your email address',
+        subject: "Please verify your email address",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2 style="color: #333; text-align: center;">Welcome ${name}!</h2>
@@ -155,15 +163,15 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
               Secure Registration System
             </p>
           </div>
-        `
+        `,
       };
 
       // Use the existing email service transporter
       const transporter = (emailService as any).transporter;
       await transporter.sendMail(mailOptions);
-      console.log('Verification email sent to:', email);
+      console.log("Verification email sent to:", email);
     } catch (emailError) {
-      console.error('Failed to send verification email:', emailError);
+      console.error("Failed to send verification email:", emailError);
       // Don't fail the registration if email fails
     }
 
@@ -174,32 +182,32 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
         email: email.toLowerCase(),
         bio,
         picture: file ? file.filename : undefined,
-        registered_at: new Date().toISOString()
+        registered_at: new Date().toISOString(),
       };
 
       await axios.post(NETLIFY_WEBHOOK_URL, webhookPayload, {
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        timeout: 5000 // 5 second timeout
+        timeout: 5000, // 5 second timeout
       });
-      console.log('User data sent to Netlify webhook successfully');
+      console.log("User data sent to Netlify webhook successfully");
     } catch (webhookError) {
-      console.error('Failed to send data to Netlify webhook:', webhookError);
+      console.error("Failed to send data to Netlify webhook:", webhookError);
       // Don't fail the registration if webhook fails
     }
 
     const response: EnhancedRegistrationResponse = {
-      message: 'Registration successful! Please check your email to verify your account.',
-      userId
+      message:
+        "Registration successful! Please check your email to verify your account.",
+      userId,
     };
 
     res.status(201).json(response);
-
   } catch (error) {
-    console.error('Enhanced registration error:', error);
+    console.error("Enhanced registration error:", error);
     res.status(500).json({
-      error: 'Internal server error during registration'
+      error: "Internal server error during registration",
     });
   }
 };
@@ -209,7 +217,7 @@ export const handleEmailVerification: RequestHandler = async (req, res) => {
   try {
     const { token } = req.query;
 
-    if (!token || typeof token !== 'string') {
+    if (!token || typeof token !== "string") {
       return res.status(400).send(`
         <html>
           <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
@@ -249,7 +257,7 @@ export const handleEmailVerification: RequestHandler = async (req, res) => {
 
     // Mark email as verified
     await db.markEmailAsVerified(verification.user_id);
-    
+
     // Mark token as used
     await db.markTokenAsUsed(verification.id);
 
@@ -260,7 +268,7 @@ export const handleEmailVerification: RequestHandler = async (req, res) => {
       <html>
         <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
           <h2 style="color: #16a34a;">✅ Email Verified Successfully!</h2>
-          <p>Welcome ${user?.name || 'User'}! Your email has been verified and your account is now active.</p>
+          <p>Welcome ${user?.name || "User"}! Your email has been verified and your account is now active.</p>
           <p>You can now log in to your account.</p>
           <div style="margin-top: 30px;">
             <a href="/" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
@@ -270,9 +278,8 @@ export const handleEmailVerification: RequestHandler = async (req, res) => {
         </body>
       </html>
     `);
-
   } catch (error) {
-    console.error('Email verification error:', error);
+    console.error("Email verification error:", error);
     res.status(500).send(`
       <html>
         <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">

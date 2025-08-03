@@ -68,7 +68,11 @@ export function createServer() {
   app.get("/api/otp/user/:userId", handleGetOTPUser);
 
   // Enhanced Registration endpoints
-  app.post("/api/register-enhanced", uploadMiddleware, handleEnhancedRegistration);
+  app.post(
+    "/api/register-enhanced",
+    uploadMiddleware,
+    handleEnhancedRegistration,
+  );
   app.get("/api/verify-email", handleEmailVerification);
 
   return app;
