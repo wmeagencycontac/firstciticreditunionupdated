@@ -16,34 +16,42 @@ export interface DemoResponse {
  */
 
 export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
+  id: number;
   email: string;
-  createdAt: string;
+  name: string;
+  email_verified: boolean;
+  role: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Account {
-  id: string;
-  userId: string;
-  accountNumber: string;
-  accountType: "checking" | "savings" | "credit";
+  id: number;
+  user_id: number;
+  account_number: string;
+  account_type: "checking" | "savings";
   balance: number;
   currency: string;
-  isActive: boolean;
-  createdAt: string;
+  routing_number: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Transaction {
-  id: string;
-  accountId: string;
-  type: "debit" | "credit" | "transfer";
+  id: number;
+  account_id: number;
+  type: "debit" | "credit";
   amount: number;
   description: string;
-  category: string;
-  merchant?: string;
-  createdAt: string;
-  status: "pending" | "completed" | "failed";
+  timestamp: string;
+}
+
+export interface Card {
+  id: number;
+  user_id: number;
+  card_number: string;
+  status: "active" | "inactive" | "blocked";
+  created_at: string;
 }
 
 export interface TransferRequest {
