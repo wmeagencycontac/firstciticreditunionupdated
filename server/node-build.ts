@@ -1,18 +1,9 @@
 import path from "path";
 import { createServer } from "./index";
 import * as express from "express";
-import { createServer as createHttpServer } from "http";
-import { Server as SocketIOServer } from "socket.io";
 
-const app = createServer();
+const { app, httpServer, io } = createServer();
 const port = process.env.PORT || 3000;
-const httpServer = createHttpServer(app);
-const io = new SocketIOServer(httpServer, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
 
 // Simulate realistic transactions for demo purposes
 const demoMerchants = [
