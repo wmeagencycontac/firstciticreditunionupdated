@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
@@ -146,16 +147,7 @@ const App = () => (
               />
             }
           />
-          <Route
-            path="/transactions"
-            element={
-              <Placeholder
-                title="Transaction History"
-                description="View and manage your complete transaction history."
-                suggestedPrompt="Can you build a transaction history page with filtering, search, and export capabilities?"
-              />
-            }
-          />
+          <Route path="/transactions" element={<Transactions />} />
           <Route
             path="/demo"
             element={

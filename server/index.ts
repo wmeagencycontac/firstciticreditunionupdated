@@ -6,9 +6,13 @@ import { handleLogin, handleProfile } from "./routes/auth";
 import {
   handleGetAccounts,
   handleGetAccountDetails,
-  handleGetTransactions,
+  handleGetTransactions as handleGetAccountTransactions,
 } from "./routes/accounts";
 import { handleGetDashboard } from "./routes/dashboard";
+import {
+  handleGetTransactions,
+  handleCreateTransaction,
+} from "./routes/transactions";
 
 export function createServer() {
   const app = express();
@@ -32,7 +36,14 @@ export function createServer() {
   app.get("/api/dashboard", handleGetDashboard);
   app.get("/api/accounts", handleGetAccounts);
   app.get("/api/accounts/:accountId", handleGetAccountDetails);
-  app.get("/api/accounts/:accountId/transactions", handleGetTransactions);
+  app.get(
+    "/api/accounts/:accountId/transactions",
+    handleGetAccountTransactions,
+  );
+
+  // All transactions endpoints
+  app.get("/api/transactions", handleGetTransactions);
+  app.post("/api/transactions", handleCreateTransaction);
 
   return app;
 }
