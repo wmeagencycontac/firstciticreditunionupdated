@@ -110,5 +110,5 @@ export function createServer() {
   );
   app.get("/api/verify-email", handleEmailVerification);
 
-  return app;
+  return { app, httpServer, io };
 }
