@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import OtpLogin from "./pages/OtpLogin";
 import Register from "./pages/Register";
+import EnhancedRegistration from "./pages/EnhancedRegistration";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Placeholder from "./pages/Placeholder";
