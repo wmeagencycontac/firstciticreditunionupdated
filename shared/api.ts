@@ -63,6 +63,52 @@ export interface LoginResponse {
   token: string;
 }
 
+export interface RegistrationRequest {
+  // Personal Information
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  ssn: string;
+
+  // Address Information
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+
+  // Account Selection
+  accountType: "personal" | "business" | "investment";
+  initialDeposit: string;
+
+  // Business Information (optional)
+  businessName?: string;
+  businessType?: string;
+  ein?: string;
+  businessAddress?: string;
+
+  // Identity Verification
+  documentType: "drivers_license" | "passport" | "state_id";
+  documentNumber: string;
+  documentExpiry: string;
+
+  // Security
+  password: string;
+  confirmPassword: string;
+
+  // Legal
+  agreeToTerms: boolean;
+  agreeToPrivacy: boolean;
+  optInMarketing: boolean;
+}
+
+export interface RegistrationResponse {
+  user: User;
+  message: string;
+}
+
 export interface AccountSummary {
   account: Account;
   recentTransactions: Transaction[];
