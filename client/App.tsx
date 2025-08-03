@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Placeholder from "./pages/Placeholder";
@@ -27,16 +28,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Banking Pages */}
-          <Route
-            path="/register"
-            element={
-              <Placeholder
-                title="Account Registration"
-                description="Create your new SecureBank account with our simple and secure registration process."
-                suggestedPrompt="Can you build the account registration form with user details, account type selection, and identity verification?"
-              />
-            }
-          />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/personal"
             element={

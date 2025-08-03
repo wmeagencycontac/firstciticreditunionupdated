@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleLogin, handleProfile } from "./routes/auth";
+import { handleRegistration } from "./routes/registration";
 import {
   handleGetAccounts,
   handleGetAccountDetails,
@@ -32,6 +33,7 @@ export function createServer() {
 
   // Banking API routes
   app.post("/api/auth/login", handleLogin);
+  app.post("/api/auth/register", handleRegistration);
   app.get("/api/auth/profile", handleProfile);
   app.get("/api/dashboard", handleGetDashboard);
   app.get("/api/accounts", handleGetAccounts);
