@@ -27,6 +27,14 @@ import {
   handleEnhancedRegistration,
   handleEmailVerification,
 } from "./routes/enhanced-registration";
+import {
+  handleAccountSummary,
+  handleGetAllTransactions,
+  handleSendTransfer,
+  handleGetCards,
+  handleAdminVerifyUser,
+  authenticateToken,
+} from "./routes/banking";
 
 // Global Socket.IO server instance
 export let io: SocketIOServer;
