@@ -20,7 +20,7 @@ class EmailService {
       }
     };
 
-    this.transporter = nodemailer.createTransporter(config);
+    this.transporter = nodemailer.createTransport(config);
   }
 
   public async sendOTP(to: string, otp: string): Promise<boolean> {
