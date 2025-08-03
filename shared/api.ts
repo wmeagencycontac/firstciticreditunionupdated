@@ -55,8 +55,8 @@ export interface Card {
 }
 
 export interface TransferRequest {
-  fromAccountId: string;
-  toAccountId: string;
+  from_account_id: number;
+  to_account_id: number;
   amount: number;
   description: string;
 }
