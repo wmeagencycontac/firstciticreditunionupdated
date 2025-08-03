@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { getOTPDatabase } from "../database";
+import { getEmailService } from "../email";
 import {
   OTPRequestRequest,
   OTPRequestResponse,
