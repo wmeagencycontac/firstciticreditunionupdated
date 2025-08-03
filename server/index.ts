@@ -20,6 +20,11 @@ import {
   handleVerifyOTP,
   handleGetOTPUser,
 } from "./routes/otp-auth";
+import {
+  uploadMiddleware,
+  handleEnhancedRegistration,
+  handleEmailVerification,
+} from "./routes/enhanced-registration";
 
 export function createServer() {
   const app = express();
