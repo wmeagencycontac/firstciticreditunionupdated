@@ -25,17 +25,28 @@ import {
   EyeOff,
 } from "lucide-react";
 import { DashboardData, Transaction } from "@shared/api";
+import io from "socket.io-client";
 
 export default function Dashboard() {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null,
-  );
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [balanceVisible, setBalanceVisible] = useState(true);
+  const [liveTransactions, setLiveTransactions] = useState<any[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchDashboardData();
+
+    // Connect to Socket.IO server for real-time updates
+    const socket = io();
+
+    socket.on("transaction", (tx) => {
+      setLiveTransactions((prev) => [tx, ...prev].slice(0, 5)); // keep last 5
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const fetchDashboardData = async () => {
@@ -112,7 +123,25 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
-      {/* Header */}
+      {/* Live Transactions Feed */}
+      {liveTransactions.length > 0 && (
+        <div className="container mx-auto px-4 pt-4">
+          <div className="mb-4 bg-green-50 border border-green-200 rounded p-4 shadow">
+            <h3 className="text-lg font-semibold mb-2">Live Transactions</h3>
+            <ul className="space-y-2">
+              {liveTransactions.map((tx) => (
+                <li key={tx.id} className="flex items-center justify-between">
+                  <span className="font-bold text-green-700">{tx.type.toUpperCase()}</span>
+                  <span>${tx.amount}</span>
+                  <span className="text-xs text-gray-500">{new Date(tx.timestamp).toLocaleTimeString()}</span>
+                  <span className="text-gray-700">{tx.description}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+      {/* ...existing dashboard code... */}
       <header className="border-b bg-card/50 backdrop-blur">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -122,7 +151,6 @@ export default function Dashboard() {
               </div>
               <span className="text-xl font-bold">SecureBank</span>
             </div>
-
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm">
                 <Bell className="w-4 h-4" />
@@ -151,7 +179,6 @@ export default function Dashboard() {
           </div>
         </div>
       </header>
-
       <div className="container mx-auto px-4 py-8">
         {/* Total Balance Card */}
         <Card className="mb-8 border-0 shadow-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
@@ -220,7 +247,6 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
-
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Accounts */}
           <div className="lg:col-span-2 space-y-6">
@@ -274,7 +300,6 @@ export default function Dashboard() {
                           </Badge>
                         </div>
                       </div>
-
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <p className="text-muted-foreground">
@@ -299,7 +324,6 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-
           {/* Recent Activity */}
           <div>
             <h2 className="text-2xl font-bold mb-4">Recent Activity</h2>

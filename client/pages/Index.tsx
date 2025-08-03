@@ -1,4 +1,8 @@
 import { useState } from "react";
+import Personal from "./Personal";
+import Business from "./Business";
+import Investments from "./Investments";
+import About from "./About";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,30 +42,10 @@ export default function Index() {
             </span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/personal"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Personal
-            </Link>
-            <Link
-              to="/business"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Business
-            </Link>
-            <Link
-              to="/investments"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Investments
-            </Link>
-            <Link
-              to="/about"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              About
-            </Link>
+            <a href="#personal" className="text-muted-foreground hover:text-foreground transition-colors">Personal</a>
+            <a href="#business" className="text-muted-foreground hover:text-foreground transition-colors">Business</a>
+            <a href="#investments" className="text-muted-foreground hover:text-foreground transition-colors">Investments</a>
+            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
           </div>
           <div className="flex items-center space-x-4">
             <Link to="/login">
@@ -121,98 +105,14 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Everything you need to manage your money
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Our comprehensive banking platform provides all the tools you need
-            for modern financial management.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Smartphone className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle>Mobile Banking</CardTitle>
-              <CardDescription>
-                Bank on the go with our award-winning mobile app. Check
-                balances, transfer money, and deposit checks.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle>Bank-Level Security</CardTitle>
-              <CardDescription>
-                Your money and data are protected with military-grade encryption
-                and multi-factor authentication.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <TrendingUp className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle>Investment Tools</CardTitle>
-              <CardDescription>
-                Grow your wealth with our investment platform. Access stocks,
-                bonds, and expert financial advice.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Lock className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle>Fraud Protection</CardTitle>
-              <CardDescription>
-                Advanced AI monitors your accounts 24/7 for suspicious activity
-                and unauthorized transactions.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle>Expert Support</CardTitle>
-              <CardDescription>
-                Get help when you need it with 24/7 customer support from real
-                banking professionals.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Globe className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle>Global Access</CardTitle>
-              <CardDescription>
-                Access your accounts from anywhere in the world with no foreign
-                transaction fees.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-      </section>
+      {/* Personal Banking Section */}
+      <div id="personal"><Personal /></div>
+      {/* Business Banking Section */}
+      <div id="business"><Business /></div>
+      {/* Investments Section */}
+      <div id="investments"><Investments /></div>
+      {/* About Section */}
+      <div id="about"><About /></div>
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">
