@@ -52,5 +52,10 @@ export function createServer() {
   app.get("/api/transactions", handleGetTransactions);
   app.post("/api/transactions", handleCreateTransaction);
 
+  // OTP Authentication endpoints
+  app.post("/api/otp/request-code", handleRequestOTP);
+  app.post("/api/otp/verify-code", handleVerifyOTP);
+  app.get("/api/otp/user/:userId", handleGetOTPUser);
+
   return app;
 }
