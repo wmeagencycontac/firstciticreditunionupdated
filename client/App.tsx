@@ -28,16 +28,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Banking Pages */}
-          <Route
-            path="/register"
-            element={
-              <Placeholder
-                title="Account Registration"
-                description="Create your new SecureBank account with our simple and secure registration process."
-                suggestedPrompt="Can you build the account registration form with user details, account type selection, and identity verification?"
-              />
-            }
-          />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/personal"
             element={
