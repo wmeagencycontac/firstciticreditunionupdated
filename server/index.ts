@@ -20,6 +20,11 @@ import {
   handleVerifyOTP,
   handleGetOTPUser,
 } from "./routes/otp-auth";
+import {
+  uploadMiddleware,
+  handleEnhancedRegistration,
+  handleEmailVerification,
+} from "./routes/enhanced-registration";
 
 export function createServer() {
   const app = express();
@@ -61,6 +66,14 @@ export function createServer() {
   app.post("/api/otp/request-code", handleRequestOTP);
   app.post("/api/otp/verify-code", handleVerifyOTP);
   app.get("/api/otp/user/:userId", handleGetOTPUser);
+
+  // Enhanced Registration endpoints
+  app.post(
+    "/api/register-enhanced",
+    uploadMiddleware,
+    handleEnhancedRegistration,
+  );
+  app.get("/api/verify-email", handleEmailVerification);
 
   return app;
 }
