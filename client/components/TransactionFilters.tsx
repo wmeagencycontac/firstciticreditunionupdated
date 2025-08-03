@@ -14,17 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Search,
-  Filter,
-  Calendar as CalendarIcon,
-} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Search, Filter, Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -154,7 +145,7 @@ export default function TransactionFilters({
                 variant="outline"
                 className={cn(
                   "justify-start text-left font-normal",
-                  !dateRange.from && "text-muted-foreground"
+                  !dateRange.from && "text-muted-foreground",
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />

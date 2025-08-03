@@ -1,10 +1,5 @@
 import { Bell, ArrowDownRight, ArrowUpRight } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Transaction } from "@shared/api";
 import { format } from "date-fns";
 
@@ -12,7 +7,9 @@ interface LiveTransactionFeedProps {
   transactions: Transaction[];
 }
 
-export default function LiveTransactionFeed({ transactions }: LiveTransactionFeedProps) {
+export default function LiveTransactionFeed({
+  transactions,
+}: LiveTransactionFeedProps) {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -49,15 +46,19 @@ export default function LiveTransactionFeed({ transactions }: LiveTransactionFee
               <div
                 key={tx.id}
                 className={`flex items-center justify-between p-2 bg-background rounded border transition-all duration-300 ${
-                  index === 0 ? 'animate-slide-in border-success/30' : ''
+                  index === 0 ? "animate-slide-in border-success/30" : ""
                 }`}
               >
                 <div className="flex items-center gap-2">
                   {getTransactionIcon(tx)}
                   <div>
-                    <span className="font-medium text-sm">{tx.description}</span>
+                    <span className="font-medium text-sm">
+                      {tx.description}
+                    </span>
                     {tx.merchant && (
-                      <p className="text-xs text-muted-foreground">{tx.merchant}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {tx.merchant}
+                      </p>
                     )}
                   </div>
                 </div>

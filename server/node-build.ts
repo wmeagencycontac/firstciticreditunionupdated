@@ -4,33 +4,64 @@ import * as express from "express";
 import { createServer as createHttpServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 
-
 const app = createServer();
 const port = process.env.PORT || 3000;
 const httpServer = createHttpServer(app);
 const io = new SocketIOServer(httpServer, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
 // Simulate realistic transactions for demo purposes
 const demoMerchants = [
-  "Starbucks Coffee", "Amazon.com", "Shell Gas Station", "Target", "Uber",
-  "Netflix", "Spotify", "McDonald's", "Walmart", "CVS Pharmacy",
-  "Apple Store", "Home Depot", "Best Buy", "Costco", "Chipotle"
+  "Starbucks Coffee",
+  "Amazon.com",
+  "Shell Gas Station",
+  "Target",
+  "Uber",
+  "Netflix",
+  "Spotify",
+  "McDonald's",
+  "Walmart",
+  "CVS Pharmacy",
+  "Apple Store",
+  "Home Depot",
+  "Best Buy",
+  "Costco",
+  "Chipotle",
 ];
 
 const demoDescriptions = [
-  "Coffee Purchase", "Online Shopping", "Gas Station", "Grocery Shopping", "Ride Share",
-  "Streaming Service", "Music Subscription", "Fast Food", "Department Store", "Pharmacy",
-  "Electronics Purchase", "Home Improvement", "Tech Purchase", "Warehouse Store", "Restaurant"
+  "Coffee Purchase",
+  "Online Shopping",
+  "Gas Station",
+  "Grocery Shopping",
+  "Ride Share",
+  "Streaming Service",
+  "Music Subscription",
+  "Fast Food",
+  "Department Store",
+  "Pharmacy",
+  "Electronics Purchase",
+  "Home Improvement",
+  "Tech Purchase",
+  "Warehouse Store",
+  "Restaurant",
 ];
 
 const demoCategories = [
-  "Food & Dining", "Shopping", "Transportation", "Groceries", "Entertainment",
-  "Subscriptions", "Health", "Electronics", "Home & Garden", "Travel"
+  "Food & Dining",
+  "Shopping",
+  "Transportation",
+  "Groceries",
+  "Entertainment",
+  "Subscriptions",
+  "Health",
+  "Electronics",
+  "Home & Garden",
+  "Travel",
 ];
 
 function generateRandomTransaction() {
@@ -50,16 +81,21 @@ function generateRandomTransaction() {
     category: demoCategories[Math.floor(Math.random() * demoCategories.length)],
     merchant: demoMerchants[merchantIndex],
     createdAt: new Date().toISOString(),
-    status: Math.random() < 0.95 ? "completed" : "pending" // 95% completed, 5% pending
+    status: Math.random() < 0.95 ? "completed" : "pending", // 95% completed, 5% pending
   };
 }
 
 // Simulate transactions every 15-30 seconds
-setInterval(() => {
-  const transaction = generateRandomTransaction();
-  io.emit("transaction", transaction);
-  console.log(`📡 Broadcasted transaction: ${transaction.description} - ${transaction.amount > 0 ? '+' : ''}$${Math.abs(transaction.amount)}`);
-}, Math.random() * 15000 + 15000); // Random interval between 15-30 seconds
+setInterval(
+  () => {
+    const transaction = generateRandomTransaction();
+    io.emit("transaction", transaction);
+    console.log(
+      `📡 Broadcasted transaction: ${transaction.description} - ${transaction.amount > 0 ? "+" : ""}$${Math.abs(transaction.amount)}`,
+    );
+  },
+  Math.random() * 15000 + 15000,
+); // Random interval between 15-30 seconds
 
 // In production, serve the built SPA files
 const __dirname = import.meta.dirname;
@@ -77,7 +113,6 @@ app.get("*", (req, res) => {
 
   res.sendFile(path.join(distPath, "index.html"));
 });
-
 
 httpServer.listen(port, () => {
   console.log(`🚀 Fusion Starter server running on port ${port}`);

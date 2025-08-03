@@ -60,7 +60,9 @@ import LiveTransactionFeed from "@/components/LiveTransactionFeed";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<
+    Transaction[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
@@ -91,8 +93,8 @@ export default function Transactions() {
     socket.on("transaction_update", (updatedTransaction: Transaction) => {
       setTransactions((prev) =>
         prev.map((tx) =>
-          tx.id === updatedTransaction.id ? updatedTransaction : tx
-        )
+          tx.id === updatedTransaction.id ? updatedTransaction : tx,
+        ),
       );
     });
 
@@ -157,10 +159,11 @@ export default function Transactions() {
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter((tx) =>
-        tx.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tx.merchant?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tx.category.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (tx) =>
+          tx.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tx.merchant?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tx.category.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
@@ -187,10 +190,14 @@ export default function Transactions() {
           filtered = filtered.filter((tx) => Math.abs(tx.amount) < 50);
           break;
         case "50-200":
-          filtered = filtered.filter((tx) => Math.abs(tx.amount) >= 50 && Math.abs(tx.amount) <= 200);
+          filtered = filtered.filter(
+            (tx) => Math.abs(tx.amount) >= 50 && Math.abs(tx.amount) <= 200,
+          );
           break;
         case "200-1000":
-          filtered = filtered.filter((tx) => Math.abs(tx.amount) >= 200 && Math.abs(tx.amount) <= 1000);
+          filtered = filtered.filter(
+            (tx) => Math.abs(tx.amount) >= 200 && Math.abs(tx.amount) <= 1000,
+          );
           break;
         case "over-1000":
           filtered = filtered.filter((tx) => Math.abs(tx.amount) > 1000);
@@ -227,7 +234,15 @@ export default function Transactions() {
   };
 
   const exportToCSV = () => {
-    const headers = ["Date", "Description", "Merchant", "Category", "Type", "Amount", "Status"];
+    const headers = [
+      "Date",
+      "Description",
+      "Merchant",
+      "Category",
+      "Type",
+      "Amount",
+      "Status",
+    ];
     const csvContent = [
       headers.join(","),
       ...filteredTransactions.map((tx) =>
@@ -239,7 +254,7 @@ export default function Transactions() {
           tx.type,
           tx.amount,
           tx.status,
-        ].join(",")
+        ].join(","),
       ),
     ].join("\n");
 
@@ -293,12 +308,12 @@ export default function Transactions() {
                   <td>${tx.description}</td>
                   <td>${tx.category}</td>
                   <td>${tx.type.toUpperCase()}</td>
-                  <td class="${tx.amount > 0 ? 'amount-positive' : 'amount-negative'}">
+                  <td class="${tx.amount > 0 ? "amount-positive" : "amount-negative"}">
                     ${formatCurrency(tx.amount)}
                   </td>
                   <td>${tx.status.toUpperCase()}</td>
                 </tr>
-              `
+              `,
                 )
                 .join("")}
             </tbody>
@@ -355,7 +370,7 @@ export default function Transactions() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedTransactions = filteredTransactions.slice(
     startIndex,
-    startIndex + itemsPerPage
+    startIndex + itemsPerPage,
   );
 
   if (loading) {
@@ -479,8 +494,9 @@ export default function Transactions() {
         {/* Results Summary */}
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, filteredTransactions.length)} of{" "}
-            {filteredTransactions.length} transactions
+            Showing {startIndex + 1}-
+            {Math.min(startIndex + itemsPerPage, filteredTransactions.length)}{" "}
+            of {filteredTransactions.length} transactions
           </p>
         </div>
 
@@ -505,7 +521,10 @@ export default function Transactions() {
                     <TableCell>
                       <div>
                         <p className="font-medium">
-                          {format(new Date(transaction.createdAt), "MMM dd, yyyy")}
+                          {format(
+                            new Date(transaction.createdAt),
+                            "MMM dd, yyyy",
+                          )}
                         </p>
                         <p className="text-xs text-muted-foreground">
                           {format(new Date(transaction.createdAt), "HH:mm:ss")}
@@ -549,8 +568,8 @@ export default function Transactions() {
                           transaction.status === "completed"
                             ? "default"
                             : transaction.status === "pending"
-                            ? "secondary"
-                            : "destructive"
+                              ? "secondary"
+                              : "destructive"
                         }
                       >
                         {transaction.status}
@@ -590,17 +609,19 @@ export default function Transactions() {
               Previous
             </Button>
             <div className="flex items-center gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setCurrentPage(page)}
-                  className="w-8 h-8 p-0"
-                >
-                  {page}
-                </Button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(page)}
+                    className="w-8 h-8 p-0"
+                  >
+                    {page}
+                  </Button>
+                ),
+              )}
             </div>
             <Button
               variant="outline"

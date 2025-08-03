@@ -42,26 +42,58 @@ function expressPlugin(): Plugin {
         const io = new SocketIOServer(server.httpServer, {
           cors: {
             origin: "*",
-            methods: ["GET", "POST"]
-          }
+            methods: ["GET", "POST"],
+          },
         });
 
         // Simulate realistic transactions for demo purposes
         const demoMerchants = [
-          "Starbucks Coffee", "Amazon.com", "Shell Gas Station", "Target", "Uber",
-          "Netflix", "Spotify", "McDonald's", "Walmart", "CVS Pharmacy",
-          "Apple Store", "Home Depot", "Best Buy", "Costco", "Chipotle"
+          "Starbucks Coffee",
+          "Amazon.com",
+          "Shell Gas Station",
+          "Target",
+          "Uber",
+          "Netflix",
+          "Spotify",
+          "McDonald's",
+          "Walmart",
+          "CVS Pharmacy",
+          "Apple Store",
+          "Home Depot",
+          "Best Buy",
+          "Costco",
+          "Chipotle",
         ];
 
         const demoDescriptions = [
-          "Coffee Purchase", "Online Shopping", "Gas Station", "Grocery Shopping", "Ride Share",
-          "Streaming Service", "Music Subscription", "Fast Food", "Department Store", "Pharmacy",
-          "Electronics Purchase", "Home Improvement", "Tech Purchase", "Warehouse Store", "Restaurant"
+          "Coffee Purchase",
+          "Online Shopping",
+          "Gas Station",
+          "Grocery Shopping",
+          "Ride Share",
+          "Streaming Service",
+          "Music Subscription",
+          "Fast Food",
+          "Department Store",
+          "Pharmacy",
+          "Electronics Purchase",
+          "Home Improvement",
+          "Tech Purchase",
+          "Warehouse Store",
+          "Restaurant",
         ];
 
         const demoCategories = [
-          "Food & Dining", "Shopping", "Transportation", "Groceries", "Entertainment",
-          "Subscriptions", "Health", "Electronics", "Home & Garden", "Travel"
+          "Food & Dining",
+          "Shopping",
+          "Transportation",
+          "Groceries",
+          "Entertainment",
+          "Subscriptions",
+          "Health",
+          "Electronics",
+          "Home & Garden",
+          "Travel",
         ];
 
         function generateRandomTransaction() {
@@ -70,7 +102,9 @@ function expressPlugin(): Plugin {
             ? Math.floor(Math.random() * 500) + 50 // Credit: $50-$550
             : -(Math.floor(Math.random() * 200) + 5); // Debit: $5-$205
 
-          const merchantIndex = Math.floor(Math.random() * demoMerchants.length);
+          const merchantIndex = Math.floor(
+            Math.random() * demoMerchants.length,
+          );
 
           return {
             id: `live-${Math.random().toString(36).slice(2)}`,
@@ -78,19 +112,25 @@ function expressPlugin(): Plugin {
             type: isCredit ? "credit" : "debit",
             amount: amount,
             description: demoDescriptions[merchantIndex],
-            category: demoCategories[Math.floor(Math.random() * demoCategories.length)],
+            category:
+              demoCategories[Math.floor(Math.random() * demoCategories.length)],
             merchant: demoMerchants[merchantIndex],
             createdAt: new Date().toISOString(),
-            status: Math.random() < 0.95 ? "completed" : "pending" // 95% completed, 5% pending
+            status: Math.random() < 0.95 ? "completed" : "pending", // 95% completed, 5% pending
           };
         }
 
         // Simulate transactions every 20-40 seconds in development
-        setInterval(() => {
-          const transaction = generateRandomTransaction();
-          io.emit("transaction", transaction);
-          console.log(`📡 [DEV] Broadcasted transaction: ${transaction.description} - ${transaction.amount > 0 ? '+' : ''}$${Math.abs(transaction.amount)}`);
-        }, Math.random() * 20000 + 20000); // Random interval between 20-40 seconds
+        setInterval(
+          () => {
+            const transaction = generateRandomTransaction();
+            io.emit("transaction", transaction);
+            console.log(
+              `📡 [DEV] Broadcasted transaction: ${transaction.description} - ${transaction.amount > 0 ? "+" : ""}$${Math.abs(transaction.amount)}`,
+            );
+          },
+          Math.random() * 20000 + 20000,
+        ); // Random interval between 20-40 seconds
 
         io.on("connection", (socket) => {
           console.log("🔌 Client connected to Socket.IO");
