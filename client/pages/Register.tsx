@@ -17,19 +17,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { 
-  CreditCard, 
-  Eye, 
-  EyeOff, 
-  User, 
-  Building, 
-  TrendingUp, 
+import {
+  CreditCard,
+  Eye,
+  EyeOff,
+  User,
+  Building,
+  TrendingUp,
   Shield,
   CheckCircle,
   Upload,
   Calendar,
   MapPin
 } from "lucide-react";
+import { RegistrationRequest, RegistrationResponse } from "@shared/api";
 
 interface RegistrationFormData {
   // Personal Information
