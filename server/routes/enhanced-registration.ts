@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 import path from "path";
-import { getEnhancedDatabase } from "../database-enhanced";
+import { getBankingDatabase } from "../banking-database";
 import { getEmailService } from "../email";
 import {
   EnhancedRegistrationRequest,
