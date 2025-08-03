@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleLogin, handleProfile } from "./routes/auth";
+import { handleRegistration } from "./routes/registration";
 import {
   handleGetAccounts,
   handleGetAccountDetails,
