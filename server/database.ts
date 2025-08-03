@@ -1,20 +1,21 @@
-import sqlite3 from 'sqlite3';
-import path from 'path';
+import sqlite3 from "sqlite3";
+import path from "path";
 
 export class OTPDatabase {
   private db: sqlite3.Database;
 
-  constructor(dbPath: string = ':memory:') {
+  constructor(dbPath: string = ":memory:") {
     // Use persistent database in production, in-memory for development
-    const finalPath = process.env.NODE_ENV === 'production' 
-      ? path.join(process.cwd(), 'data', 'otp.db')
-      : dbPath;
-    
+    const finalPath =
+      process.env.NODE_ENV === "production"
+        ? path.join(process.cwd(), "data", "otp.db")
+        : dbPath;
+
     this.db = new sqlite3.Database(finalPath, (err) => {
       if (err) {
-        console.error('Error opening database:', err);
+        console.error("Error opening database:", err);
       } else {
-        console.log('Connected to SQLite database for OTP system');
+        console.log("Connected to SQLite database for OTP system");
         this.initializeTables();
       }
     });
@@ -44,7 +45,7 @@ export class OTPDatabase {
       // Create index for faster lookups
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_otps_user_expires 
                    ON otps(user_id, expires_at DESC)`);
-      
+
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_otp_users_email 
                    ON otp_users(email)`);
     });
@@ -57,9 +58,9 @@ export class OTPDatabase {
   public close(): void {
     this.db.close((err) => {
       if (err) {
-        console.error('Error closing database:', err);
+        console.error("Error closing database:", err);
       } else {
-        console.log('Database connection closed');
+        console.log("Database connection closed");
       }
     });
   }
