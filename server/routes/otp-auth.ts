@@ -57,21 +57,24 @@ export const handleRequestOTP: RequestHandler = (req, res) => {
 
             // Send OTP via email
             const emailService = getEmailService();
-            emailService.sendOTP(email, otp).then((success) => {
-              if (success) {
-                console.log(`🔐 OTP sent to ${email} (expires in 5 minutes)`);
-                const response: OTPRequestResponse = {
-                  message: "OTP sent to your email address",
-                };
-                return res.json(response);
-              } else {
-                console.error(`❌ Failed to send OTP to ${email}`);
+            emailService
+              .sendOTP(email, otp)
+              .then((success) => {
+                if (success) {
+                  console.log(`🔐 OTP sent to ${email} (expires in 5 minutes)`);
+                  const response: OTPRequestResponse = {
+                    message: "OTP sent to your email address",
+                  };
+                  return res.json(response);
+                } else {
+                  console.error(`❌ Failed to send OTP to ${email}`);
+                  return res.status(500).json({ error: "Failed to send OTP" });
+                }
+              })
+              .catch((error) => {
+                console.error("Email service error:", error);
                 return res.status(500).json({ error: "Failed to send OTP" });
-              }
-            }).catch((error) => {
-              console.error("Email service error:", error);
-              return res.status(500).json({ error: "Failed to send OTP" });
-            });
+              });
           },
         );
       };

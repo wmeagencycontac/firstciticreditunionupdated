@@ -176,9 +176,7 @@ export default function Login() {
                 </div>
               </div>
               <Button variant="outline" className="w-full mt-4" asChild>
-                <Link to="/otp-login">
-                  Sign in with Email Code
-                </Link>
+                <Link to="/otp-login">Sign in with Email Code</Link>
               </Button>
             </div>
 

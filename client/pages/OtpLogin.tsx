@@ -2,9 +2,20 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Loader2, Mail, Shield, CheckCircle, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
@@ -127,7 +138,8 @@ export default function OtpLogin() {
             {step === "success" && "Login Successful"}
           </CardTitle>
           <CardDescription>
-            {step === "email" && "Enter your email to receive a secure login code"}
+            {step === "email" &&
+              "Enter your email to receive a secure login code"}
             {step === "verification" && `We've sent a 6-digit code to ${email}`}
             {step === "success" && "You have been authenticated successfully"}
           </CardDescription>
@@ -193,7 +205,11 @@ export default function OtpLogin() {
                   Enter the 6-digit code sent to your email
                 </p>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading || otp.length !== 6}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading || otp.length !== 6}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -216,9 +232,7 @@ export default function OtpLogin() {
                 <p className="text-sm text-muted-foreground">
                   User ID: {userId}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  Email: {email}
-                </p>
+                <p className="text-sm text-muted-foreground">Email: {email}</p>
               </div>
               <div className="space-y-2">
                 <Button asChild className="w-full">
@@ -237,10 +251,18 @@ export default function OtpLogin() {
             <p className="text-sm text-muted-foreground text-center">
               Didn't receive the code?
             </p>
-            <Button variant="link" onClick={handleResendCode} disabled={isLoading}>
+            <Button
+              variant="link"
+              onClick={handleResendCode}
+              disabled={isLoading}
+            >
               Resend Code
             </Button>
-            <Button variant="ghost" onClick={() => setStep("email")} disabled={isLoading}>
+            <Button
+              variant="ghost"
+              onClick={() => setStep("email")}
+              disabled={isLoading}
+            >
               Change Email Address
             </Button>
           </CardFooter>

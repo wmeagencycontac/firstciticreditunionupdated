@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 interface EmailConfig {
   service: string;
@@ -13,11 +13,11 @@ class EmailService {
 
   constructor() {
     const config: EmailConfig = {
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER || 'Baytagdkdv@gmail.com',
-        pass: process.env.EMAIL_PASS || 'cxva oshq iybh unfg'
-      }
+        user: process.env.EMAIL_USER || "Baytagdkdv@gmail.com",
+        pass: process.env.EMAIL_PASS || "cxva oshq iybh unfg",
+      },
     };
 
     this.transporter = nodemailer.createTransport(config);
@@ -26,9 +26,9 @@ class EmailService {
   public async sendOTP(to: string, otp: string): Promise<boolean> {
     try {
       const mailOptions = {
-        from: `"New Horizon Secure Login" <${process.env.EMAIL_USER || 'Baytagdkdv@gmail.com'}>`,
+        from: `"New Horizon Secure Login" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
         to,
-        subject: 'Your Login Code',
+        subject: "Your Login Code",
         text: `Your one-time login code is: ${otp}\n\nIt will expire in 5 minutes.`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -49,14 +49,14 @@ class EmailService {
               New Horizon Banking - Secure Authentication
             </p>
           </div>
-        `
+        `,
       };
 
       const info = await this.transporter.sendMail(mailOptions);
-      console.log('OTP email sent:', info.response);
+      console.log("OTP email sent:", info.response);
       return true;
     } catch (error) {
-      console.error('Email send error:', error);
+      console.error("Email send error:", error);
       return false;
     }
   }
@@ -64,10 +64,10 @@ class EmailService {
   public async verifyConnection(): Promise<boolean> {
     try {
       await this.transporter.verify();
-      console.log('✅ Email service is ready');
+      console.log("✅ Email service is ready");
       return true;
     } catch (error) {
-      console.error('❌ Email service configuration error:', error);
+      console.error("❌ Email service configuration error:", error);
       return false;
     }
   }
