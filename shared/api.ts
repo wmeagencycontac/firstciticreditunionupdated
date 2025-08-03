@@ -178,3 +178,49 @@ export interface OTPRecord {
   failed_attempts: number;
   used: number;
 }
+
+/**
+ * Enhanced Registration with Profile Upload Types
+ */
+
+export interface EnhancedRegistrationRequest {
+  name: string;
+  email: string;
+  bio?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
+export interface EnhancedRegistrationResponse {
+  message: string;
+  userId?: number;
+}
+
+export interface EmailVerificationRequest {
+  token: string;
+}
+
+export interface EmailVerificationResponse {
+  message: string;
+  success: boolean;
+}
+
+export interface NetlifyWebhookPayload {
+  name: string;
+  email: string;
+  bio?: string;
+  picture?: string;
+  registered_at: string;
+}
+
+export interface EnhancedUser {
+  id: number;
+  email: string;
+  name: string;
+  bio?: string;
+  picture?: string;
+  email_verified: boolean;
+  role: string;
+  created_at: string;
+  updated_at: string;
+}
