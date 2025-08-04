@@ -13,6 +13,8 @@ import Register from "./pages/Register";
 import EnhancedRegistration from "./pages/EnhancedRegistration";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
