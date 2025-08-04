@@ -318,9 +318,11 @@ export interface AccountCreatedEvent {
 }
 
 export interface AdminAlertEvent {
-  type: "user-verified" | "account-created" | "transaction-alert";
+  type: "user-registered" | "user-verified" | "account-created" | "transaction-added" | "balance-updated";
   userId: number;
-  userEmail: string;
+  userEmail?: string;
+  userName?: string;
   message: string;
   timestamp: string;
+  data?: any;
 }
