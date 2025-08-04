@@ -66,6 +66,15 @@ export function emitBalanceUpdated(balanceData: BalanceUpdateEvent) {
 
   // Emit to user's personal room
   io.to(`user:${balanceData.userId}`).emit("balance-updated", balanceData);
+
+  // Emit to admin room for monitoring
+  io.to("admin").emit("admin-alert", {
+    type: "balance-updated",
+    userId: balanceData.userId,
+    message: `Account balance updated: $${balanceData.newBalance} (${balanceData.accountType})`,
+    timestamp: new Date().toISOString(),
+    data: balanceData,
+  } as AdminAlertEvent);
 }
 
 export function emitAccountCreated(accountData: AccountCreatedEvent) {
