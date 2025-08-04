@@ -197,6 +197,15 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
       // Don't fail the registration if webhook fails
     }
 
+    // Emit user registration event to admin
+    try {
+      const { emitUserRegistered } = await import("../socket-events");
+      emitUserRegistered(userId, email.toLowerCase(), name);
+    } catch (socketError) {
+      console.error("Failed to emit user registration event:", socketError);
+      // Don't fail registration if socket event fails
+    }
+
     const response: EnhancedRegistrationResponse = {
       message:
         "Registration successful! Please check your email to verify your account.",
