@@ -100,14 +100,30 @@ export function emitAdminAlert(alertData: AdminAlertEvent) {
   io.to("admin").emit("admin-alert", alertData);
 }
 
-export function emitUserVerified(userId: number, userEmail: string) {
+export function emitUserVerified(userId: number, userEmail: string, userName?: string) {
   if (!io) return;
 
   const alertData: AdminAlertEvent = {
     type: "user-verified",
     userId,
     userEmail,
-    message: `User ${userEmail} has been verified and banking accounts created`,
+    userName,
+    message: `User ${userName || userEmail} has been verified and banking accounts created`,
+    timestamp: new Date().toISOString(),
+  };
+
+  emitAdminAlert(alertData);
+}
+
+export function emitUserRegistered(userId: number, userEmail: string, userName: string) {
+  if (!io) return;
+
+  const alertData: AdminAlertEvent = {
+    type: "user-registered",
+    userId,
+    userEmail,
+    userName,
+    message: `New user registration: ${userName} (${userEmail})`,
     timestamp: new Date().toISOString(),
   };
 
