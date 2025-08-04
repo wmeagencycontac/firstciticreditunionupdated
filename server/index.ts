@@ -139,6 +139,11 @@ export function createServer() {
   app.post("/api/admin/setup", handleCreateAdmin);
   app.get("/api/admin/check", handleCheckAdminExists);
 
+  // Admin authentication endpoints
+  app.post("/api/admin/login", handleAdminLogin);
+  app.post("/api/admin/logout", authenticateToken, handleAdminLogout);
+  app.get("/api/admin/profile", authenticateToken, handleAdminProfile);
+
   // Admin banking endpoints
   app.get("/api/admin/users-pending", authenticateToken, handleGetPendingUsers);
   app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
