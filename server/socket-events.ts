@@ -82,6 +82,15 @@ export function emitAccountCreated(accountData: AccountCreatedEvent) {
 
   // Emit to user's personal room
   io.to(`user:${accountData.userId}`).emit("account-created", accountData);
+
+  // Emit to admin room for monitoring
+  io.to("admin").emit("admin-alert", {
+    type: "account-created",
+    userId: accountData.userId,
+    message: `New banking accounts created for user (${accountData.accounts.length} accounts, ${accountData.cards.length} cards)`,
+    timestamp: new Date().toISOString(),
+    data: accountData,
+  } as AdminAlertEvent);
 }
 
 export function emitAdminAlert(alertData: AdminAlertEvent) {
