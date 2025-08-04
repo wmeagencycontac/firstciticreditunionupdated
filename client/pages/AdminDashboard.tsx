@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { User, AdminPendingUsersResponse } from "@shared/api";
-import { LiveTransactionFeed } from "@/components/LiveTransactionFeed";
+import { AdminActivityFeed } from "@/components/AdminActivityFeed";
 
 interface AdminUser {
   id: number;
