@@ -32,6 +32,10 @@ const App = () => (
           <Route path="/otp-login" element={<OtpLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
           {/* Banking Pages */}
           <Route path="/register" element={<Register />} />
           <Route path="/register-enhanced" element={<EnhancedRegistration />} />
