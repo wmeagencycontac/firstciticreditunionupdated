@@ -13,6 +13,9 @@ import Register from "./pages/Register";
 import EnhancedRegistration from "./pages/EnhancedRegistration";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminSetup from "./pages/AdminSetup";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +32,11 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/otp-login" element={<OtpLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
+
+          {/* Admin Routes */}
+          <Route path="/admin/setup" element={<AdminSetup />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
           {/* Banking Pages */}
           <Route path="/register" element={<Register />} />

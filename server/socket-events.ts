@@ -32,11 +32,18 @@ export interface AccountCreatedEvent {
 }
 
 export interface AdminAlertEvent {
-  type: "user-verified" | "account-created" | "transaction-alert";
+  type:
+    | "user-registered"
+    | "user-verified"
+    | "account-created"
+    | "transaction-added"
+    | "balance-updated";
   userId: number;
-  userEmail: string;
+  userEmail?: string;
+  userName?: string;
   message: string;
   timestamp: string;
+  data?: any;
 }
 
 // Helper functions to emit events
@@ -51,11 +58,11 @@ export function emitTransactionAdded(transactionData: TransactionEvent) {
 
   // Emit to admin room for monitoring
   io.to("admin").emit("admin-alert", {
-    type: "transaction-alert",
+    type: "transaction-added",
     userId: transactionData.userId,
-    userEmail: "",
     message: `Transaction: ${transactionData.type} $${transactionData.amount} - ${transactionData.description}`,
     timestamp: new Date().toISOString(),
+    data: transactionData,
   } as AdminAlertEvent);
 }
 
@@ -64,6 +71,15 @@ export function emitBalanceUpdated(balanceData: BalanceUpdateEvent) {
 
   // Emit to user's personal room
   io.to(`user:${balanceData.userId}`).emit("balance-updated", balanceData);
+
+  // Emit to admin room for monitoring
+  io.to("admin").emit("admin-alert", {
+    type: "balance-updated",
+    userId: balanceData.userId,
+    message: `Account balance updated: $${balanceData.newBalance} (${balanceData.accountType})`,
+    timestamp: new Date().toISOString(),
+    data: balanceData,
+  } as AdminAlertEvent);
 }
 
 export function emitAccountCreated(accountData: AccountCreatedEvent) {
@@ -71,6 +87,15 @@ export function emitAccountCreated(accountData: AccountCreatedEvent) {
 
   // Emit to user's personal room
   io.to(`user:${accountData.userId}`).emit("account-created", accountData);
+
+  // Emit to admin room for monitoring
+  io.to("admin").emit("admin-alert", {
+    type: "account-created",
+    userId: accountData.userId,
+    message: `New banking accounts created for user (${accountData.accounts.length} accounts, ${accountData.cards.length} cards)`,
+    timestamp: new Date().toISOString(),
+    data: accountData,
+  } as AdminAlertEvent);
 }
 
 export function emitAdminAlert(alertData: AdminAlertEvent) {
@@ -80,14 +105,38 @@ export function emitAdminAlert(alertData: AdminAlertEvent) {
   io.to("admin").emit("admin-alert", alertData);
 }
 
-export function emitUserVerified(userId: number, userEmail: string) {
+export function emitUserVerified(
+  userId: number,
+  userEmail: string,
+  userName?: string,
+) {
   if (!io) return;
 
   const alertData: AdminAlertEvent = {
     type: "user-verified",
     userId,
     userEmail,
-    message: `User ${userEmail} has been verified and banking accounts created`,
+    userName,
+    message: `User ${userName || userEmail} has been verified and banking accounts created`,
+    timestamp: new Date().toISOString(),
+  };
+
+  emitAdminAlert(alertData);
+}
+
+export function emitUserRegistered(
+  userId: number,
+  userEmail: string,
+  userName: string,
+) {
+  if (!io) return;
+
+  const alertData: AdminAlertEvent = {
+    type: "user-registered",
+    userId,
+    userEmail,
+    userName,
+    message: `New user registration: ${userName} (${userEmail})`,
     timestamp: new Date().toISOString(),
   };
 

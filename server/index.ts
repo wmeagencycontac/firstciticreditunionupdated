@@ -18,6 +18,10 @@ import {
   handleCreateTransaction,
 } from "./routes/transactions";
 import {
+  handleCreateAdmin,
+  handleCheckAdminExists,
+} from "./routes/admin-setup";
+import {
   handleRequestOTP,
   handleVerifyOTP,
   handleGetOTPUser,
@@ -33,6 +37,7 @@ import {
   handleSendTransfer,
   handleGetCards,
   handleAdminVerifyUser,
+  handleGetPendingUsers,
   authenticateToken,
 } from "./routes/banking";
 
@@ -125,7 +130,12 @@ export function createServer() {
   app.post("/api/send-transfer", authenticateToken, handleSendTransfer);
   app.get("/api/cards", authenticateToken, handleGetCards);
 
+  // Admin setup endpoints (no auth required for initial setup)
+  app.post("/api/admin/setup", handleCreateAdmin);
+  app.get("/api/admin/check", handleCheckAdminExists);
+
   // Admin banking endpoints
+  app.get("/api/admin/users-pending", authenticateToken, handleGetPendingUsers);
   app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
 
   return { app, httpServer, io };

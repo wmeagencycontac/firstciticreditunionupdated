@@ -56,7 +56,7 @@ import { format } from "date-fns";
 import io from "socket.io-client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import TransactionFilters from "@/components/TransactionFilters";
-import LiveTransactionFeed from "@/components/LiveTransactionFeed";
+import { LiveTransactionFeed } from "@/components/LiveTransactionFeed";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
