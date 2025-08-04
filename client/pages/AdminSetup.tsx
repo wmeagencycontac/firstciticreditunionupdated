@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, Lock, User, Mail, Key } from "lucide-react";
@@ -22,7 +28,7 @@ export default function AdminSetup() {
     name: "",
     password: "",
     confirmPassword: "",
-    setup_key: ""
+    setup_key: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [checkingAdmin, setCheckingAdmin] = useState(true);
@@ -38,7 +44,7 @@ export default function AdminSetup() {
     try {
       const response = await fetch("/api/admin/check");
       const data = await response.json();
-      
+
       if (response.ok) {
         setAdminExists(data.adminExists);
         if (data.adminExists) {
@@ -55,9 +61,9 @@ export default function AdminSetup() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     if (error) setError("");
   };
@@ -124,7 +130,7 @@ export default function AdminSetup() {
           <Shield className="h-16 w-16 mx-auto mb-4 text-green-400" />
           <h2 className="text-2xl font-bold mb-2">Admin Already Exists</h2>
           <p className="mb-4">The admin user has already been configured.</p>
-          <Button 
+          <Button
             onClick={() => navigate("/admin/login")}
             className="bg-purple-600 hover:bg-purple-700"
           >
@@ -144,7 +150,9 @@ export default function AdminSetup() {
             <Shield className="h-6 w-6 text-white" />
           </div>
           <h2 className="text-3xl font-bold text-white mb-2">Admin Setup</h2>
-          <p className="text-slate-300">Create the initial administrator account</p>
+          <p className="text-slate-300">
+            Create the initial administrator account
+          </p>
         </div>
 
         {/* Setup Form */}
@@ -184,7 +192,8 @@ export default function AdminSetup() {
                   />
                 </div>
                 <p className="text-xs text-slate-400">
-                  Default setup key: admin123 (change this in production via ADMIN_SETUP_KEY env var)
+                  Default setup key: admin123 (change this in production via
+                  ADMIN_SETUP_KEY env var)
                 </p>
               </div>
 
@@ -264,8 +273,8 @@ export default function AdminSetup() {
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-purple-600 hover:bg-purple-700"
                 disabled={isLoading}
               >

@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
+import {
   Activity,
   UserPlus,
   UserCheck,
   CreditCard,
   DollarSign,
   TrendingUp,
-  Clock
+  Clock,
 } from "lucide-react";
 import { io, Socket } from "socket.io-client";
 import { AdminAlertEvent } from "@shared/api";
@@ -47,8 +53,8 @@ export function AdminActivityFeed() {
         ...alertData,
         id: `${Date.now()}-${Math.random()}`,
       };
-      
-      setActivities(prev => [activityItem, ...prev.slice(0, 49)]); // Keep last 50 items
+
+      setActivities((prev) => [activityItem, ...prev.slice(0, 49)]); // Keep last 50 items
     });
 
     setSocket(newSocket);
@@ -96,13 +102,16 @@ export function AdminActivityFeed() {
     const date = new Date(timestamp);
     const now = new Date();
     const diff = now.getTime() - date.getTime();
-    
-    if (diff < 60000) { // Less than 1 minute
+
+    if (diff < 60000) {
+      // Less than 1 minute
       return "Just now";
-    } else if (diff < 3600000) { // Less than 1 hour
+    } else if (diff < 3600000) {
+      // Less than 1 hour
       const minutes = Math.floor(diff / 60000);
       return `${minutes}m ago`;
-    } else if (diff < 86400000) { // Less than 1 day
+    } else if (diff < 86400000) {
+      // Less than 1 day
       const hours = Math.floor(diff / 3600000);
       return `${hours}h ago`;
     } else {
@@ -122,9 +131,11 @@ export function AdminActivityFeed() {
           <Activity className="h-5 w-5" />
           <span>Live Activity Feed</span>
           <div className="flex items-center space-x-2 ml-auto">
-            <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
+            <div
+              className={`h-2 w-2 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}
+            />
             <span className="text-xs text-muted-foreground">
-              {isConnected ? 'Connected' : 'Disconnected'}
+              {isConnected ? "Connected" : "Disconnected"}
             </span>
           </div>
         </CardTitle>
@@ -137,7 +148,9 @@ export function AdminActivityFeed() {
           <div className="text-center py-8">
             <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500">No recent activity</p>
-            <p className="text-sm text-gray-400">Activity will appear here in real-time</p>
+            <p className="text-sm text-gray-400">
+              Activity will appear here in real-time
+            </p>
           </div>
         ) : (
           <div className="space-y-3 max-h-96 overflow-y-auto">
@@ -151,11 +164,13 @@ export function AdminActivityFeed() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2 mb-1">
-                    <Badge 
-                      variant="secondary" 
+                    <Badge
+                      variant="secondary"
                       className={`text-xs ${getActivityBadgeColor(activity.type)}`}
                     >
-                      {activity.type.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}
+                      {activity.type
+                        .replace("-", " ")
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
                     </Badge>
                     <span className="text-xs text-gray-500">
                       {formatTime(activity.timestamp)}
@@ -174,7 +189,7 @@ export function AdminActivityFeed() {
             ))}
           </div>
         )}
-        
+
         {activities.length > 0 && (
           <div className="mt-4 text-center">
             <p className="text-xs text-gray-500">

@@ -1,20 +1,26 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  Users, 
-  UserCheck, 
-  CreditCard, 
-  DollarSign, 
+import {
+  Users,
+  UserCheck,
+  CreditCard,
+  DollarSign,
   Activity,
   LogOut,
   Shield,
   Clock,
   CheckCircle,
-  XCircle
+  XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { User, AdminPendingUsersResponse } from "@shared/api";
@@ -53,7 +59,7 @@ export default function AdminDashboard() {
   const checkAuth = () => {
     const token = localStorage.getItem("adminToken");
     const userStr = localStorage.getItem("adminUser");
-    
+
     if (!token || !userStr) {
       navigate("/admin/login");
       return;
@@ -82,7 +88,7 @@ export default function AdminDashboard() {
 
       const response = await fetch("/api/admin/users-pending", {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -105,8 +111,8 @@ export default function AdminDashboard() {
   };
 
   const handleVerifyUser = async (userId: number, userEmail: string) => {
-    setVerifyingUsers(prev => new Set([...prev, userId]));
-    
+    setVerifyingUsers((prev) => new Set([...prev, userId]));
+
     try {
       const token = localStorage.getItem("adminToken");
       if (!token) {
@@ -117,7 +123,7 @@ export default function AdminDashboard() {
       const response = await fetch("/api/admin/verify-users", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ user_id: userId }),
@@ -126,9 +132,9 @@ export default function AdminDashboard() {
       if (response.ok) {
         const data = await response.json();
         toast.success(`User ${userEmail} verified successfully!`);
-        
+
         // Remove user from pending list
-        setPendingUsers(prev => prev.filter(user => user.id !== userId));
+        setPendingUsers((prev) => prev.filter((user) => user.id !== userId));
       } else if (response.status === 401 || response.status === 403) {
         handleLogout();
       } else {
@@ -139,7 +145,7 @@ export default function AdminDashboard() {
       console.error("Error verifying user:", error);
       toast.error("Connection error. Please try again.");
     } finally {
-      setVerifyingUsers(prev => {
+      setVerifyingUsers((prev) => {
         const newSet = new Set(prev);
         newSet.delete(userId);
         return newSet;
@@ -183,13 +189,19 @@ export default function AdminDashboard() {
             <div className="flex items-center space-x-3">
               <Shield className="h-8 w-8 text-primary" />
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
-                <p className="text-sm text-gray-500">Banking Administration Portal</p>
+                <h1 className="text-xl font-semibold text-gray-900">
+                  Admin Dashboard
+                </h1>
+                <p className="text-sm text-gray-500">
+                  Banking Administration Portal
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">{adminUser?.name}</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {adminUser?.name}
+                </p>
                 <p className="text-xs text-gray-500">{adminUser?.email}</p>
               </div>
               <Button
@@ -218,7 +230,9 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Users</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Pending Users
+              </CardTitle>
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -244,20 +258,22 @@ export default function AdminDashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Accounts</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Active Accounts
+              </CardTitle>
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">-</div>
-              <p className="text-xs text-muted-foreground">
-                Banking accounts
-              </p>
+              <p className="text-xs text-muted-foreground">Banking accounts</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Daily Activity</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Daily Activity
+              </CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -286,7 +302,9 @@ export default function AdminDashboard() {
                 <div className="text-center py-8">
                   <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
                   <p className="text-gray-500">No pending users</p>
-                  <p className="text-sm text-gray-400">All users have been verified</p>
+                  <p className="text-sm text-gray-400">
+                    All users have been verified
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -299,14 +317,24 @@ export default function AdminDashboard() {
                         <div className="flex items-center space-x-3">
                           <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
                             <span className="text-sm font-medium text-gray-700">
-                              {user.name.split(" ").map(n => n[0]).join("").toUpperCase()}
+                              {user.name
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")
+                                .toUpperCase()}
                             </span>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{user.name}</p>
-                            <p className="text-sm text-gray-500">{user.email}</p>
+                            <p className="font-medium text-gray-900">
+                              {user.name}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {user.email}
+                            </p>
                             {user.bio && (
-                              <p className="text-xs text-gray-400 mt-1">{user.bio}</p>
+                              <p className="text-xs text-gray-400 mt-1">
+                                {user.bio}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -320,7 +348,9 @@ export default function AdminDashboard() {
                         size="sm"
                         className="ml-4"
                       >
-                        {verifyingUsers.has(user.id) ? "Verifying..." : "Approve"}
+                        {verifyingUsers.has(user.id)
+                          ? "Verifying..."
+                          : "Approve"}
                       </Button>
                     </div>
                   ))}

@@ -227,13 +227,13 @@ export const handleGetPendingUsers: RequestHandler = async (req, res) => {
           } else {
             resolve(rows || []);
           }
-        }
+        },
       );
     });
 
     res.json({
       users: pendingUsers,
-      total: pendingUsers.length
+      total: pendingUsers.length,
     });
   } catch (error) {
     console.error("Get pending users error:", error);

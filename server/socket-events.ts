@@ -32,7 +32,12 @@ export interface AccountCreatedEvent {
 }
 
 export interface AdminAlertEvent {
-  type: "user-registered" | "user-verified" | "account-created" | "transaction-added" | "balance-updated";
+  type:
+    | "user-registered"
+    | "user-verified"
+    | "account-created"
+    | "transaction-added"
+    | "balance-updated";
   userId: number;
   userEmail?: string;
   userName?: string;
@@ -100,7 +105,11 @@ export function emitAdminAlert(alertData: AdminAlertEvent) {
   io.to("admin").emit("admin-alert", alertData);
 }
 
-export function emitUserVerified(userId: number, userEmail: string, userName?: string) {
+export function emitUserVerified(
+  userId: number,
+  userEmail: string,
+  userName?: string,
+) {
   if (!io) return;
 
   const alertData: AdminAlertEvent = {
@@ -115,7 +124,11 @@ export function emitUserVerified(userId: number, userEmail: string, userName?: s
   emitAdminAlert(alertData);
 }
 
-export function emitUserRegistered(userId: number, userEmail: string, userName: string) {
+export function emitUserRegistered(
+  userId: number,
+  userEmail: string,
+  userName: string,
+) {
   if (!io) return;
 
   const alertData: AdminAlertEvent = {

@@ -13,7 +13,9 @@ export const handleCreateAdmin: RequestHandler = async (req, res) => {
     }
 
     if (!email || !name || !password) {
-      return res.status(400).json({ error: "Email, name, and password are required" });
+      return res
+        .status(400)
+        .json({ error: "Email, name, and password are required" });
     }
 
     const db = getBankingDatabase();
@@ -21,7 +23,9 @@ export const handleCreateAdmin: RequestHandler = async (req, res) => {
     // Check if admin already exists
     const existingUser = await db.getUserByEmail(email.toLowerCase());
     if (existingUser) {
-      return res.status(409).json({ error: "User with this email already exists" });
+      return res
+        .status(409)
+        .json({ error: "User with this email already exists" });
     }
 
     // Hash password
@@ -39,7 +43,7 @@ export const handleCreateAdmin: RequestHandler = async (req, res) => {
           } else {
             resolve(this.lastID);
           }
-        }
+        },
       );
     });
 
@@ -59,7 +63,7 @@ export const handleCreateAdmin: RequestHandler = async (req, res) => {
 export const handleCheckAdminExists: RequestHandler = async (req, res) => {
   try {
     const db = getBankingDatabase();
-    
+
     const adminExists = await new Promise<boolean>((resolve, reject) => {
       db.getDatabase().get(
         `SELECT id FROM users WHERE role = 'admin' LIMIT 1`,
@@ -70,7 +74,7 @@ export const handleCheckAdminExists: RequestHandler = async (req, res) => {
           } else {
             resolve(!!row);
           }
-        }
+        },
       );
     });
 
