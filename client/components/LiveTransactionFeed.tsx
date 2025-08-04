@@ -7,7 +7,7 @@ interface LiveTransactionFeedProps {
   transactions: Transaction[];
 }
 
-export default function LiveTransactionFeed({
+export function LiveTransactionFeed({
   transactions,
 }: LiveTransactionFeedProps) {
   const formatCurrency = (amount: number) => {
