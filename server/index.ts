@@ -22,6 +22,11 @@ import {
   handleCheckAdminExists,
 } from "./routes/admin-setup";
 import {
+  handleAdminLogin,
+  handleAdminLogout,
+  handleAdminProfile,
+} from "./routes/admin-auth";
+import {
   handleRequestOTP,
   handleVerifyOTP,
   handleGetOTPUser,
