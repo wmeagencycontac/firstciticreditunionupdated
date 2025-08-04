@@ -53,11 +53,11 @@ export function emitTransactionAdded(transactionData: TransactionEvent) {
 
   // Emit to admin room for monitoring
   io.to("admin").emit("admin-alert", {
-    type: "transaction-alert",
+    type: "transaction-added",
     userId: transactionData.userId,
-    userEmail: "",
     message: `Transaction: ${transactionData.type} $${transactionData.amount} - ${transactionData.description}`,
     timestamp: new Date().toISOString(),
+    data: transactionData,
   } as AdminAlertEvent);
 }
 
