@@ -335,7 +335,7 @@ export const handleAdminVerifyUser: RequestHandler = async (req, res) => {
       ],
     });
 
-    emitUserVerified(user_id, user.email);
+    emitUserVerified(user_id, user.email, user.name);
 
     res.json({
       message: "User verified and banking accounts created successfully",
