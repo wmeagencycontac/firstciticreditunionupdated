@@ -127,6 +127,7 @@ export function createServer() {
   app.get("/api/cards", authenticateToken, handleGetCards);
 
   // Admin banking endpoints
+  app.get("/api/admin/users-pending", authenticateToken, handleGetPendingUsers);
   app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
 
   return { app, httpServer, io };
