@@ -203,6 +203,44 @@ export const handleGetCards: RequestHandler = async (req, res) => {
   }
 };
 
+// GET /api/admin/users-pending - Get all unverified users for admin review
+export const handleGetPendingUsers: RequestHandler = async (req, res) => {
+  try {
+    // Check if user is admin
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ error: "Admin access required" });
+    }
+
+    const db = getBankingDatabase();
+
+    // Get all unverified users
+    const pendingUsers = await new Promise<any[]>((resolve, reject) => {
+      db.getDatabase().all(
+        `SELECT id, email, name, bio, picture, created_at, updated_at
+         FROM users
+         WHERE email_verified = 0 AND role = 'user'
+         ORDER BY created_at DESC`,
+        [],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows || []);
+          }
+        }
+      );
+    });
+
+    res.json({
+      users: pendingUsers,
+      total: pendingUsers.length
+    });
+  } catch (error) {
+    console.error("Get pending users error:", error);
+    res.status(500).json({ error: "Failed to get pending users" });
+  }
+};
+
 // POST /api/admin/verify-users - Admin endpoint to verify users and create banking data
 export const handleAdminVerifyUser: RequestHandler = async (req, res) => {
   try {
