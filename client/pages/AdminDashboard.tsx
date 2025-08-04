@@ -330,7 +330,7 @@ export default function AdminDashboard() {
           </Card>
 
           {/* Live Activity Feed */}
-          <LiveTransactionFeed />
+          <AdminActivityFeed />
         </div>
       </div>
     </div>
