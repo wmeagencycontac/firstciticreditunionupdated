@@ -20,7 +20,7 @@ async function testAdminWorkflow() {
         (err, row) => {
           if (err) reject(err);
           else resolve(!!row);
-        }
+        },
       );
     });
     console.log(`   Admin exists: ${adminCheck ? "✅ Yes" : "❌ No"}`);
@@ -34,14 +34,16 @@ async function testAdminWorkflow() {
         (err, rows) => {
           if (err) reject(err);
           else resolve(rows || []);
-        }
+        },
       );
     });
-    
+
     console.log(`   Pending users found: ${pendingUsers.length}`);
     if (pendingUsers.length > 0) {
       pendingUsers.forEach((user, index) => {
-        console.log(`   ${index + 1}. ${user.name} (${user.email}) - ${new Date(user.created_at).toLocaleDateString()}`);
+        console.log(
+          `   ${index + 1}. ${user.name} (${user.email}) - ${new Date(user.created_at).toLocaleDateString()}`,
+        );
       });
     } else {
       console.log("   No pending users found");
@@ -49,7 +51,7 @@ async function testAdminWorkflow() {
 
     // 3. Simulate some admin events for real-time feed testing
     console.log("\n3️⃣ Simulating admin events for real-time testing...");
-    
+
     // Simulate user registration event
     emitUserRegistered(999, "test@example.com", "Test User");
     console.log("   ✅ Emitted user registration event");
@@ -72,7 +74,6 @@ async function testAdminWorkflow() {
     console.log("   3. Visit /admin/login to access admin dashboard");
     console.log("   4. Monitor real-time events in the activity feed");
     console.log("   5. Test user verification workflow");
-
   } catch (error) {
     console.error("❌ Test failed:", error);
   } finally {
