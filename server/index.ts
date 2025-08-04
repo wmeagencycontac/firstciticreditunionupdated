@@ -18,6 +18,10 @@ import {
   handleCreateTransaction,
 } from "./routes/transactions";
 import {
+  handleCreateAdmin,
+  handleCheckAdminExists,
+} from "./routes/admin-setup";
+import {
   handleRequestOTP,
   handleVerifyOTP,
   handleGetOTPUser,
