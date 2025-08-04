@@ -143,12 +143,24 @@ export class BankingDatabase {
 
       // Create indexes for performance
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_accounts_number ON accounts(account_number)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_transactions_account_id ON transactions(account_id)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_transactions_timestamp ON transactions(timestamp DESC)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_cards_user_id ON cards(user_id)`);
-      this.db.run(`CREATE INDEX IF NOT EXISTS idx_cards_number ON cards(card_number)`);
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_accounts_number ON accounts(account_number)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_transactions_account_id ON transactions(account_id)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_transactions_timestamp ON transactions(timestamp DESC)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_cards_user_id ON cards(user_id)`,
+      );
+      this.db.run(
+        `CREATE INDEX IF NOT EXISTS idx_cards_number ON cards(card_number)`,
+      );
     });
   }
 
@@ -176,7 +188,7 @@ export class BankingDatabase {
           } else {
             resolve(this.lastID);
           }
-        }
+        },
       );
     });
   }
@@ -192,7 +204,7 @@ export class BankingDatabase {
           } else {
             resolve(row || null);
           }
-        }
+        },
       );
     });
   }
@@ -220,7 +232,7 @@ export class BankingDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -233,7 +245,12 @@ export class BankingDatabase {
     initialBalance?: number;
   }): Promise<number> {
     return new Promise((resolve, reject) => {
-      const { userId, accountNumber, accountType, initialBalance = 0 } = accountData;
+      const {
+        userId,
+        accountNumber,
+        accountType,
+        initialBalance = 0,
+      } = accountData;
       this.db.run(
         `INSERT INTO accounts (user_id, account_number, account_type, balance, routing_number)
          VALUES (?, ?, ?, ?, '322078972')`,
@@ -244,7 +261,7 @@ export class BankingDatabase {
           } else {
             resolve(this.lastID);
           }
-        }
+        },
       );
     });
   }
@@ -260,7 +277,7 @@ export class BankingDatabase {
           } else {
             resolve(rows || []);
           }
-        }
+        },
       );
     });
   }
@@ -276,12 +293,15 @@ export class BankingDatabase {
           } else {
             resolve(row || null);
           }
-        }
+        },
       );
     });
   }
 
-  public async updateAccountBalance(accountId: number, newBalance: number): Promise<void> {
+  public async updateAccountBalance(
+    accountId: number,
+    newBalance: number,
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       this.db.run(
         `UPDATE accounts SET balance = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
@@ -292,7 +312,7 @@ export class BankingDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -316,12 +336,15 @@ export class BankingDatabase {
           } else {
             resolve(this.lastID);
           }
-        }
+        },
       );
     });
   }
 
-  public async getTransactionsByAccountId(accountId: number, limit: number = 50): Promise<Transaction[]> {
+  public async getTransactionsByAccountId(
+    accountId: number,
+    limit: number = 50,
+  ): Promise<Transaction[]> {
     return new Promise((resolve, reject) => {
       this.db.all(
         `SELECT * FROM transactions WHERE account_id = ? ORDER BY timestamp DESC LIMIT ?`,
@@ -332,12 +355,15 @@ export class BankingDatabase {
           } else {
             resolve(rows || []);
           }
-        }
+        },
       );
     });
   }
 
-  public async getTransactionsByUserId(userId: number, limit: number = 50): Promise<Transaction[]> {
+  public async getTransactionsByUserId(
+    userId: number,
+    limit: number = 50,
+  ): Promise<Transaction[]> {
     return new Promise((resolve, reject) => {
       this.db.all(
         `SELECT t.* FROM transactions t 
@@ -351,7 +377,7 @@ export class BankingDatabase {
           } else {
             resolve(rows || []);
           }
-        }
+        },
       );
     });
   }
@@ -373,7 +399,7 @@ export class BankingDatabase {
           } else {
             resolve(this.lastID);
           }
-        }
+        },
       );
     });
   }
@@ -389,15 +415,18 @@ export class BankingDatabase {
           } else {
             resolve(rows || []);
           }
-        }
+        },
       );
     });
   }
 
   // Account number generation methods
-  public generateAccountNumber(userId: number, accountType: "savings" | "checking"): string {
+  public generateAccountNumber(
+    userId: number,
+    accountType: "savings" | "checking",
+  ): string {
     const memberId = userId.toString().padStart(5, "0");
-    
+
     if (accountType === "savings") {
       // Savings: [memberID][00][shareNumber] → e.g. `1234560001`
       const shareNumber = "0001";
@@ -412,13 +441,13 @@ export class BankingDatabase {
     // Generate a unique 16-digit card number
     // Start with BIN (Bank Identification Number) - using 4111 as example
     const bin = "4111";
-    
+
     // Generate random middle digits
     const middle = Math.random().toString().slice(2, 14).padEnd(12, "0");
-    
+
     // Simple checksum (Luhn algorithm would be better for production)
     const checkDigit = Math.floor(Math.random() * 10);
-    
+
     return `${bin}${middle}${checkDigit}`;
   }
 
@@ -433,7 +462,7 @@ export class BankingDatabase {
           } else {
             resolve(!row);
           }
-        }
+        },
       );
     });
   }
@@ -441,40 +470,45 @@ export class BankingDatabase {
   public async generateUniqueCardNumber(): Promise<string> {
     let cardNumber: string;
     let isUnique = false;
-    
+
     do {
       cardNumber = this.generateCardNumber();
       isUnique = await this.isCardNumberUnique(cardNumber);
     } while (!isUnique);
-    
+
     return cardNumber;
   }
 
   // Transfer methods
-  public async transfer(fromAccountId: number, toAccountId: number, amount: number, description: string): Promise<void> {
+  public async transfer(
+    fromAccountId: number,
+    toAccountId: number,
+    amount: number,
+    description: string,
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
         this.db.run("BEGIN TRANSACTION");
-        
+
         // Debit from source account
         this.db.run(
           `UPDATE accounts SET balance = balance - ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-          [amount, fromAccountId]
+          [amount, fromAccountId],
         );
-        
+
         // Credit to destination account
         this.db.run(
           `UPDATE accounts SET balance = balance + ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-          [amount, toAccountId]
+          [amount, toAccountId],
         );
-        
+
         // Create debit transaction
         this.db.run(
           `INSERT INTO transactions (account_id, type, amount, description)
            VALUES (?, 'debit', ?, ?)`,
-          [fromAccountId, amount, description]
+          [fromAccountId, amount, description],
         );
-        
+
         // Create credit transaction
         this.db.run(
           `INSERT INTO transactions (account_id, type, amount, description)
@@ -493,7 +527,7 @@ export class BankingDatabase {
                 }
               });
             }
-          }
+          },
         );
       });
     });
@@ -518,7 +552,7 @@ export class BankingDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -534,7 +568,7 @@ export class BankingDatabase {
           } else {
             resolve(row);
           }
-        }
+        },
       );
     });
   }
@@ -550,7 +584,7 @@ export class BankingDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -574,7 +608,7 @@ export class BankingDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -593,7 +627,7 @@ export class BankingDatabase {
           } else {
             resolve(row);
           }
-        }
+        },
       );
     });
   }
@@ -609,7 +643,7 @@ export class BankingDatabase {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 async function setupTestBankingData() {
   const db = getBankingDatabase();
-  
+
   try {
     // Check if admin user already exists
     const existingAdmin = await db.getUserByEmail("admin@bank.com");
@@ -17,19 +17,18 @@ async function setupTestBankingData() {
         email: "admin@bank.com",
         name: "Bank Administrator",
         bio: "System Administrator",
-        passwordHash: adminPasswordHash
+        passwordHash: adminPasswordHash,
       });
-      
+
       // Mark admin as verified and set role
       await db.markEmailAsVerified(adminId);
-      await db.getDatabase().run(
-        "UPDATE users SET role = 'admin' WHERE id = ?",
-        [adminId]
-      );
-      
+      await db
+        .getDatabase()
+        .run("UPDATE users SET role = 'admin' WHERE id = ?", [adminId]);
+
       console.log("✅ Created admin user: admin@bank.com / admin123");
     }
-    
+
     // Check if test user exists
     const existingUser = await db.getUserByEmail("test@user.com");
     if (existingUser) {
@@ -41,18 +40,19 @@ async function setupTestBankingData() {
         email: "test@user.com",
         name: "Test User",
         bio: "Test account for banking demo",
-        passwordHash: userPasswordHash
+        passwordHash: userPasswordHash,
       });
-      
+
       console.log("✅ Created test user: test@user.com / user123");
-      console.log("📝 Use admin account to verify this user and create banking accounts");
+      console.log(
+        "📝 Use admin account to verify this user and create banking accounts",
+      );
     }
-    
+
     console.log("\n🚀 Banking system setup complete!");
     console.log("🔑 Admin login: admin@bank.com / admin123");
     console.log("👤 Test user login: test@user.com / user123");
     console.log("📋 Use admin to verify test user and create banking accounts");
-    
   } catch (error) {
     console.error("❌ Setup error:", error);
   }

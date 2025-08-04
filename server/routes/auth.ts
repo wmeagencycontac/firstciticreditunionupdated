@@ -13,7 +13,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
     }
 
     const db = getBankingDatabase();
-    
+
     // Get user from database
     const user = await db.getUserByEmail(email.toLowerCase());
     if (!user) {
@@ -33,7 +33,9 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
     // Check if email is verified
     if (!user.email_verified) {
-      return res.status(403).json({ error: "Please verify your email before logging in" });
+      return res
+        .status(403)
+        .json({ error: "Please verify your email before logging in" });
     }
 
     // Create session token
@@ -80,7 +82,7 @@ export const handleProfile: RequestHandler = async (req, res) => {
 
     const token = authHeader.split(" ")[1];
     const db = getBankingDatabase();
-    
+
     const session = await db.getSessionByToken(token);
     if (!session) {
       return res.status(401).json({ error: "Invalid or expired token" });
@@ -113,9 +115,9 @@ export const handleLogout: RequestHandler = async (req, res) => {
 
     const token = authHeader.split(" ")[1];
     const db = getBankingDatabase();
-    
+
     await db.deleteSession(token);
-    
+
     res.json({ message: "Logged out successfully" });
   } catch (error) {
     console.error("Logout error:", error);

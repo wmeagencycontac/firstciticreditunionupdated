@@ -47,8 +47,8 @@ export function createServer() {
   io = new SocketIOServer(httpServer, {
     cors: {
       origin: "*",
-      methods: ["GET", "POST"]
-    }
+      methods: ["GET", "POST"],
+    },
   });
 
   // Socket.IO connection handling

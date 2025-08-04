@@ -14,7 +14,7 @@ const authenticateToken: RequestHandler = async (req, res, next) => {
   try {
     const db = getBankingDatabase();
     const session = await db.getSessionByToken(token);
-    
+
     if (!session) {
       return res.status(403).json({ error: "Invalid or expired token" });
     }
@@ -25,7 +25,7 @@ const authenticateToken: RequestHandler = async (req, res, next) => {
       email: session.email,
       name: session.name,
       email_verified: session.email_verified,
-      role: session.role
+      role: session.role,
     };
 
     next();
@@ -43,7 +43,7 @@ export const handleAccountSummary: RequestHandler = async (req, res) => {
 
     // Get user's accounts
     const accounts = await db.getAccountsByUserId(userId);
-    
+
     if (accounts.length === 0) {
       return res.status(404).json({ error: "No accounts found" });
     }
@@ -51,17 +51,23 @@ export const handleAccountSummary: RequestHandler = async (req, res) => {
     // Get recent transactions for each account
     const accountSummaries = await Promise.all(
       accounts.map(async (account) => {
-        const recentTransactions = await db.getTransactionsByAccountId(account.id, 10);
+        const recentTransactions = await db.getTransactionsByAccountId(
+          account.id,
+          10,
+        );
         return {
           ...account,
-          recent_transactions: recentTransactions
+          recent_transactions: recentTransactions,
         };
-      })
+      }),
     );
 
     res.json({
       accounts: accountSummaries,
-      total_balance: accounts.reduce((sum, acc) => sum + parseFloat(acc.balance.toString()), 0)
+      total_balance: accounts.reduce(
+        (sum, acc) => sum + parseFloat(acc.balance.toString()),
+        0,
+      ),
     });
   } catch (error) {
     console.error("Account summary error:", error);
@@ -80,7 +86,7 @@ export const handleGetAllTransactions: RequestHandler = async (req, res) => {
 
     res.json({
       transactions,
-      total: transactions.length
+      total: transactions.length,
     });
   } catch (error) {
     console.error("Get transactions error:", error);
@@ -107,7 +113,9 @@ export const handleSendTransfer: RequestHandler = async (req, res) => {
     // Get source account and verify ownership
     const fromAccount = await db.getAccountById(from_account_id);
     if (!fromAccount || fromAccount.user_id !== userId) {
-      return res.status(403).json({ error: "Source account not found or not owned by user" });
+      return res
+        .status(403)
+        .json({ error: "Source account not found or not owned by user" });
     }
 
     // Check sufficient balance
@@ -136,7 +144,7 @@ export const handleSendTransfer: RequestHandler = async (req, res) => {
       type: "debit",
       amount,
       description,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     emitTransactionAdded({
@@ -146,27 +154,27 @@ export const handleSendTransfer: RequestHandler = async (req, res) => {
       type: "credit",
       amount,
       description,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     emitBalanceUpdated({
       accountId: from_account_id,
       userId: fromAccount.user_id,
       newBalance: parseFloat(updatedFromAccount!.balance.toString()),
-      accountType: fromAccount.account_type as "savings" | "checking"
+      accountType: fromAccount.account_type as "savings" | "checking",
     });
 
     emitBalanceUpdated({
       accountId: to_account_id,
       userId: toAccount.user_id,
       newBalance: parseFloat(updatedToAccount!.balance.toString()),
-      accountType: toAccount.account_type as "savings" | "checking"
+      accountType: toAccount.account_type as "savings" | "checking",
     });
 
     res.json({
       message: "Transfer completed successfully",
       from_account: updatedFromAccount,
-      to_account: updatedToAccount
+      to_account: updatedToAccount,
     });
   } catch (error) {
     console.error("Transfer error:", error);
@@ -183,9 +191,9 @@ export const handleGetCards: RequestHandler = async (req, res) => {
     const cards = await db.getCardsByUserId(userId);
 
     // Mask card numbers for security (show only last 4 digits)
-    const maskedCards = cards.map(card => ({
+    const maskedCards = cards.map((card) => ({
       ...card,
-      card_number: `****-****-****-${card.card_number.slice(-4)}`
+      card_number: `****-****-****-${card.card_number.slice(-4)}`,
     }));
 
     res.json({ cards: maskedCards });
@@ -228,14 +236,14 @@ export const handleAdminVerifyUser: RequestHandler = async (req, res) => {
       userId: user_id,
       accountNumber: savingsAccountNumber,
       accountType: "savings",
-      initialBalance: 5000
+      initialBalance: 5000,
     });
 
     const checkingAccountId = await db.createAccount({
       userId: user_id,
       accountNumber: checkingAccountNumber,
       accountType: "checking",
-      initialBalance: 5000
+      initialBalance: 5000,
     });
 
     // Create initial deposit transactions
@@ -243,26 +251,28 @@ export const handleAdminVerifyUser: RequestHandler = async (req, res) => {
       accountId: savingsAccountId,
       type: "credit",
       amount: 5000,
-      description: "Initial deposit - Account opening"
+      description: "Initial deposit - Account opening",
     });
 
     await db.createTransaction({
       accountId: checkingAccountId,
       type: "credit",
       amount: 5000,
-      description: "Initial deposit - Account opening"
+      description: "Initial deposit - Account opening",
     });
 
     // Generate and create user card
     const cardNumber = await db.generateUniqueCardNumber();
     const cardId = await db.createCard({
       userId: user_id,
-      cardNumber
+      cardNumber,
     });
 
     // Emit real-time events
-    const { emitAccountCreated, emitUserVerified } = await import("../socket-events");
-    
+    const { emitAccountCreated, emitUserVerified } = await import(
+      "../socket-events"
+    );
+
     emitAccountCreated({
       userId: user_id,
       accounts: [
@@ -270,21 +280,21 @@ export const handleAdminVerifyUser: RequestHandler = async (req, res) => {
           accountId: savingsAccountId,
           accountNumber: savingsAccountNumber,
           accountType: "savings",
-          balance: 5000
+          balance: 5000,
         },
         {
           accountId: checkingAccountId,
           accountNumber: checkingAccountNumber,
           accountType: "checking",
-          balance: 5000
-        }
+          balance: 5000,
+        },
       ],
       cards: [
         {
           cardId,
-          cardNumber: `****-****-****-${cardNumber.slice(-4)}`
-        }
-      ]
+          cardNumber: `****-****-****-${cardNumber.slice(-4)}`,
+        },
+      ],
     });
 
     emitUserVerified(user_id, user.email);
@@ -295,30 +305,32 @@ export const handleAdminVerifyUser: RequestHandler = async (req, res) => {
         id: user.id,
         email: user.email,
         name: user.name,
-        email_verified: true
+        email_verified: true,
       },
       accounts: [
         {
           id: savingsAccountId,
           account_number: savingsAccountNumber,
           account_type: "savings",
-          balance: 5000
+          balance: 5000,
         },
         {
           id: checkingAccountId,
           account_number: checkingAccountNumber,
           account_type: "checking",
-          balance: 5000
-        }
+          balance: 5000,
+        },
       ],
       card: {
         id: cardId,
-        card_number: `****-****-****-${cardNumber.slice(-4)}`
-      }
+        card_number: `****-****-****-${cardNumber.slice(-4)}`,
+      },
     });
   } catch (error) {
     console.error("Admin verify user error:", error);
-    res.status(500).json({ error: "Failed to verify user and create accounts" });
+    res
+      .status(500)
+      .json({ error: "Failed to verify user and create accounts" });
   }
 };
 
