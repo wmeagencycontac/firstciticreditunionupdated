@@ -268,6 +268,20 @@ export interface AdminVerifyUserResponse {
   card: Card;
 }
 
+export interface AdminPendingUsersResponse {
+  users: User[];
+  total: number;
+}
+
+export interface AdminDashboardStats {
+  totalUsers: number;
+  pendingUsers: number;
+  totalAccounts: number;
+  totalBalance: number;
+  dailyTransactions: number;
+  activeCards: number;
+}
+
 /**
  * Socket.IO Event Types
  */
