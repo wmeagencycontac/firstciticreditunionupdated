@@ -1,9 +1,11 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { createServer as createHttpServer } from "http";
+import { Server as SocketIOServer } from "socket.io";
 import { getEmailService } from "./email";
 import { handleDemo } from "./routes/demo";
-import { handleLogin, handleProfile } from "./routes/auth";
+import { handleLogin, handleProfile, handleLogout } from "./routes/auth";
 import { handleRegistration } from "./routes/registration";
 import {
   handleGetAccounts,
@@ -25,9 +27,50 @@ import {
   handleEnhancedRegistration,
   handleEmailVerification,
 } from "./routes/enhanced-registration";
+import {
+  handleAccountSummary,
+  handleGetAllTransactions,
+  handleSendTransfer,
+  handleGetCards,
+  handleAdminVerifyUser,
+  authenticateToken,
+} from "./routes/banking";
+
+// Global Socket.IO server instance
+export let io: SocketIOServer;
 
 export function createServer() {
   const app = express();
+  const httpServer = createHttpServer(app);
+
+  // Initialize Socket.IO
+  io = new SocketIOServer(httpServer, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
+
+  // Socket.IO connection handling
+  io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
+
+    // Join user-specific room for personalized notifications
+    socket.on("join-user-room", (userId: string) => {
+      socket.join(`user:${userId}`);
+      console.log(`User ${userId} joined their room`);
+    });
+
+    // Join admin room for admin notifications
+    socket.on("join-admin-room", () => {
+      socket.join("admin");
+      console.log("Admin joined admin room");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+    });
+  });
 
   // Initialize and verify email service
   const emailService = getEmailService();
@@ -50,6 +93,7 @@ export function createServer() {
   app.post("/api/auth/login", handleLogin);
   app.post("/api/auth/register", handleRegistration);
   app.get("/api/auth/profile", handleProfile);
+  app.post("/api/auth/logout", handleLogout);
   app.get("/api/dashboard", handleGetDashboard);
   app.get("/api/accounts", handleGetAccounts);
   app.get("/api/accounts/:accountId", handleGetAccountDetails);
@@ -75,5 +119,14 @@ export function createServer() {
   );
   app.get("/api/verify-email", handleEmailVerification);
 
-  return app;
+  // Banking API endpoints (protected)
+  app.get("/api/account-summary", authenticateToken, handleAccountSummary);
+  app.get("/api/all-transactions", authenticateToken, handleGetAllTransactions);
+  app.post("/api/send-transfer", authenticateToken, handleSendTransfer);
+  app.get("/api/cards", authenticateToken, handleGetCards);
+
+  // Admin banking endpoints
+  app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
+
+  return { app, httpServer, io };
 }

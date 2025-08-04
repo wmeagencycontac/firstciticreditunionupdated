@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 import path from "path";
-import { getEnhancedDatabase } from "../database-enhanced";
+import { getBankingDatabase } from "../banking-database";
 import { getEmailService } from "../email";
 import {
   EnhancedRegistrationRequest,
@@ -92,7 +92,7 @@ export const handleEnhancedRegistration: RequestHandler = async (req, res) => {
       }
     }
 
-    const db = getEnhancedDatabase();
+    const db = getBankingDatabase();
     const emailService = getEmailService();
 
     // Check if user already exists
@@ -228,7 +228,7 @@ export const handleEmailVerification: RequestHandler = async (req, res) => {
       `);
     }
 
-    const db = getEnhancedDatabase();
+    const db = getBankingDatabase();
 
     // Get verification token
     const verification = await db.getVerificationToken(token);

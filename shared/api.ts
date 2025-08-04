@@ -16,39 +16,47 @@ export interface DemoResponse {
  */
 
 export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
+  id: number;
   email: string;
-  createdAt: string;
+  name: string;
+  email_verified: boolean;
+  role: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Account {
-  id: string;
-  userId: string;
-  accountNumber: string;
-  accountType: "checking" | "savings" | "credit";
+  id: number;
+  user_id: number;
+  account_number: string;
+  account_type: "checking" | "savings";
   balance: number;
   currency: string;
-  isActive: boolean;
-  createdAt: string;
+  routing_number: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Transaction {
-  id: string;
-  accountId: string;
-  type: "debit" | "credit" | "transfer";
+  id: number;
+  account_id: number;
+  type: "debit" | "credit";
   amount: number;
   description: string;
-  category: string;
-  merchant?: string;
-  createdAt: string;
-  status: "pending" | "completed" | "failed";
+  timestamp: string;
+}
+
+export interface Card {
+  id: number;
+  user_id: number;
+  card_number: string;
+  status: "active" | "inactive" | "blocked";
+  created_at: string;
 }
 
 export interface TransferRequest {
-  fromAccountId: string;
-  toAccountId: string;
+  from_account_id: number;
+  to_account_id: number;
   amount: number;
   description: string;
 }
@@ -223,4 +231,82 @@ export interface EnhancedUser {
   role: string;
   created_at: string;
   updated_at: string;
+}
+
+/**
+ * New Banking API Response Types
+ */
+
+export interface AccountSummaryResponse {
+  accounts: (Account & { recent_transactions: Transaction[] })[];
+  total_balance: number;
+}
+
+export interface TransactionsResponse {
+  transactions: Transaction[];
+  total: number;
+}
+
+export interface CardsResponse {
+  cards: Card[];
+}
+
+export interface TransferResponse {
+  message: string;
+  from_account: Account;
+  to_account: Account;
+}
+
+export interface AdminVerifyUserRequest {
+  user_id: number;
+}
+
+export interface AdminVerifyUserResponse {
+  message: string;
+  user: User;
+  accounts: Account[];
+  card: Card;
+}
+
+/**
+ * Socket.IO Event Types
+ */
+
+export interface TransactionEvent {
+  transactionId: number;
+  accountId: number;
+  userId: number;
+  type: "credit" | "debit";
+  amount: number;
+  description: string;
+  timestamp: string;
+}
+
+export interface BalanceUpdateEvent {
+  accountId: number;
+  userId: number;
+  newBalance: number;
+  accountType: "savings" | "checking";
+}
+
+export interface AccountCreatedEvent {
+  userId: number;
+  accounts: {
+    accountId: number;
+    accountNumber: string;
+    accountType: "savings" | "checking";
+    balance: number;
+  }[];
+  cards: {
+    cardId: number;
+    cardNumber: string;
+  }[];
+}
+
+export interface AdminAlertEvent {
+  type: "user-verified" | "account-created" | "transaction-alert";
+  userId: number;
+  userEmail: string;
+  message: string;
+  timestamp: string;
 }
