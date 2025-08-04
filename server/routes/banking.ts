@@ -373,4 +373,4 @@ export const handleAdminVerifyUser: RequestHandler = async (req, res) => {
 };
 
 // Middleware export for authentication
-export { authenticateToken };
+export { authenticateToken, handleGetPendingUsers };
