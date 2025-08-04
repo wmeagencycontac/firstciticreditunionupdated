@@ -22,6 +22,11 @@ import {
   handleCheckAdminExists,
 } from "./routes/admin-setup";
 import {
+  handleAdminLogin,
+  handleAdminLogout,
+  handleAdminProfile,
+} from "./routes/admin-auth";
+import {
   handleRequestOTP,
   handleVerifyOTP,
   handleGetOTPUser,
@@ -57,8 +62,27 @@ export function createServer() {
   });
 
   // Socket.IO connection handling
-  io.on("connection", (socket) => {
+  io.on("connection", async (socket) => {
     console.log("User connected:", socket.id);
+
+    // Check authentication for admin connections
+    const authToken = socket.handshake.auth?.token;
+    let isAdmin = false;
+
+    if (authToken) {
+      try {
+        const { getBankingDatabase } = await import("./banking-database");
+        const db = getBankingDatabase();
+        const session = await db.getSessionByToken(authToken);
+
+        if (session && session.role === "admin") {
+          isAdmin = true;
+          console.log("Admin authenticated via Socket.IO:", session.email);
+        }
+      } catch (error) {
+        console.error("Socket.IO auth error:", error);
+      }
+    }
 
     // Join user-specific room for personalized notifications
     socket.on("join-user-room", (userId: string) => {
@@ -66,10 +90,15 @@ export function createServer() {
       console.log(`User ${userId} joined their room`);
     });
 
-    // Join admin room for admin notifications
+    // Join admin room for admin notifications (only if authenticated)
     socket.on("join-admin-room", () => {
-      socket.join("admin");
-      console.log("Admin joined admin room");
+      if (isAdmin) {
+        socket.join("admin");
+        console.log("Authenticated admin joined admin room");
+      } else {
+        console.log("Unauthorized attempt to join admin room");
+        socket.emit("error", "Admin authentication required");
+      }
     });
 
     socket.on("disconnect", () => {
@@ -133,6 +162,11 @@ export function createServer() {
   // Admin setup endpoints (no auth required for initial setup)
   app.post("/api/admin/setup", handleCreateAdmin);
   app.get("/api/admin/check", handleCheckAdminExists);
+
+  // Admin authentication endpoints
+  app.post("/api/admin/login", handleAdminLogin);
+  app.post("/api/admin/logout", authenticateToken, handleAdminLogout);
+  app.get("/api/admin/profile", authenticateToken, handleAdminProfile);
 
   // Admin banking endpoints
   app.get("/api/admin/users-pending", authenticateToken, handleGetPendingUsers);

@@ -29,9 +29,19 @@ export function AdminActivityFeed() {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
+    // Check if admin is logged in
+    const adminToken = localStorage.getItem("adminToken");
+    if (!adminToken) {
+      console.log("No admin token found, skipping socket connection");
+      return;
+    }
+
     // Initialize Socket.IO connection
     const newSocket = io({
       transports: ["websocket", "polling"],
+      auth: {
+        token: adminToken,
+      },
     });
 
     newSocket.on("connect", () => {
