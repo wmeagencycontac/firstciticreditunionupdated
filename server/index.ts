@@ -33,6 +33,7 @@ import {
   handleSendTransfer,
   handleGetCards,
   handleAdminVerifyUser,
+  handleGetPendingUsers,
   authenticateToken,
 } from "./routes/banking";
 
