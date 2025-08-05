@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CreditCard, Eye, EyeOff } from "lucide-react";
+import { Building2, Eye, EyeOff } from "lucide-react";
 import { auth } from "@/lib/supabase";
 
 export default function Login() {
