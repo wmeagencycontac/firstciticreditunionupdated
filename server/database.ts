@@ -7,10 +7,16 @@ export class OTPDatabase {
 
   constructor(dbPath: string = ":memory:") {
     // Use persistent database in production, in-memory for development
-    const finalPath =
-      process.env.NODE_ENV === "production"
-        ? path.join(process.cwd(), "data", "otp.db")
-        : dbPath;
+    let finalPath = dbPath;
+
+    if (process.env.NODE_ENV === "production") {
+      const dataDir = path.join(process.cwd(), "data");
+      // Ensure data directory exists
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
+      finalPath = path.join(dataDir, "otp.db");
+    }
 
     this.db = new sqlite3.Database(finalPath, (err) => {
       if (err) {
