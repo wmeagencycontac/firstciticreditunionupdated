@@ -95,7 +95,7 @@ export const handleGetDashboard: RequestHandler = async (req, res) => {
     }
 
     // Transform user data to match frontend expectations
-    const user = {
+    const user: DashboardUser = {
       id: session.user_id.toString(),
       firstName: session.name.split(" ")[0] || session.name,
       lastName: session.name.split(" ")[1] || "",
@@ -104,7 +104,7 @@ export const handleGetDashboard: RequestHandler = async (req, res) => {
     };
 
     // Transform recent activity to match frontend expectations
-    const transformedRecentActivity = recentActivity.map(txn => ({
+    const transformedRecentActivity: DashboardTransaction[] = recentActivity.map(txn => ({
       id: txn.id.toString(),
       accountId: txn.account_id.toString(),
       type: txn.type,
