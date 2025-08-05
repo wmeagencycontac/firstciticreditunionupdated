@@ -108,7 +108,7 @@ export default function Index() {
               we're here to help you achieve your financial goals with trust and convenience.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link to="/register">
+              <Link to="/signup">
                 <Button size="lg" className="w-full sm:w-auto bg-[#00754A] hover:bg-[#005A39] text-white px-8">
                   Open an Account
                 </Button>
