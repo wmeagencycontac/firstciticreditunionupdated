@@ -26,13 +26,24 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { auth, db, realtimeManager, Account, Transaction, BankingUser } from "@/lib/supabase";
+import {
+  auth,
+  db,
+  realtimeManager,
+  Account,
+  Transaction,
+  BankingUser,
+} from "@/lib/supabase";
 
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
-  const [bankingProfile, setBankingProfile] = useState<BankingUser | null>(null);
+  const [bankingProfile, setBankingProfile] = useState<BankingUser | null>(
+    null,
+  );
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [recentTransactions, setRecentTransactions] = useState<Transaction[]>([]);
+  const [recentTransactions, setRecentTransactions] = useState<Transaction[]>(
+    [],
+  );
   const [loading, setLoading] = useState(true);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [error, setError] = useState("");
@@ -68,7 +79,8 @@ export default function Dashboard() {
   const loadDashboardData = async (userId: string) => {
     try {
       // Load banking profile
-      const { data: profile, error: profileError } = await db.getBankingProfile(userId);
+      const { data: profile, error: profileError } =
+        await db.getBankingProfile(userId);
       if (profileError) {
         console.error("Error loading profile:", profileError);
       } else {
@@ -76,7 +88,8 @@ export default function Dashboard() {
       }
 
       // Load accounts
-      const { data: accountsData, error: accountsError } = await db.getAccounts(userId);
+      const { data: accountsData, error: accountsError } =
+        await db.getAccounts(userId);
       if (accountsError) {
         console.error("Error loading accounts:", accountsError);
       } else {
@@ -84,7 +97,8 @@ export default function Dashboard() {
       }
 
       // Load recent transactions
-      const { data: transactionsData, error: transactionsError } = await db.getTransactions(userId, undefined, 10);
+      const { data: transactionsData, error: transactionsError } =
+        await db.getTransactions(userId, undefined, 10);
       if (transactionsError) {
         console.error("Error loading transactions:", transactionsError);
       } else {
@@ -236,7 +250,10 @@ export default function Dashboard() {
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
               You don't have any accounts yet. Visit{" "}
-              <Link to="/supabase-test" className="text-primary hover:underline">
+              <Link
+                to="/supabase-test"
+                className="text-primary hover:underline"
+              >
                 /supabase-test
               </Link>{" "}
               to create your first account and start banking with us!
@@ -293,8 +310,12 @@ export default function Dashboard() {
                 <p className="text-lg font-semibold">{accounts.length}</p>
               </div>
               <div>
-                <p className="text-primary-foreground/80 text-xs">Recent Transactions</p>
-                <p className="text-lg font-semibold">{recentTransactions.length}</p>
+                <p className="text-primary-foreground/80 text-xs">
+                  Recent Transactions
+                </p>
+                <p className="text-lg font-semibold">
+                  {recentTransactions.length}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -358,7 +379,9 @@ export default function Dashboard() {
                     <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                       <CreditCard className="w-8 h-8 text-muted-foreground" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">No Accounts Yet</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      No Accounts Yet
+                    </h3>
                     <p className="text-muted-foreground mb-4">
                       Create your first account to start banking with us
                     </p>
@@ -435,7 +458,9 @@ export default function Dashboard() {
                 )}
                 <Link to="/supabase-test" className="block mt-4">
                   <Button variant="outline" className="w-full">
-                    {recentTransactions.length > 0 ? "View All Transactions" : "Start Banking"}
+                    {recentTransactions.length > 0
+                      ? "View All Transactions"
+                      : "Start Banking"}
                   </Button>
                 </Link>
               </CardContent>

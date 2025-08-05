@@ -1,12 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { AlertCircle, CheckCircle, Database, User, CreditCard, ArrowRightLeft } from 'lucide-react';
-import { auth, db, realtimeManager, Account, Transaction, Card as CardType, BankingUser } from '@/lib/supabase';
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  AlertCircle,
+  CheckCircle,
+  Database,
+  User,
+  CreditCard,
+  ArrowRightLeft,
+} from "lucide-react";
+import {
+  auth,
+  db,
+  realtimeManager,
+  Account,
+  Transaction,
+  Card as CardType,
+  BankingUser,
+} from "@/lib/supabase";
 
 export default function SupabaseTest() {
   const [user, setUser] = useState<any>(null);
@@ -14,20 +35,26 @@ export default function SupabaseTest() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [cards, setCards] = useState<CardType[]>([]);
-  const [bankingProfile, setBankingProfile] = useState<BankingUser | null>(null);
-  
+  const [bankingProfile, setBankingProfile] = useState<BankingUser | null>(
+    null,
+  );
+
   // Form states
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [accountType, setAccountType] = useState<'savings' | 'checking'>('checking');
-  const [transferAmount, setTransferAmount] = useState('');
-  const [fromAccountId, setFromAccountId] = useState('');
-  const [toAccountId, setToAccountId] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [accountType, setAccountType] = useState<"savings" | "checking">(
+    "checking",
+  );
+  const [transferAmount, setTransferAmount] = useState("");
+  const [fromAccountId, setFromAccountId] = useState("");
+  const [toAccountId, setToAccountId] = useState("");
 
   // Status messages
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState<'success' | 'error'>('success');
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error">(
+    "success",
+  );
 
   useEffect(() => {
     // Check for existing user session
@@ -40,12 +67,14 @@ export default function SupabaseTest() {
     });
 
     // Listen for auth state changes
-    const { data: { subscription } } = auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
+    const {
+      data: { subscription },
+    } = auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session?.user) {
         setUser(session.user);
         loadUserData(session.user.id);
         setupRealtimeSubscriptions(session.user.id);
-      } else if (event === 'SIGNED_OUT') {
+      } else if (event === "SIGNED_OUT") {
         setUser(null);
         setAccounts([]);
         setTransactions([]);
@@ -64,18 +93,18 @@ export default function SupabaseTest() {
   const setupRealtimeSubscriptions = (userId: string) => {
     // Subscribe to real-time transaction updates
     realtimeManager.subscribeToTransactions(userId, (payload) => {
-      console.log('Real-time transaction update:', payload);
+      console.log("Real-time transaction update:", payload);
       setMessage(`Real-time update: ${payload.eventType} transaction`);
-      setMessageType('success');
+      setMessageType("success");
       // Reload transactions to get the latest data
       loadTransactions(userId);
     });
 
     // Subscribe to real-time account updates
     realtimeManager.subscribeToAccounts(userId, (payload) => {
-      console.log('Real-time account update:', payload);
+      console.log("Real-time account update:", payload);
       setMessage(`Real-time update: Account balance changed`);
-      setMessageType('success');
+      setMessageType("success");
       // Reload accounts to get the latest data
       loadAccounts(userId);
     });
@@ -93,7 +122,7 @@ export default function SupabaseTest() {
   const loadBankingProfile = async (userId: string) => {
     const { data, error } = await db.getBankingProfile(userId);
     if (error) {
-      console.error('Error loading banking profile:', error);
+      console.error("Error loading banking profile:", error);
     } else {
       setBankingProfile(data);
     }
@@ -102,7 +131,7 @@ export default function SupabaseTest() {
   const loadAccounts = async (userId: string) => {
     const { data, error } = await db.getAccounts(userId);
     if (error) {
-      console.error('Error loading accounts:', error);
+      console.error("Error loading accounts:", error);
     } else {
       setAccounts(data || []);
     }
@@ -111,7 +140,7 @@ export default function SupabaseTest() {
   const loadTransactions = async (userId: string) => {
     const { data, error } = await db.getTransactions(userId, undefined, 10);
     if (error) {
-      console.error('Error loading transactions:', error);
+      console.error("Error loading transactions:", error);
     } else {
       setTransactions(data || []);
     }
@@ -120,7 +149,7 @@ export default function SupabaseTest() {
   const loadCards = async (userId: string) => {
     const { data, error } = await db.getCards(userId);
     if (error) {
-      console.error('Error loading cards:', error);
+      console.error("Error loading cards:", error);
     } else {
       setCards(data || []);
     }
@@ -133,14 +162,14 @@ export default function SupabaseTest() {
       const { data, error } = await auth.signUp(email, password, name);
       if (error) {
         setMessage(error.message);
-        setMessageType('error');
+        setMessageType("error");
       } else {
-        setMessage('Sign up successful! Check your email for verification.');
-        setMessageType('success');
+        setMessage("Sign up successful! Check your email for verification.");
+        setMessageType("success");
       }
     } catch (error) {
-      setMessage('Sign up failed');
-      setMessageType('error');
+      setMessage("Sign up failed");
+      setMessageType("error");
     }
     setLoading(false);
   };
@@ -152,14 +181,14 @@ export default function SupabaseTest() {
       const { data, error } = await auth.signIn(email, password);
       if (error) {
         setMessage(error.message);
-        setMessageType('error');
+        setMessageType("error");
       } else {
-        setMessage('Sign in successful!');
-        setMessageType('success');
+        setMessage("Sign in successful!");
+        setMessageType("success");
       }
     } catch (error) {
-      setMessage('Sign in failed');
-      setMessageType('error');
+      setMessage("Sign in failed");
+      setMessageType("error");
     }
     setLoading(false);
   };
@@ -170,14 +199,14 @@ export default function SupabaseTest() {
       const { error } = await auth.signOut();
       if (error) {
         setMessage(error.message);
-        setMessageType('error');
+        setMessageType("error");
       } else {
-        setMessage('Signed out successfully');
-        setMessageType('success');
+        setMessage("Signed out successfully");
+        setMessageType("success");
       }
     } catch (error) {
-      setMessage('Sign out failed');
-      setMessageType('error');
+      setMessage("Sign out failed");
+      setMessageType("error");
     }
     setLoading(false);
   };
@@ -186,11 +215,11 @@ export default function SupabaseTest() {
     if (!user) return;
     setLoading(true);
     try {
-      const response = await fetch('/api/supabase/accounts', {
-        method: 'POST',
+      const response = await fetch("/api/supabase/accounts", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.access_token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.access_token}`,
         },
         body: JSON.stringify({
           accountType,
@@ -199,17 +228,17 @@ export default function SupabaseTest() {
       });
 
       if (response.ok) {
-        setMessage('Account created successfully!');
-        setMessageType('success');
+        setMessage("Account created successfully!");
+        setMessageType("success");
         await loadAccounts(user.id);
       } else {
         const error = await response.json();
-        setMessage(error.error || 'Failed to create account');
-        setMessageType('error');
+        setMessage(error.error || "Failed to create account");
+        setMessageType("error");
       }
     } catch (error) {
-      setMessage('Failed to create account');
-      setMessageType('error');
+      setMessage("Failed to create account");
+      setMessageType("error");
     }
     setLoading(false);
   };
@@ -218,66 +247,66 @@ export default function SupabaseTest() {
     if (!user) return;
     setLoading(true);
     try {
-      const response = await fetch('/api/supabase/cards', {
-        method: 'POST',
+      const response = await fetch("/api/supabase/cards", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.access_token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.access_token}`,
         },
       });
 
       if (response.ok) {
-        setMessage('Card created successfully!');
-        setMessageType('success');
+        setMessage("Card created successfully!");
+        setMessageType("success");
         await loadCards(user.id);
       } else {
         const error = await response.json();
-        setMessage(error.error || 'Failed to create card');
-        setMessageType('error');
+        setMessage(error.error || "Failed to create card");
+        setMessageType("error");
       }
     } catch (error) {
-      setMessage('Failed to create card');
-      setMessageType('error');
+      setMessage("Failed to create card");
+      setMessageType("error");
     }
     setLoading(false);
   };
 
   const handleTransfer = async () => {
     if (!user || !fromAccountId || !toAccountId || !transferAmount) {
-      setMessage('Please fill in all transfer fields');
-      setMessageType('error');
+      setMessage("Please fill in all transfer fields");
+      setMessageType("error");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await fetch('/api/supabase/transfer', {
-        method: 'POST',
+      const response = await fetch("/api/supabase/transfer", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.access_token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.access_token}`,
         },
         body: JSON.stringify({
           fromAccountId: parseInt(fromAccountId),
           toAccountId: parseInt(toAccountId),
           amount: parseFloat(transferAmount),
-          description: 'Test transfer',
+          description: "Test transfer",
         }),
       });
 
       if (response.ok) {
-        setMessage('Transfer completed successfully!');
-        setMessageType('success');
+        setMessage("Transfer completed successfully!");
+        setMessageType("success");
         await loadUserData(user.id);
-        setTransferAmount('');
+        setTransferAmount("");
       } else {
         const error = await response.json();
-        setMessage(error.error || 'Transfer failed');
-        setMessageType('error');
+        setMessage(error.error || "Transfer failed");
+        setMessageType("error");
       }
     } catch (error) {
-      setMessage('Transfer failed');
-      setMessageType('error');
+      setMessage("Transfer failed");
+      setMessageType("error");
     }
     setLoading(false);
   };
@@ -296,15 +325,21 @@ export default function SupabaseTest() {
 
         {/* Status Message */}
         {message && (
-          <Card className={`${messageType === 'error' ? 'border-red-200 bg-red-50' : 'border-green-200 bg-green-50'}`}>
+          <Card
+            className={`${messageType === "error" ? "border-red-200 bg-red-50" : "border-green-200 bg-green-50"}`}
+          >
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
-                {messageType === 'error' ? (
+                {messageType === "error" ? (
                   <AlertCircle className="h-4 w-4 text-red-600" />
                 ) : (
                   <CheckCircle className="h-4 w-4 text-green-600" />
                 )}
-                <span className={messageType === 'error' ? 'text-red-800' : 'text-green-800'}>
+                <span
+                  className={
+                    messageType === "error" ? "text-red-800" : "text-green-800"
+                  }
+                >
                   {message}
                 </span>
               </div>
@@ -356,7 +391,7 @@ export default function SupabaseTest() {
                     />
                   </div>
                   <Button type="submit" disabled={loading} className="w-full">
-                    {loading ? 'Creating Account...' : 'Sign Up'}
+                    {loading ? "Creating Account..." : "Sign Up"}
                   </Button>
                 </form>
               </CardContent>
@@ -393,7 +428,7 @@ export default function SupabaseTest() {
                     />
                   </div>
                   <Button type="submit" disabled={loading} className="w-full">
-                    {loading ? 'Signing In...' : 'Sign In'}
+                    {loading ? "Signing In..." : "Sign In"}
                   </Button>
                 </form>
               </CardContent>
@@ -423,16 +458,30 @@ export default function SupabaseTest() {
                   </div>
                   <div>
                     <Label className="text-sm font-medium">Name</Label>
-                    <p className="text-sm text-gray-600">{bankingProfile?.name || 'Loading...'}</p>
+                    <p className="text-sm text-gray-600">
+                      {bankingProfile?.name || "Loading..."}
+                    </p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium">Role</Label>
-                    <Badge variant="secondary">{bankingProfile?.role || 'user'}</Badge>
+                    <Badge variant="secondary">
+                      {bankingProfile?.role || "user"}
+                    </Badge>
                   </div>
                   <div>
-                    <Label className="text-sm font-medium">Email Verified</Label>
-                    <Badge variant={bankingProfile?.email_verified ? 'default' : 'destructive'}>
-                      {bankingProfile?.email_verified ? 'Verified' : 'Not Verified'}
+                    <Label className="text-sm font-medium">
+                      Email Verified
+                    </Label>
+                    <Badge
+                      variant={
+                        bankingProfile?.email_verified
+                          ? "default"
+                          : "destructive"
+                      }
+                    >
+                      {bankingProfile?.email_verified
+                        ? "Verified"
+                        : "Not Verified"}
                     </Badge>
                   </div>
                 </div>
@@ -453,7 +502,9 @@ export default function SupabaseTest() {
                   <div className="flex gap-2">
                     <select
                       value={accountType}
-                      onChange={(e) => setAccountType(e.target.value as 'savings' | 'checking')}
+                      onChange={(e) =>
+                        setAccountType(e.target.value as "savings" | "checking")
+                      }
                       className="px-3 py-2 border rounded-md"
                     >
                       <option value="checking">Checking</option>
@@ -463,18 +514,26 @@ export default function SupabaseTest() {
                       Create Account
                     </Button>
                   </div>
-                  
+
                   <div className="space-y-2">
                     {accounts.map((account) => (
                       <div key={account.id} className="p-3 border rounded-lg">
                         <div className="flex justify-between items-center">
                           <div>
-                            <p className="font-medium">{account.account_type.toUpperCase()}</p>
-                            <p className="text-sm text-gray-600">{account.account_number}</p>
+                            <p className="font-medium">
+                              {account.account_type.toUpperCase()}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {account.account_number}
+                            </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-bold text-lg">${account.balance.toFixed(2)}</p>
-                            <p className="text-xs text-gray-500">{account.currency}</p>
+                            <p className="font-bold text-lg">
+                              ${account.balance.toFixed(2)}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {account.currency}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -495,7 +554,7 @@ export default function SupabaseTest() {
                   <Button onClick={handleCreateCard} disabled={loading}>
                     Create New Card
                   </Button>
-                  
+
                   <div className="space-y-2">
                     {cards.map((card) => (
                       <div key={card.id} className="p-3 border rounded-lg">
@@ -503,10 +562,15 @@ export default function SupabaseTest() {
                           <div>
                             <p className="font-medium">{card.card_number}</p>
                             <p className="text-sm text-gray-600">
-                              Created: {new Date(card.created_at).toLocaleDateString()}
+                              Created:{" "}
+                              {new Date(card.created_at).toLocaleDateString()}
                             </p>
                           </div>
-                          <Badge variant={card.status === 'active' ? 'default' : 'secondary'}>
+                          <Badge
+                            variant={
+                              card.status === "active" ? "default" : "secondary"
+                            }
+                          >
                             {card.status}
                           </Badge>
                         </div>
@@ -525,7 +589,9 @@ export default function SupabaseTest() {
                     <ArrowRightLeft className="h-5 w-5" />
                     Transfer Funds
                   </CardTitle>
-                  <CardDescription>Transfer between your accounts</CardDescription>
+                  <CardDescription>
+                    Transfer between your accounts
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {accounts.length >= 2 ? (
@@ -540,7 +606,9 @@ export default function SupabaseTest() {
                           <option value="">Select account</option>
                           {accounts.map((account) => (
                             <option key={account.id} value={account.id}>
-                              {account.account_type.toUpperCase()} - {account.account_number} (${account.balance.toFixed(2)})
+                              {account.account_type.toUpperCase()} -{" "}
+                              {account.account_number} ($
+                              {account.balance.toFixed(2)})
                             </option>
                           ))}
                         </select>
@@ -555,7 +623,9 @@ export default function SupabaseTest() {
                           <option value="">Select account</option>
                           {accounts.map((account) => (
                             <option key={account.id} value={account.id}>
-                              {account.account_type.toUpperCase()} - {account.account_number} (${account.balance.toFixed(2)})
+                              {account.account_type.toUpperCase()} -{" "}
+                              {account.account_number} ($
+                              {account.balance.toFixed(2)})
                             </option>
                           ))}
                         </select>
@@ -571,37 +641,59 @@ export default function SupabaseTest() {
                           min="0.01"
                         />
                       </div>
-                      <Button onClick={handleTransfer} disabled={loading} className="w-full">
-                        {loading ? 'Processing...' : 'Transfer Funds'}
+                      <Button
+                        onClick={handleTransfer}
+                        disabled={loading}
+                        className="w-full"
+                      >
+                        {loading ? "Processing..." : "Transfer Funds"}
                       </Button>
                     </>
                   ) : (
-                    <p className="text-gray-600">Create at least 2 accounts to transfer funds</p>
+                    <p className="text-gray-600">
+                      Create at least 2 accounts to transfer funds
+                    </p>
                   )}
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Recent Transactions ({transactions.length})</CardTitle>
+                  <CardTitle>
+                    Recent Transactions ({transactions.length})
+                  </CardTitle>
                   <CardDescription>Latest account activity</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 max-h-64 overflow-y-auto">
                     {transactions.map((transaction) => (
-                      <div key={transaction.id} className="p-3 border rounded-lg">
+                      <div
+                        key={transaction.id}
+                        className="p-3 border rounded-lg"
+                      >
                         <div className="flex justify-between items-center">
                           <div>
-                            <p className="font-medium">{transaction.description}</p>
+                            <p className="font-medium">
+                              {transaction.description}
+                            </p>
                             <p className="text-sm text-gray-600">
                               {new Date(transaction.timestamp).toLocaleString()}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className={`font-bold ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>
-                              {transaction.type === 'credit' ? '+' : '-'}${transaction.amount.toFixed(2)}
+                            <p
+                              className={`font-bold ${transaction.type === "credit" ? "text-green-600" : "text-red-600"}`}
+                            >
+                              {transaction.type === "credit" ? "+" : "-"}$
+                              {transaction.amount.toFixed(2)}
                             </p>
-                            <Badge variant={transaction.type === 'credit' ? 'default' : 'destructive'}>
+                            <Badge
+                              variant={
+                                transaction.type === "credit"
+                                  ? "default"
+                                  : "destructive"
+                              }
+                            >
                               {transaction.type}
                             </Badge>
                           </div>

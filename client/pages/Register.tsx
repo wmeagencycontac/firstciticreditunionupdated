@@ -61,10 +61,8 @@ export default function Register() {
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    if (!formData.firstName.trim())
-      errors.firstName = "First name is required";
-    if (!formData.lastName.trim())
-      errors.lastName = "Last name is required";
+    if (!formData.firstName.trim()) errors.firstName = "First name is required";
+    if (!formData.lastName.trim()) errors.lastName = "Last name is required";
     if (!formData.email.trim()) errors.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       errors.email = "Invalid email format";
@@ -91,13 +89,13 @@ export default function Register() {
 
     try {
       const fullName = `${formData.firstName} ${formData.lastName}`;
-      
+
       const { data, error: signUpError } = await auth.signUp(
         formData.email,
         formData.password,
         fullName,
         "", // bio
-        "" // picture
+        "", // picture
       );
 
       if (signUpError) {
@@ -111,7 +109,8 @@ export default function Register() {
       // Success - redirect to login with success message
       navigate("/login", {
         state: {
-          message: "Registration successful! Please check your email to verify your account, then sign in.",
+          message:
+            "Registration successful! Please check your email to verify your account, then sign in.",
           email: formData.email,
         },
       });
@@ -163,9 +162,13 @@ export default function Register() {
                   <Input
                     id="firstName"
                     value={formData.firstName}
-                    onChange={(e) => updateFormData({ firstName: e.target.value })}
+                    onChange={(e) =>
+                      updateFormData({ firstName: e.target.value })
+                    }
                     placeholder="Enter your first name"
-                    className={validationErrors.firstName ? "border-destructive" : ""}
+                    className={
+                      validationErrors.firstName ? "border-destructive" : ""
+                    }
                   />
                   {validationErrors.firstName && (
                     <p className="text-sm text-destructive">
@@ -178,9 +181,13 @@ export default function Register() {
                   <Input
                     id="lastName"
                     value={formData.lastName}
-                    onChange={(e) => updateFormData({ lastName: e.target.value })}
+                    onChange={(e) =>
+                      updateFormData({ lastName: e.target.value })
+                    }
                     placeholder="Enter your last name"
-                    className={validationErrors.lastName ? "border-destructive" : ""}
+                    className={
+                      validationErrors.lastName ? "border-destructive" : ""
+                    }
                   />
                   {validationErrors.lastName && (
                     <p className="text-sm text-destructive">
@@ -202,7 +209,9 @@ export default function Register() {
                   className={validationErrors.email ? "border-destructive" : ""}
                 />
                 {validationErrors.email && (
-                  <p className="text-sm text-destructive">{validationErrors.email}</p>
+                  <p className="text-sm text-destructive">
+                    {validationErrors.email}
+                  </p>
                 )}
               </div>
 
@@ -214,9 +223,13 @@ export default function Register() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
-                    onChange={(e) => updateFormData({ password: e.target.value })}
+                    onChange={(e) =>
+                      updateFormData({ password: e.target.value })
+                    }
                     placeholder="Create a strong password"
-                    className={validationErrors.password ? "border-destructive" : ""}
+                    className={
+                      validationErrors.password ? "border-destructive" : ""
+                    }
                   />
                   <Button
                     type="button"
@@ -252,7 +265,9 @@ export default function Register() {
                     }
                     placeholder="Confirm your password"
                     className={
-                      validationErrors.confirmPassword ? "border-destructive" : ""
+                      validationErrors.confirmPassword
+                        ? "border-destructive"
+                        : ""
                     }
                   />
                   <Button
@@ -324,7 +339,9 @@ export default function Register() {
                       updateFormData({ agreeToPrivacy: !!checked })
                     }
                     className={
-                      validationErrors.agreeToPrivacy ? "border-destructive" : ""
+                      validationErrors.agreeToPrivacy
+                        ? "border-destructive"
+                        : ""
                     }
                   />
                   <Label htmlFor="agreeToPrivacy" className="text-sm leading-5">
@@ -383,7 +400,16 @@ export default function Register() {
               <div className="text-xs text-muted-foreground space-y-1">
                 <p>• Create your account here</p>
                 <p>• Check your email for verification</p>
-                <p>• Or visit <Link to="/supabase-test" className="text-primary hover:underline">/supabase-test</Link> to try features instantly</p>
+                <p>
+                  • Or visit{" "}
+                  <Link
+                    to="/supabase-test"
+                    className="text-primary hover:underline"
+                  >
+                    /supabase-test
+                  </Link>{" "}
+                  to try features instantly
+                </p>
               </div>
             </div>
           </CardContent>
@@ -392,7 +418,8 @@ export default function Register() {
         {/* Security Notice */}
         <div className="mt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            Your information is protected with Supabase Authentication and bank-level security
+            Your information is protected with Supabase Authentication and
+            bank-level security
           </p>
         </div>
       </div>

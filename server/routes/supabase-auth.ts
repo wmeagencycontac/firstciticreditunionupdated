@@ -22,7 +22,9 @@ const verifyEmailSchema = z.object({
 
 export const signUp: RequestHandler = async (req, res) => {
   try {
-    const { email, password, name, bio, picture } = signUpSchema.parse(req.body);
+    const { email, password, name, bio, picture } = signUpSchema.parse(
+      req.body,
+    );
 
     // Sign up with Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -48,31 +50,32 @@ export const signUp: RequestHandler = async (req, res) => {
     // Create initial checking account for new user
     if (authData.user.id) {
       // Generate account number
-      const { data: accountNumberData, error: accountNumberError } = await supabaseAdmin
-        .rpc('generate_account_number', {
+      const { data: accountNumberData, error: accountNumberError } =
+        await supabaseAdmin.rpc("generate_account_number", {
           user_id_input: authData.user.id,
-          account_type_input: 'checking'
+          account_type_input: "checking",
         });
 
       if (!accountNumberError && accountNumberData) {
         // Create the account
         const { error: accountError } = await supabaseAdmin
-          .from('accounts')
+          .from("accounts")
           .insert({
             user_id: authData.user.id,
             account_number: accountNumberData,
-            account_type: 'checking',
-            balance: 1000.00, // Initial balance
+            account_type: "checking",
+            balance: 1000.0, // Initial balance
           });
 
         if (accountError) {
-          console.error('Failed to create initial account:', accountError);
+          console.error("Failed to create initial account:", accountError);
         }
       }
     }
 
     res.json({
-      message: "User created successfully. Please check your email to verify your account.",
+      message:
+        "User created successfully. Please check your email to verify your account.",
       user: {
         id: authData.user.id,
         email: authData.user.email,
@@ -82,7 +85,9 @@ export const signUp: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Sign up error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: error.errors });
+      return res
+        .status(400)
+        .json({ error: "Invalid input", details: error.errors });
     }
     res.status(500).json({ error: "Internal server error" });
   }
@@ -107,13 +112,13 @@ export const signIn: RequestHandler = async (req, res) => {
 
     // Get user's banking profile
     const { data: bankingUser, error: profileError } = await supabaseAdmin
-      .from('banking_users')
-      .select('*')
-      .eq('id', data.user.id)
+      .from("banking_users")
+      .select("*")
+      .eq("id", data.user.id)
       .single();
 
-    if (profileError && profileError.code !== 'PGRST116') {
-      console.error('Error fetching banking profile:', profileError);
+    if (profileError && profileError.code !== "PGRST116") {
+      console.error("Error fetching banking profile:", profileError);
     }
 
     res.json({
@@ -121,9 +126,9 @@ export const signIn: RequestHandler = async (req, res) => {
       user: {
         id: data.user.id,
         email: data.user.email,
-        name: bankingUser?.name || 'User',
+        name: bankingUser?.name || "User",
         email_verified: data.user.email_confirmed_at !== null,
-        role: bankingUser?.role || 'user',
+        role: bankingUser?.role || "user",
       },
       session: {
         access_token: data.session.access_token,
@@ -134,7 +139,9 @@ export const signIn: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Sign in error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: error.errors });
+      return res
+        .status(400)
+        .json({ error: "Invalid input", details: error.errors });
     }
     res.status(500).json({ error: "Internal server error" });
   }
@@ -143,16 +150,16 @@ export const signIn: RequestHandler = async (req, res) => {
 export const signOut: RequestHandler = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "No authorization header" });
     }
 
-    const token = authHeader.split(' ')[1];
-    
+    const token = authHeader.split(" ")[1];
+
     // Create a client with the user's session
     const supabaseUser = supabase.auth.setSession({
       access_token: token,
-      refresh_token: '', // We only need access token for sign out
+      refresh_token: "", // We only need access token for sign out
     });
 
     const { error } = await supabase.auth.signOut();
@@ -171,14 +178,17 @@ export const signOut: RequestHandler = async (req, res) => {
 export const getProfile: RequestHandler = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "No authorization header" });
     }
 
-    const token = authHeader.split(' ')[1];
-    
+    const token = authHeader.split(" ")[1];
+
     // Verify the JWT token
-    const { data: { user }, error } = await supabase.auth.getUser(token);
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser(token);
 
     if (error || !user) {
       return res.status(401).json({ error: "Invalid token" });
@@ -186,9 +196,9 @@ export const getProfile: RequestHandler = async (req, res) => {
 
     // Get user's banking profile
     const { data: bankingUser, error: profileError } = await supabaseAdmin
-      .from('banking_users')
-      .select('*')
-      .eq('id', user.id)
+      .from("banking_users")
+      .select("*")
+      .eq("id", user.id)
       .single();
 
     if (profileError) {
@@ -219,7 +229,7 @@ export const verifyEmail: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase.auth.verifyOtp({
       token,
-      type: 'email',
+      type: "email",
     });
 
     if (error) {
@@ -229,12 +239,15 @@ export const verifyEmail: RequestHandler = async (req, res) => {
     // Update the banking user's email verification status
     if (data.user) {
       const { error: updateError } = await supabaseAdmin
-        .from('banking_users')
+        .from("banking_users")
         .update({ email_verified: true, updated_at: new Date().toISOString() })
-        .eq('id', data.user.id);
+        .eq("id", data.user.id);
 
       if (updateError) {
-        console.error('Failed to update email verification status:', updateError);
+        console.error(
+          "Failed to update email verification status:",
+          updateError,
+        );
       }
     }
 
@@ -249,7 +262,9 @@ export const verifyEmail: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Email verification error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: error.errors });
+      return res
+        .status(400)
+        .json({ error: "Invalid input", details: error.errors });
     }
     res.status(500).json({ error: "Internal server error" });
   }
@@ -259,13 +274,16 @@ export const verifyEmail: RequestHandler = async (req, res) => {
 export const authenticateUser: RequestHandler = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "No authorization header" });
     }
 
-    const token = authHeader.split(' ')[1];
-    
-    const { data: { user }, error } = await supabase.auth.getUser(token);
+    const token = authHeader.split(" ")[1];
+
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser(token);
 
     if (error || !user) {
       return res.status(401).json({ error: "Invalid or expired token" });

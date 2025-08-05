@@ -54,7 +54,7 @@ export default function Login() {
 
     try {
       const { data, error: signInError } = await auth.signIn(email, password);
-      
+
       if (signInError) {
         throw new Error(signInError.message);
       }
@@ -66,11 +66,14 @@ export default function Login() {
       // Store session info in localStorage for compatibility
       if (data.session) {
         localStorage.setItem("supabase_session", JSON.stringify(data.session));
-        localStorage.setItem("user_data", JSON.stringify({
-          id: data.user.id,
-          email: data.user.email,
-          name: data.user.user_metadata?.name || 'User'
-        }));
+        localStorage.setItem(
+          "user_data",
+          JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.user_metadata?.name || "User",
+          }),
+        );
       }
 
       // Redirect to dashboard
@@ -82,10 +85,10 @@ export default function Login() {
     }
   };
 
-  const handleOAuthSignIn = async (provider: 'google' | 'github') => {
+  const handleOAuthSignIn = async (provider: "google" | "github") => {
     setLoading(true);
     setError("");
-    
+
     try {
       const { error } = await auth.signIn(email, password); // This will be replaced with OAuth
       if (error) {
@@ -218,7 +221,16 @@ export default function Login() {
               <div className="text-xs text-muted-foreground space-y-1">
                 <p>• Create a new account with the sign up link</p>
                 <p>• Or test with the Supabase test page</p>
-                <p>• Visit <Link to="/supabase-test" className="text-primary hover:underline">/supabase-test</Link> to get started</p>
+                <p>
+                  • Visit{" "}
+                  <Link
+                    to="/supabase-test"
+                    className="text-primary hover:underline"
+                  >
+                    /supabase-test
+                  </Link>{" "}
+                  to get started
+                </p>
               </div>
             </div>
           </CardContent>

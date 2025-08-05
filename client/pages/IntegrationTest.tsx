@@ -1,107 +1,197 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { CheckCircle, XCircle, AlertCircle, RefreshCw, Database, Users, CreditCard, ArrowRightLeft } from 'lucide-react';
-import { auth, db } from '@/lib/supabase';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  RefreshCw,
+  Database,
+  Users,
+  CreditCard,
+  ArrowRightLeft,
+} from "lucide-react";
+import { auth, db } from "@/lib/supabase";
 
 interface TestResult {
   name: string;
-  status: 'pending' | 'success' | 'error';
+  status: "pending" | "success" | "error";
   message: string;
   details?: string;
 }
 
 export default function IntegrationTest() {
   const [tests, setTests] = useState<TestResult[]>([
-    { name: 'Database Connection', status: 'pending', message: 'Testing...' },
-    { name: 'Authentication System', status: 'pending', message: 'Testing...' },
-    { name: 'User Profile Loading', status: 'pending', message: 'Testing...' },
-    { name: 'Account Management', status: 'pending', message: 'Testing...' },
-    { name: 'Transaction History', status: 'pending', message: 'Testing...' },
-    { name: 'Real-time Features', status: 'pending', message: 'Testing...' },
+    { name: "Database Connection", status: "pending", message: "Testing..." },
+    { name: "Authentication System", status: "pending", message: "Testing..." },
+    { name: "User Profile Loading", status: "pending", message: "Testing..." },
+    { name: "Account Management", status: "pending", message: "Testing..." },
+    { name: "Transaction History", status: "pending", message: "Testing..." },
+    { name: "Real-time Features", status: "pending", message: "Testing..." },
   ]);
-  
+
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [isRunning, setIsRunning] = useState(false);
 
-  const updateTest = (name: string, status: 'success' | 'error', message: string, details?: string) => {
-    setTests(prev => prev.map(test => 
-      test.name === name ? { ...test, status, message, details } : test
-    ));
+  const updateTest = (
+    name: string,
+    status: "success" | "error",
+    message: string,
+    details?: string,
+  ) => {
+    setTests((prev) =>
+      prev.map((test) =>
+        test.name === name ? { ...test, status, message, details } : test,
+      ),
+    );
   };
 
   const runTests = async () => {
     setIsRunning(true);
-    
+
     try {
       // Test 1: Database Connection
-      console.log('Testing database connection...');
-      updateTest('Database Connection', 'success', 'Connected to Supabase');
+      console.log("Testing database connection...");
+      updateTest("Database Connection", "success", "Connected to Supabase");
 
       // Test 2: Authentication System
-      console.log('Testing authentication...');
+      console.log("Testing authentication...");
       const { user } = await auth.getUser();
       if (user) {
         setCurrentUser(user);
-        updateTest('Authentication System', 'success', 'User authenticated', `User ID: ${user.id}`);
+        updateTest(
+          "Authentication System",
+          "success",
+          "User authenticated",
+          `User ID: ${user.id}`,
+        );
       } else {
-        updateTest('Authentication System', 'error', 'No user authenticated', 'Please sign in first');
+        updateTest(
+          "Authentication System",
+          "error",
+          "No user authenticated",
+          "Please sign in first",
+        );
       }
 
       // Test 3: User Profile Loading
       if (user) {
-        console.log('Testing user profile...');
+        console.log("Testing user profile...");
         const { data: profile, error } = await db.getBankingProfile(user.id);
         if (error) {
-          updateTest('User Profile Loading', 'error', 'Failed to load profile', error.message);
+          updateTest(
+            "User Profile Loading",
+            "error",
+            "Failed to load profile",
+            error.message,
+          );
         } else {
-          updateTest('User Profile Loading', 'success', 'Profile loaded successfully', `Name: ${profile?.name}`);
+          updateTest(
+            "User Profile Loading",
+            "success",
+            "Profile loaded successfully",
+            `Name: ${profile?.name}`,
+          );
         }
       } else {
-        updateTest('User Profile Loading', 'error', 'Cannot test without authentication', 'Please sign in first');
+        updateTest(
+          "User Profile Loading",
+          "error",
+          "Cannot test without authentication",
+          "Please sign in first",
+        );
       }
 
       // Test 4: Account Management
       if (user) {
-        console.log('Testing account management...');
+        console.log("Testing account management...");
         const { data: accounts, error } = await db.getAccounts(user.id);
         if (error) {
-          updateTest('Account Management', 'error', 'Failed to load accounts', error.message);
+          updateTest(
+            "Account Management",
+            "error",
+            "Failed to load accounts",
+            error.message,
+          );
         } else {
-          updateTest('Account Management', 'success', `Loaded ${accounts?.length || 0} accounts`, `Found ${accounts?.length || 0} banking accounts`);
+          updateTest(
+            "Account Management",
+            "success",
+            `Loaded ${accounts?.length || 0} accounts`,
+            `Found ${accounts?.length || 0} banking accounts`,
+          );
         }
       } else {
-        updateTest('Account Management', 'error', 'Cannot test without authentication', 'Please sign in first');
+        updateTest(
+          "Account Management",
+          "error",
+          "Cannot test without authentication",
+          "Please sign in first",
+        );
       }
 
       // Test 5: Transaction History
       if (user) {
-        console.log('Testing transaction history...');
-        const { data: transactions, error } = await db.getTransactions(user.id, undefined, 5);
+        console.log("Testing transaction history...");
+        const { data: transactions, error } = await db.getTransactions(
+          user.id,
+          undefined,
+          5,
+        );
         if (error) {
-          updateTest('Transaction History', 'error', 'Failed to load transactions', error.message);
+          updateTest(
+            "Transaction History",
+            "error",
+            "Failed to load transactions",
+            error.message,
+          );
         } else {
-          updateTest('Transaction History', 'success', `Loaded ${transactions?.length || 0} transactions`, `Found ${transactions?.length || 0} recent transactions`);
+          updateTest(
+            "Transaction History",
+            "success",
+            `Loaded ${transactions?.length || 0} transactions`,
+            `Found ${transactions?.length || 0} recent transactions`,
+          );
         }
       } else {
-        updateTest('Transaction History', 'error', 'Cannot test without authentication', 'Please sign in first');
+        updateTest(
+          "Transaction History",
+          "error",
+          "Cannot test without authentication",
+          "Please sign in first",
+        );
       }
 
       // Test 6: Real-time Features
-      console.log('Testing real-time features...');
+      console.log("Testing real-time features...");
       try {
-        updateTest('Real-time Features', 'success', 'Real-time subscriptions available', 'Supabase Realtime is configured');
+        updateTest(
+          "Real-time Features",
+          "success",
+          "Real-time subscriptions available",
+          "Supabase Realtime is configured",
+        );
       } catch (error) {
-        updateTest('Real-time Features', 'error', 'Real-time features unavailable', error instanceof Error ? error.message : 'Unknown error');
+        updateTest(
+          "Real-time Features",
+          "error",
+          "Real-time features unavailable",
+          error instanceof Error ? error.message : "Unknown error",
+        );
       }
-
     } catch (error) {
-      console.error('Integration test error:', error);
+      console.error("Integration test error:", error);
     }
-    
+
     setIsRunning(false);
   };
 
@@ -111,9 +201,9 @@ export default function IntegrationTest() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'success':
+      case "success":
         return <CheckCircle className="h-5 w-5 text-green-600" />;
-      case 'error':
+      case "error":
         return <XCircle className="h-5 w-5 text-red-600" />;
       default:
         return <AlertCircle className="h-5 w-5 text-yellow-600" />;
@@ -122,16 +212,20 @@ export default function IntegrationTest() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'success':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Passed</Badge>;
-      case 'error':
+      case "success":
+        return (
+          <Badge variant="default" className="bg-green-100 text-green-800">
+            Passed
+          </Badge>
+        );
+      case "error":
         return <Badge variant="destructive">Failed</Badge>;
       default:
         return <Badge variant="secondary">Running</Badge>;
     }
   };
 
-  const successCount = tests.filter(t => t.status === 'success').length;
+  const successCount = tests.filter((t) => t.status === "success").length;
   const totalTests = tests.length;
 
   return (
@@ -176,28 +270,30 @@ export default function IntegrationTest() {
                 )}
               </Button>
             </div>
-            
+
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
+              <div
                 className="bg-green-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${(successCount / totalTests) * 100}%` }}
               ></div>
             </div>
-            
+
             <div className="mt-4 grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="text-lg font-semibold text-green-600">{successCount}</div>
+                <div className="text-lg font-semibold text-green-600">
+                  {successCount}
+                </div>
                 <div className="text-sm text-gray-600">Passed</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-red-600">
-                  {tests.filter(t => t.status === 'error').length}
+                  {tests.filter((t) => t.status === "error").length}
                 </div>
                 <div className="text-sm text-gray-600">Failed</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-yellow-600">
-                  {tests.filter(t => t.status === 'pending').length}
+                  {tests.filter((t) => t.status === "pending").length}
                 </div>
                 <div className="text-sm text-gray-600">Pending</div>
               </div>
@@ -209,12 +305,17 @@ export default function IntegrationTest() {
         <Card>
           <CardHeader>
             <CardTitle>Detailed Test Results</CardTitle>
-            <CardDescription>Individual test case status and details</CardDescription>
+            <CardDescription>
+              Individual test case status and details
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {tests.map((test, index) => (
-                <div key={test.name} className="flex items-start gap-4 p-4 border rounded-lg">
+                <div
+                  key={test.name}
+                  className="flex items-start gap-4 p-4 border rounded-lg"
+                >
                   <div className="flex-shrink-0 mt-0.5">
                     {getStatusIcon(test.status)}
                   </div>
@@ -247,7 +348,9 @@ export default function IntegrationTest() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium">User ID</label>
-                  <p className="text-sm text-gray-600 font-mono">{currentUser.id}</p>
+                  <p className="text-sm text-gray-600 font-mono">
+                    {currentUser.id}
+                  </p>
                 </div>
                 <div>
                   <label className="text-sm font-medium">Email</label>
@@ -256,7 +359,7 @@ export default function IntegrationTest() {
                 <div>
                   <label className="text-sm font-medium">Email Verified</label>
                   <p className="text-sm text-gray-600">
-                    {currentUser.email_confirmed_at ? 'Yes' : 'No'}
+                    {currentUser.email_confirmed_at ? "Yes" : "No"}
                   </p>
                 </div>
                 <div>
@@ -277,7 +380,9 @@ export default function IntegrationTest() {
               <ArrowRightLeft className="h-5 w-5" />
               Quick Actions
             </CardTitle>
-            <CardDescription>Test different parts of your application</CardDescription>
+            <CardDescription>
+              Test different parts of your application
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -321,7 +426,8 @@ export default function IntegrationTest() {
                   <CheckCircle className="h-16 w-16 mx-auto mb-4" />
                   <h3 className="text-xl font-bold mb-2">All Tests Passed!</h3>
                   <p className="text-gray-600">
-                    Your Supabase integration is working correctly. Your banking application is ready to use.
+                    Your Supabase integration is working correctly. Your banking
+                    application is ready to use.
                   </p>
                 </div>
               ) : (
@@ -329,7 +435,8 @@ export default function IntegrationTest() {
                   <AlertCircle className="h-16 w-16 mx-auto mb-4" />
                   <h3 className="text-xl font-bold mb-2">Some Tests Failed</h3>
                   <p className="text-gray-600">
-                    Please review the failed tests above and ensure all features are working correctly.
+                    Please review the failed tests above and ensure all features
+                    are working correctly.
                   </p>
                 </div>
               )}
