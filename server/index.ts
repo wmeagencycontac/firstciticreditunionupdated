@@ -176,5 +176,9 @@ export function createServer() {
   app.get("/api/admin/users-pending", authenticateToken, handleGetPendingUsers);
   app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
 
+  // Test setup endpoints (for development/testing)
+  app.post("/api/test-setup/create", handleCreateTestUser);
+  app.get("/api/test-setup/info", handleGetTestUserInfo);
+
   return { app, httpServer, io };
 }
