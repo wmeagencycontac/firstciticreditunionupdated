@@ -46,7 +46,10 @@ export default function App() {
 
             {/* Banking Pages */}
             <Route path="/register" element={<Register />} />
-            <Route path="/register-enhanced" element={<EnhancedRegistration />} />
+            <Route
+              path="/register-enhanced"
+              element={<EnhancedRegistration />}
+            />
             <Route
               path="/personal"
               element={

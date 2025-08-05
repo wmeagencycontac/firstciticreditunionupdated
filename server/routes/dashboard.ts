@@ -33,14 +33,20 @@ export const handleGetDashboard: RequestHandler = async (req, res) => {
     const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
 
     // Get recent transactions across all accounts
-    const allTransactions = await db.getTransactionsByUserId(session.user_id, 20);
+    const allTransactions = await db.getTransactionsByUserId(
+      session.user_id,
+      20,
+    );
     const recentActivity = allTransactions.slice(0, 5);
 
     // Build account summaries
     const accountSummaries: AccountSummary[] = [];
 
     for (const account of accounts) {
-      const accountTransactions = await db.getTransactionsByAccountId(account.id, 10);
+      const accountTransactions = await db.getTransactionsByAccountId(
+        account.id,
+        10,
+      );
 
       const currentMonth = new Date().getMonth();
       const currentYear = new Date().getFullYear();
@@ -74,17 +80,18 @@ export const handleGetDashboard: RequestHandler = async (req, res) => {
       };
 
       // Transform transactions to match frontend expectations
-      const transformedTransactions: DashboardTransaction[] = accountTransactions.map(txn => ({
-        id: txn.id.toString(),
-        accountId: txn.account_id.toString(),
-        type: txn.type,
-        amount: txn.type === "debit" ? -txn.amount : txn.amount,
-        description: txn.description,
-        category: "General",
-        merchant: txn.description.split(" ")[0],
-        createdAt: txn.timestamp,
-        status: "completed" as const,
-      }));
+      const transformedTransactions: DashboardTransaction[] =
+        accountTransactions.map((txn) => ({
+          id: txn.id.toString(),
+          accountId: txn.account_id.toString(),
+          type: txn.type,
+          amount: txn.type === "debit" ? -txn.amount : txn.amount,
+          description: txn.description,
+          category: "General",
+          merchant: txn.description.split(" ")[0],
+          createdAt: txn.timestamp,
+          status: "completed" as const,
+        }));
 
       accountSummaries.push({
         account: transformedAccount,
@@ -104,17 +111,18 @@ export const handleGetDashboard: RequestHandler = async (req, res) => {
     };
 
     // Transform recent activity to match frontend expectations
-    const transformedRecentActivity: DashboardTransaction[] = recentActivity.map(txn => ({
-      id: txn.id.toString(),
-      accountId: txn.account_id.toString(),
-      type: txn.type,
-      amount: txn.type === "debit" ? -txn.amount : txn.amount,
-      description: txn.description,
-      category: "General",
-      merchant: txn.description.split(" ")[0],
-      createdAt: txn.timestamp,
-      status: "completed" as const,
-    }));
+    const transformedRecentActivity: DashboardTransaction[] =
+      recentActivity.map((txn) => ({
+        id: txn.id.toString(),
+        accountId: txn.account_id.toString(),
+        type: txn.type,
+        amount: txn.type === "debit" ? -txn.amount : txn.amount,
+        description: txn.description,
+        category: "General",
+        merchant: txn.description.split(" ")[0],
+        createdAt: txn.timestamp,
+        status: "completed" as const,
+      }));
 
     const dashboardData: DashboardData = {
       user,

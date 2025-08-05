@@ -13,16 +13,18 @@ export default function QuickTest() {
       setStatus("Creating test user...");
       const setupRes = await fetch("/api/test-setup/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
-      
+
       if (!setupRes.ok) {
-        throw new Error(`Setup failed: ${setupRes.status} ${await setupRes.text()}`);
+        throw new Error(
+          `Setup failed: ${setupRes.status} ${await setupRes.text()}`,
+        );
       }
-      
+
       const setupData = await setupRes.json();
       setStatus("Test user created successfully");
-      
+
       // Test 2: Login
       setStatus("Logging in...");
       const loginRes = await fetch("/api/auth/login", {
@@ -30,38 +32,41 @@ export default function QuickTest() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: setupData.credentials.email,
-          password: setupData.credentials.password
-        })
+          password: setupData.credentials.password,
+        }),
       });
-      
+
       if (!loginRes.ok) {
-        throw new Error(`Login failed: ${loginRes.status} ${await loginRes.text()}`);
+        throw new Error(
+          `Login failed: ${loginRes.status} ${await loginRes.text()}`,
+        );
       }
-      
+
       const loginData = await loginRes.json();
       setStatus("Login successful");
-      
+
       // Test 3: Dashboard
       setStatus("Fetching dashboard...");
       const dashRes = await fetch("/api/dashboard", {
         headers: {
-          "Authorization": `Bearer ${loginData.token}`
-        }
+          Authorization: `Bearer ${loginData.token}`,
+        },
       });
-      
+
       if (!dashRes.ok) {
-        throw new Error(`Dashboard failed: ${dashRes.status} ${await dashRes.text()}`);
+        throw new Error(
+          `Dashboard failed: ${dashRes.status} ${await dashRes.text()}`,
+        );
       }
-      
+
       const dashData = await dashRes.json();
       setStatus("✅ All tests passed!");
       setTestResults({
         user: dashData.user,
         accountCount: dashData.accounts.length,
         totalBalance: dashData.totalBalance,
-        recentActivity: dashData.recentActivity.length
+        recentActivity: dashData.recentActivity.length,
       });
-      
     } catch (error) {
       setStatus(`❌ Error: ${error}`);
       console.error("Test error:", error);
@@ -79,16 +84,19 @@ export default function QuickTest() {
             <Button onClick={runQuickTest} className="w-full">
               Run Quick Test
             </Button>
-            
+
             <div className="p-4 bg-muted rounded">
               <strong>Status:</strong> {status}
             </div>
-            
+
             {testResults && (
               <div className="p-4 bg-green-50 rounded">
                 <h4 className="font-semibold mb-2">Test Results:</h4>
                 <ul className="space-y-1 text-sm">
-                  <li>User: {testResults.user.firstName} {testResults.user.lastName}</li>
+                  <li>
+                    User: {testResults.user.firstName}{" "}
+                    {testResults.user.lastName}
+                  </li>
                   <li>Email: {testResults.user.email}</li>
                   <li>Accounts: {testResults.accountCount}</li>
                   <li>Balance: ${testResults.totalBalance}</li>

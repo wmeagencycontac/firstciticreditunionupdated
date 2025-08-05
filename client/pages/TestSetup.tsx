@@ -1,9 +1,22 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Copy, Check, User, CreditCard, DollarSign, Activity } from "lucide-react";
+import {
+  Copy,
+  Check,
+  User,
+  CreditCard,
+  DollarSign,
+  Activity,
+} from "lucide-react";
 
 interface TestUserData {
   success: boolean;
@@ -42,7 +55,7 @@ export default function TestSetup() {
   const createTestUser = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/test-setup/create", {
         method: "POST",
@@ -58,7 +71,9 @@ export default function TestSetup() {
       const data = await response.json();
       setTestUserData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create test user");
+      setError(
+        err instanceof Error ? err.message : "Failed to create test user",
+      );
     } finally {
       setLoading(false);
     }
@@ -90,7 +105,8 @@ export default function TestSetup() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Test User Setup</h1>
         <p className="text-muted-foreground">
-          Create a pre-configured test user with banking accounts and sample data for testing the application.
+          Create a pre-configured test user with banking accounts and sample
+          data for testing the application.
         </p>
       </div>
 
@@ -167,7 +183,9 @@ export default function TestSetup() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-green-600">✅ Test User Created Successfully!</CardTitle>
+              <CardTitle className="text-green-600">
+                ✅ Test User Created Successfully!
+              </CardTitle>
               <CardDescription>{testUserData.message}</CardDescription>
             </CardHeader>
           </Card>
@@ -183,16 +201,26 @@ export default function TestSetup() {
               <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div>
                   <span className="font-medium">Email:</span>
-                  <span className="ml-2 font-mono">{testUserData.credentials.email}</span>
+                  <span className="ml-2 font-mono">
+                    {testUserData.credentials.email}
+                  </span>
                 </div>
-                <CopyButton text={testUserData.credentials.email} field="email" />
+                <CopyButton
+                  text={testUserData.credentials.email}
+                  field="email"
+                />
               </div>
               <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div>
                   <span className="font-medium">Password:</span>
-                  <span className="ml-2 font-mono">{testUserData.credentials.password}</span>
+                  <span className="ml-2 font-mono">
+                    {testUserData.credentials.password}
+                  </span>
                 </div>
-                <CopyButton text={testUserData.credentials.password} field="password" />
+                <CopyButton
+                  text={testUserData.credentials.password}
+                  field="password"
+                />
               </div>
               <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div>
@@ -216,27 +244,39 @@ export default function TestSetup() {
                   <h4 className="font-semibold mb-2">Checking Account</h4>
                   <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                     <div>
-                      <span className="font-mono text-sm">{testUserData.accounts.checking.accountNumber}</span>
+                      <span className="font-mono text-sm">
+                        {testUserData.accounts.checking.accountNumber}
+                      </span>
                       <p className="text-sm text-muted-foreground">
-                        Balance: ${testUserData.accounts.checking.balance.toLocaleString()}
+                        Balance: $
+                        {testUserData.accounts.checking.balance.toLocaleString()}
                       </p>
                     </div>
-                    <CopyButton text={testUserData.accounts.checking.accountNumber} field="checking" />
+                    <CopyButton
+                      text={testUserData.accounts.checking.accountNumber}
+                      field="checking"
+                    />
                   </div>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div>
                   <h4 className="font-semibold mb-2">Savings Account</h4>
                   <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                     <div>
-                      <span className="font-mono text-sm">{testUserData.accounts.savings.accountNumber}</span>
+                      <span className="font-mono text-sm">
+                        {testUserData.accounts.savings.accountNumber}
+                      </span>
                       <p className="text-sm text-muted-foreground">
-                        Balance: ${testUserData.accounts.savings.balance.toLocaleString()}
+                        Balance: $
+                        {testUserData.accounts.savings.balance.toLocaleString()}
                       </p>
                     </div>
-                    <CopyButton text={testUserData.accounts.savings.accountNumber} field="savings" />
+                    <CopyButton
+                      text={testUserData.accounts.savings.accountNumber}
+                      field="savings"
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -252,10 +292,17 @@ export default function TestSetup() {
               <CardContent>
                 <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                   <div>
-                    <span className="font-mono text-sm">{testUserData.card.cardNumber}</span>
-                    <p className="text-sm text-muted-foreground">Status: Active</p>
+                    <span className="font-mono text-sm">
+                      {testUserData.card.cardNumber}
+                    </span>
+                    <p className="text-sm text-muted-foreground">
+                      Status: Active
+                    </p>
                   </div>
-                  <CopyButton text={testUserData.card.cardNumber} field="card" />
+                  <CopyButton
+                    text={testUserData.card.cardNumber}
+                    field="card"
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -271,24 +318,31 @@ export default function TestSetup() {
             <CardContent>
               <ol className="space-y-3">
                 <li className="flex gap-3">
-                  <Badge className="min-w-[24px] h-6 rounded-full flex items-center justify-center text-xs">1</Badge>
+                  <Badge className="min-w-[24px] h-6 rounded-full flex items-center justify-center text-xs">
+                    1
+                  </Badge>
                   <span>{testUserData.loginInstructions.step1}</span>
                 </li>
                 <li className="flex gap-3">
-                  <Badge className="min-w-[24px] h-6 rounded-full flex items-center justify-center text-xs">2</Badge>
+                  <Badge className="min-w-[24px] h-6 rounded-full flex items-center justify-center text-xs">
+                    2
+                  </Badge>
                   <span>{testUserData.loginInstructions.step2}</span>
                 </li>
                 <li className="flex gap-3">
-                  <Badge className="min-w-[24px] h-6 rounded-full flex items-center justify-center text-xs">3</Badge>
+                  <Badge className="min-w-[24px] h-6 rounded-full flex items-center justify-center text-xs">
+                    3
+                  </Badge>
                   <span>{testUserData.loginInstructions.step3}</span>
                 </li>
               </ol>
-              
+
               <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
                 <p className="text-sm text-blue-700 dark:text-blue-300">
-                  <strong>Pro tip:</strong> The test user is pre-configured with sample transactions, 
-                  so you can immediately test features like transaction history, account summaries, 
-                  and money transfers without having to set up additional data.
+                  <strong>Pro tip:</strong> The test user is pre-configured with
+                  sample transactions, so you can immediately test features like
+                  transaction history, account summaries, and money transfers
+                  without having to set up additional data.
                 </p>
               </div>
             </CardContent>

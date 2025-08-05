@@ -42,14 +42,36 @@ export default function Index() {
             </span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#personal" className="text-muted-foreground hover:text-foreground transition-colors">Personal</a>
-            <a href="#business" className="text-muted-foreground hover:text-foreground transition-colors">Business</a>
-            <a href="#investments" className="text-muted-foreground hover:text-foreground transition-colors">Investments</a>
-            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
+            <a
+              href="#personal"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Personal
+            </a>
+            <a
+              href="#business"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Business
+            </a>
+            <a
+              href="#investments"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Investments
+            </a>
+            <a
+              href="#about"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              About
+            </a>
           </div>
           <div className="flex items-center space-x-4">
             <Link to="/test-setup">
-              <Button variant="outline" size="sm">Test Setup</Button>
+              <Button variant="outline" size="sm">
+                Test Setup
+              </Button>
             </Link>
             <Link to="/login">
               <Button variant="ghost">Sign In</Button>
@@ -109,13 +131,21 @@ export default function Index() {
       </section>
 
       {/* Personal Banking Section */}
-      <div id="personal"><Personal /></div>
+      <div id="personal">
+        <Personal />
+      </div>
       {/* Business Banking Section */}
-      <div id="business"><Business /></div>
+      <div id="business">
+        <Business />
+      </div>
       {/* Investments Section */}
-      <div id="investments"><Investments /></div>
+      <div id="investments">
+        <Investments />
+      </div>
       {/* About Section */}
-      <div id="about"><About /></div>
+      <div id="about">
+        <About />
+      </div>
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">

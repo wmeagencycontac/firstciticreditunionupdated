@@ -22,7 +22,7 @@ export interface TestUserData {
 
 export async function createTestUser(): Promise<TestUserData> {
   const db = getBankingDatabase();
-  
+
   // Test user credentials
   const testUserData = {
     email: "test@bankingapp.com",
@@ -35,11 +35,11 @@ export async function createTestUser(): Promise<TestUserData> {
     const existingUser = await db.getUserByEmail(testUserData.email);
     if (existingUser) {
       console.log("Test user already exists, updating with fresh data...");
-      
+
       // Get existing accounts and return the data
       const accounts = await db.getAccountsByUserId(existingUser.id);
       const cards = await db.getCardsByUserId(existingUser.id);
-      
+
       if (accounts.length >= 2 && cards.length >= 1) {
         return {
           email: testUserData.email,
@@ -47,12 +47,20 @@ export async function createTestUser(): Promise<TestUserData> {
           name: testUserData.name,
           accounts: {
             checking: {
-              accountNumber: accounts.find(a => a.account_type === "checking")?.account_number || "",
-              balance: accounts.find(a => a.account_type === "checking")?.balance || 0,
+              accountNumber:
+                accounts.find((a) => a.account_type === "checking")
+                  ?.account_number || "",
+              balance:
+                accounts.find((a) => a.account_type === "checking")?.balance ||
+                0,
             },
             savings: {
-              accountNumber: accounts.find(a => a.account_type === "savings")?.account_number || "",
-              balance: accounts.find(a => a.account_type === "savings")?.balance || 0,
+              accountNumber:
+                accounts.find((a) => a.account_type === "savings")
+                  ?.account_number || "",
+              balance:
+                accounts.find((a) => a.account_type === "savings")?.balance ||
+                0,
             },
           },
           card: {
@@ -91,7 +99,7 @@ export async function createTestUser(): Promise<TestUserData> {
       userId,
       accountNumber: checkingAccountNumber,
       accountType: "checking",
-      initialBalance: 2500.00,
+      initialBalance: 2500.0,
     });
 
     // Create savings account with initial balance
@@ -99,11 +107,15 @@ export async function createTestUser(): Promise<TestUserData> {
       userId,
       accountNumber: savingsAccountNumber,
       accountType: "savings",
-      initialBalance: 15000.00,
+      initialBalance: 15000.0,
     });
 
-    console.log(`✅ Created checking account: ${checkingAccountNumber} (Balance: $2,500.00)`);
-    console.log(`✅ Created savings account: ${savingsAccountNumber} (Balance: $15,000.00)`);
+    console.log(
+      `✅ Created checking account: ${checkingAccountNumber} (Balance: $2,500.00)`,
+    );
+    console.log(
+      `✅ Created savings account: ${savingsAccountNumber} (Balance: $15,000.00)`,
+    );
 
     // Generate a unique card number
     const cardNumber = await db.generateUniqueCardNumber();
@@ -120,37 +132,37 @@ export async function createTestUser(): Promise<TestUserData> {
       {
         accountId: checkingAccountId,
         type: "credit" as const,
-        amount: 3000.00,
+        amount: 3000.0,
         description: "Initial Deposit - Direct Deposit",
       },
       {
         accountId: checkingAccountId,
         type: "debit" as const,
-        amount: 85.50,
+        amount: 85.5,
         description: "Grocery Store Purchase",
       },
       {
         accountId: checkingAccountId,
         type: "debit" as const,
-        amount: 45.00,
+        amount: 45.0,
         description: "Gas Station Purchase",
       },
       {
         accountId: checkingAccountId,
         type: "credit" as const,
-        amount: 25.00,
+        amount: 25.0,
         description: "Cashback Reward",
       },
       {
         accountId: checkingAccountId,
         type: "debit" as const,
-        amount: 1200.00,
+        amount: 1200.0,
         description: "Rent Payment",
       },
       {
         accountId: checkingAccountId,
         type: "debit" as const,
-        amount: 150.00,
+        amount: 150.0,
         description: "Utility Bill Payment",
       },
       {
@@ -162,7 +174,7 @@ export async function createTestUser(): Promise<TestUserData> {
       {
         accountId: checkingAccountId,
         type: "credit" as const,
-        amount: 50.00,
+        amount: 50.0,
         description: "ATM Deposit",
       },
 
@@ -170,7 +182,7 @@ export async function createTestUser(): Promise<TestUserData> {
       {
         accountId: savingsAccountId,
         type: "credit" as const,
-        amount: 15000.00,
+        amount: 15000.0,
         description: "Initial Savings Deposit",
       },
       {
@@ -182,13 +194,13 @@ export async function createTestUser(): Promise<TestUserData> {
       {
         accountId: savingsAccountId,
         type: "debit" as const,
-        amount: 500.00,
+        amount: 500.0,
         description: "Transfer to Checking",
       },
       {
         accountId: savingsAccountId,
         type: "credit" as const,
-        amount: 1000.00,
+        amount: 1000.0,
         description: "Monthly Savings Transfer",
       },
     ];
@@ -208,11 +220,11 @@ export async function createTestUser(): Promise<TestUserData> {
       accounts: {
         checking: {
           accountNumber: checkingAccountNumber,
-          balance: 2500.00,
+          balance: 2500.0,
         },
         savings: {
           accountNumber: savingsAccountNumber,
-          balance: 15000.00,
+          balance: 15000.0,
         },
       },
       card: {
@@ -228,7 +240,6 @@ export async function createTestUser(): Promise<TestUserData> {
     console.log("💳 Debit Card:", result.card.cardNumber);
 
     return result;
-
   } catch (error) {
     console.error("❌ Error setting up test user:", error);
     throw error;
@@ -240,7 +251,9 @@ export async function runTestUserSetup(): Promise<void> {
   try {
     console.log("🚀 Setting up test user for banking application...\n");
     await createTestUser();
-    console.log("\n✅ Test user setup completed! You can now use these credentials to test the banking functionality.");
+    console.log(
+      "\n✅ Test user setup completed! You can now use these credentials to test the banking functionality.",
+    );
   } catch (error) {
     console.error("❌ Failed to setup test user:", error);
     process.exit(1);
@@ -248,8 +261,8 @@ export async function runTestUserSetup(): Promise<void> {
 }
 
 // Run if this file is executed directly
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -257,7 +270,9 @@ const __dirname = dirname(__filename);
 // Check if this file is being run directly
 if (process.argv[1] === __filename) {
   runTestUserSetup().then(() => {
-    console.log("\n👍 Setup complete! Use the credentials above to login and test the banking features.");
+    console.log(
+      "\n👍 Setup complete! Use the credentials above to login and test the banking features.",
+    );
     process.exit(0);
   });
 }
