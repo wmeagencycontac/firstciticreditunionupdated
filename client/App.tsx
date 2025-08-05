@@ -36,6 +36,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/otp-login" element={<OtpLogin />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route
