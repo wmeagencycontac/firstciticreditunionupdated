@@ -102,17 +102,20 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background to-green-50/50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <CreditCard className="w-5 h-5 text-primary-foreground" />
+          <Link to="/" className="inline-flex items-center space-x-3 mb-6">
+            <div className="w-10 h-10 bg-[#00754A] rounded-lg flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-foreground">
-              SecureBank
-            </span>
+            <div>
+              <div className="text-xl font-bold text-[#00754A]">
+                First City Credit Union
+              </div>
+              <div className="text-xs text-muted-foreground">Your Future. Your Credit Union.</div>
+            </div>
           </Link>
         </div>
 
@@ -120,7 +123,7 @@ export default function Login() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Welcome back</CardTitle>
             <CardDescription>
-              Sign in to your SecureBank account
+              Sign in to your First City Credit Union account
             </CardDescription>
           </CardHeader>
           <CardContent>
