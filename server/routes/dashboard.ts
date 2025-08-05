@@ -1,168 +1,128 @@
 import { RequestHandler } from "express";
+import { getBankingDatabase } from "../banking-database";
 import {
   DashboardData,
-  Account,
-  Transaction,
-  User,
   AccountSummary,
 } from "@shared/api";
 
-// Import mock data (in real app, this would come from database)
-const mockUsers: User[] = [
-  {
-    id: "1",
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@email.com",
-    createdAt: "2024-01-15T09:00:00Z",
-  },
-];
+export const handleGetDashboard: RequestHandler = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-const mockAccounts: Account[] = [
-  {
-    id: "acc-1",
-    userId: "1",
-    accountNumber: "****1234",
-    accountType: "checking",
-    balance: 5240.5,
-    currency: "USD",
-    isActive: true,
-    createdAt: "2024-01-15T09:00:00Z",
-  },
-  {
-    id: "acc-2",
-    userId: "1",
-    accountNumber: "****5678",
-    accountType: "savings",
-    balance: 12890.75,
-    currency: "USD",
-    isActive: true,
-    createdAt: "2024-01-15T09:00:00Z",
-  },
-];
+    const token = authHeader.split(" ")[1];
+    const db = getBankingDatabase();
 
-const mockTransactions: Transaction[] = [
-  {
-    id: "txn-1",
-    accountId: "acc-1",
-    type: "debit",
-    amount: -45.99,
-    description: "Coffee Shop Purchase",
-    category: "Food & Dining",
-    merchant: "Central Perk Coffee",
-    createdAt: "2024-12-30T14:30:00Z",
-    status: "completed",
-  },
-  {
-    id: "txn-2",
-    accountId: "acc-1",
-    type: "credit",
-    amount: 2500.0,
-    description: "Salary Deposit",
-    category: "Income",
-    merchant: "ABC Company Inc",
-    createdAt: "2024-12-29T09:00:00Z",
-    status: "completed",
-  },
-  {
-    id: "txn-3",
-    accountId: "acc-1",
-    type: "debit",
-    amount: -120.0,
-    description: "Grocery Shopping",
-    category: "Groceries",
-    merchant: "Fresh Market",
-    createdAt: "2024-12-28T18:45:00Z",
-    status: "completed",
-  },
-  {
-    id: "txn-4",
-    accountId: "acc-2",
-    type: "credit",
-    amount: 500.0,
-    description: "Transfer from Checking",
-    category: "Transfer",
-    createdAt: "2024-12-27T16:20:00Z",
-    status: "completed",
-  },
-];
+    // Get session and user info
+    const session = await db.getSessionByToken(token);
+    if (!session) {
+      return res.status(401).json({ error: "Invalid or expired token" });
+    }
 
-function getUserIdFromToken(authHeader: string | undefined): string | null {
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return null;
-  }
-  const token = authHeader.split(" ")[1];
-  return token.replace("mock-jwt-token-", "");
-}
+    // Get user accounts
+    const accounts = await db.getAccountsByUserId(session.user_id);
+    if (accounts.length === 0) {
+      return res.status(404).json({ error: "No accounts found for user" });
+    }
 
-export const handleGetDashboard: RequestHandler = (req, res) => {
-  const userId = getUserIdFromToken(req.headers.authorization);
-  if (!userId) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+    const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
 
-  const user = mockUsers.find((u) => u.id === userId);
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
-  }
+    // Get recent transactions across all accounts
+    const allTransactions = await db.getTransactionsByUserId(session.user_id, 20);
+    const recentActivity = allTransactions.slice(0, 5);
 
-  const userAccounts = mockAccounts.filter((acc) => acc.userId === userId);
-  const totalBalance = userAccounts.reduce((sum, acc) => sum + acc.balance, 0);
+    // Build account summaries
+    const accountSummaries: AccountSummary[] = [];
 
-  // Get recent transactions across all accounts
-  const recentActivity = mockTransactions
-    .filter((txn) => userAccounts.some((acc) => acc.id === txn.accountId))
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
-    .slice(0, 5);
+    for (const account of accounts) {
+      const accountTransactions = await db.getTransactionsByAccountId(account.id, 10);
 
-  // Build account summaries
-  const accountSummaries: AccountSummary[] = userAccounts.map((account) => {
-    const accountTransactions = mockTransactions.filter(
-      (txn) => txn.accountId === account.id,
-    );
-    const recentTransactions = accountTransactions
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      )
-      .slice(0, 5);
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
 
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
+      const monthlyTransactions = accountTransactions.filter((txn) => {
+        const txnDate = new Date(txn.timestamp);
+        return (
+          txnDate.getMonth() === currentMonth &&
+          txnDate.getFullYear() === currentYear
+        );
+      });
 
-    const monthlyTransactions = accountTransactions.filter((txn) => {
-      const txnDate = new Date(txn.createdAt);
-      return (
-        txnDate.getMonth() === currentMonth &&
-        txnDate.getFullYear() === currentYear
-      );
-    });
+      const monthlySpending = monthlyTransactions
+        .filter((txn) => txn.type === "debit")
+        .reduce((sum, txn) => sum + txn.amount, 0);
 
-    const monthlySpending = monthlyTransactions
-      .filter((txn) => txn.amount < 0)
-      .reduce((sum, txn) => sum + Math.abs(txn.amount), 0);
+      const monthlyIncome = monthlyTransactions
+        .filter((txn) => txn.type === "credit")
+        .reduce((sum, txn) => sum + txn.amount, 0);
 
-    const monthlyIncome = monthlyTransactions
-      .filter((txn) => txn.amount > 0)
-      .reduce((sum, txn) => sum + txn.amount, 0);
+      // Transform account to match frontend expectations
+      const transformedAccount = {
+        id: account.id.toString(),
+        userId: account.user_id.toString(),
+        accountNumber: `****${account.account_number.slice(-4)}`,
+        accountType: account.account_type as "checking" | "savings",
+        balance: account.balance,
+        currency: account.currency,
+        isActive: true,
+        createdAt: account.created_at,
+      };
 
-    return {
-      account,
-      recentTransactions,
-      monthlySpending,
-      monthlyIncome,
+      // Transform transactions to match frontend expectations
+      const transformedTransactions = accountTransactions.map(txn => ({
+        id: txn.id.toString(),
+        accountId: txn.account_id.toString(),
+        type: txn.type,
+        amount: txn.type === "debit" ? -txn.amount : txn.amount,
+        description: txn.description,
+        category: "General",
+        merchant: txn.description.split(" ")[0],
+        createdAt: txn.timestamp,
+        status: "completed" as const,
+      }));
+
+      accountSummaries.push({
+        account: transformedAccount,
+        recentTransactions: transformedTransactions,
+        monthlySpending,
+        monthlyIncome,
+      });
+    }
+
+    // Transform user data to match frontend expectations
+    const user = {
+      id: session.user_id.toString(),
+      firstName: session.name.split(" ")[0] || session.name,
+      lastName: session.name.split(" ")[1] || "",
+      email: session.email,
+      createdAt: session.created_at || new Date().toISOString(),
     };
-  });
 
-  const dashboardData: DashboardData = {
-    user,
-    accounts: accountSummaries,
-    totalBalance,
-    recentActivity,
-  };
+    // Transform recent activity to match frontend expectations
+    const transformedRecentActivity = recentActivity.map(txn => ({
+      id: txn.id.toString(),
+      accountId: txn.account_id.toString(),
+      type: txn.type,
+      amount: txn.type === "debit" ? -txn.amount : txn.amount,
+      description: txn.description,
+      category: "General",
+      merchant: txn.description.split(" ")[0],
+      createdAt: txn.timestamp,
+      status: "completed" as const,
+    }));
 
-  res.json(dashboardData);
+    const dashboardData: DashboardData = {
+      user,
+      accounts: accountSummaries,
+      totalBalance,
+      recentActivity: transformedRecentActivity,
+    };
+
+    res.json(dashboardData);
+  } catch (error) {
+    console.error("Dashboard error:", error);
+    res.status(500).json({ error: "Failed to fetch dashboard data" });
+  }
 };
