@@ -46,6 +46,7 @@ const App = () => (
 
           {/* Debug Route */}
           <Route path="/debug" element={<Debug />} />
+          <Route path="/quick-test" element={<QuickTest />} />
 
           {/* Banking Pages */}
           <Route path="/register" element={<Register />} />
