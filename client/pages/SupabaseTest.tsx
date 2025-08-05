@@ -13,7 +13,7 @@ export default function SupabaseTest() {
   const [loading, setLoading] = useState(false);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [cards, setCards] = useState<Card[]>([]);
+  const [cards, setCards] = useState<CardType[]>([]);
   const [bankingProfile, setBankingProfile] = useState<BankingUser | null>(null);
   
   // Form states
