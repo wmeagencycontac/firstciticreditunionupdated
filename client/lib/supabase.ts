@@ -137,6 +137,34 @@ export const auth = {
   onAuthStateChange(callback: (event: string, session: any) => void) {
     return supabase.auth.onAuthStateChange(callback);
   },
+
+  // Reset password
+  async resetPassword(email: string, redirectTo?: string) {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectTo || `${window.location.origin}/reset-password-confirm`,
+    });
+    return { data, error };
+  },
+
+  // Update password
+  async updatePassword(password: string) {
+    const { data, error } = await supabase.auth.updateUser({
+      password: password
+    });
+    return { data, error };
+  },
+
+  // Sign out from other devices
+  async signOutOthers() {
+    const { error } = await supabase.auth.signOut({ scope: 'others' });
+    return { error };
+  },
+
+  // Sign out from all devices
+  async signOutEverywhere() {
+    const { error } = await supabase.auth.signOut({ scope: 'global' });
+    return { error };
+  },
 };
 
 // Database helpers with type safety
