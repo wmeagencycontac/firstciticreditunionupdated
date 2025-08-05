@@ -16,6 +16,7 @@ import AdminSetup from "./pages/AdminSetup";
 import TestSetup from "./pages/TestSetup";
 import Debug from "./pages/Debug";
 import SupabaseTest from "./pages/SupabaseTest";
+import IntegrationTest from "./pages/IntegrationTest";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
