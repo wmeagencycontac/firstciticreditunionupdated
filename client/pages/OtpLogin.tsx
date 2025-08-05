@@ -192,14 +192,13 @@ export default function OtpLogin() {
                     value={otp}
                     onChange={setOtp}
                     maxLength={6}
-                    render={({ slots }) => (
-                      <InputOTPGroup>
-                        {slots.map((slot, index) => (
-                          <InputOTPSlot key={index} {...slot} />
-                        ))}
-                      </InputOTPGroup>
-                    )}
-                  />
+                  >
+                    <InputOTPGroup>
+                      {Array.from({ length: 6 }).map((_, index) => (
+                        <InputOTPSlot key={index} index={index} />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
                 </div>
                 <p className="text-sm text-muted-foreground text-center">
                   Enter the 6-digit code sent to your email
