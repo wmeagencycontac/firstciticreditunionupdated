@@ -31,6 +31,24 @@ import {
   handleGetTestUserInfo,
 } from "./routes/test-setup";
 import { getBankingDatabase } from "./banking-database";
+import { supabaseAdmin } from "./supabase";
+import {
+  signUp as supabaseSignUp,
+  signIn as supabaseSignIn,
+  signOut as supabaseSignOut,
+  getProfile as supabaseGetProfile,
+  authenticateUser as supabaseAuthenticateUser,
+} from "./routes/supabase-auth";
+import {
+  getAccounts as supabaseGetAccounts,
+  createAccount as supabaseCreateAccount,
+  getTransactions as supabaseGetTransactions,
+  createTransaction as supabaseCreateTransaction,
+  transfer as supabaseTransfer,
+  getCards as supabaseGetCards,
+  createCard as supabaseCreateCard,
+  getRecentTransactions as supabaseGetRecentTransactions,
+} from "./routes/supabase-banking";
 import {
   handleRequestOTP,
   handleVerifyOTP,
@@ -184,6 +202,40 @@ export function createServer() {
   // Test setup endpoints (for development/testing)
   app.post("/api/test-setup/create", handleCreateTestUser);
   app.get("/api/test-setup/info", handleGetTestUserInfo);
+
+  // ========================================
+  // NEW SUPABASE ROUTES
+  // ========================================
+
+  // Supabase Auth routes
+  app.post("/api/supabase/auth/signup", supabaseSignUp);
+  app.post("/api/supabase/auth/signin", supabaseSignIn);
+  app.post("/api/supabase/auth/signout", supabaseAuthenticateUser, supabaseSignOut);
+  app.get("/api/supabase/auth/profile", supabaseAuthenticateUser, supabaseGetProfile);
+
+  // Supabase Banking routes
+  app.get("/api/supabase/accounts", supabaseAuthenticateUser, supabaseGetAccounts);
+  app.post("/api/supabase/accounts", supabaseAuthenticateUser, supabaseCreateAccount);
+  app.get("/api/supabase/transactions", supabaseAuthenticateUser, supabaseGetTransactions);
+  app.post("/api/supabase/transactions", supabaseAuthenticateUser, supabaseCreateTransaction);
+  app.post("/api/supabase/transfer", supabaseAuthenticateUser, supabaseTransfer);
+  app.get("/api/supabase/cards", supabaseAuthenticateUser, supabaseGetCards);
+  app.post("/api/supabase/cards", supabaseAuthenticateUser, supabaseCreateCard);
+  app.get("/api/supabase/transactions/recent", supabaseAuthenticateUser, supabaseGetRecentTransactions);
+
+  // Migration endpoint (development only)
+  if (process.env.NODE_ENV === 'development') {
+    app.post("/api/migrate-to-supabase", async (req, res) => {
+      try {
+        const { migrateDataToSupabase } = await import('./migrate-to-supabase');
+        const result = await migrateDataToSupabase();
+        res.json({ success: true, result });
+      } catch (error) {
+        console.error('Migration error:', error);
+        res.status(500).json({ error: 'Migration failed', details: error });
+      }
+    });
+  }
 
   return { app, httpServer, io };
 }
