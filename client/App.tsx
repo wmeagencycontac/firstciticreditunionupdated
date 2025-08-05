@@ -43,6 +43,9 @@ const App = () => (
           {/* Test Setup Route */}
           <Route path="/test-setup" element={<TestSetup />} />
 
+          {/* Debug Route */}
+          <Route path="/debug" element={<Debug />} />
+
           {/* Banking Pages */}
           <Route path="/register" element={<Register />} />
           <Route path="/register-enhanced" element={<EnhancedRegistration />} />
