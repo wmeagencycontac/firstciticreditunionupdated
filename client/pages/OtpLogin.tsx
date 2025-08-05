@@ -188,11 +188,7 @@ export default function OtpLogin() {
               <div className="space-y-2">
                 <Label htmlFor="otp">Verification Code</Label>
                 <div className="flex justify-center">
-                  <InputOTP
-                    value={otp}
-                    onChange={setOtp}
-                    maxLength={6}
-                  >
+                  <InputOTP value={otp} onChange={setOtp} maxLength={6}>
                     <InputOTPGroup>
                       {Array.from({ length: 6 }).map((_, index) => (
                         <InputOTPSlot key={index} index={index} />
