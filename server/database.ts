@@ -1,5 +1,6 @@
 import sqlite3 from "sqlite3";
 import path from "path";
+import fs from "fs";
 
 export class OTPDatabase {
   private db: sqlite3.Database;
