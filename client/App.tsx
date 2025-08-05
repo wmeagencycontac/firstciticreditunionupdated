@@ -49,6 +49,9 @@ export default function App() {
             {/* Supabase Test Route */}
             <Route path="/supabase-test" element={<SupabaseTest />} />
 
+            {/* Integration Test Route */}
+            <Route path="/integration-test" element={<IntegrationTest />} />
+
             {/* Banking Pages */}
             <Route path="/register" element={<Register />} />
             <Route
