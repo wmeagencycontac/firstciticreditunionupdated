@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import OtpLogin from "./pages/OtpLogin";
 import Register from "./pages/Register";
+import Signup from "./pages/Signup";
 import EnhancedRegistration from "./pages/EnhancedRegistration";
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
