@@ -3,12 +3,21 @@ services:
     name: first-city-credit-union
     runtime: node
     plan: starter
-    buildCommand: npm run build
+    region: oregon
+    buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
+      - key: SECURE_STORAGE_PATH
+        value: /tmp/banking-data
+      - key: ENABLE_SUPABASE_INTEGRATION
+        value: "false"
     healthCheckPath: /api/ping
     autoDeploy: false
+    disk:
+      name: banking-data
+      mountPath: /tmp/banking-data
+      sizeGB: 1
