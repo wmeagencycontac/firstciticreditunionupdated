@@ -43,14 +43,18 @@ export default function AdminSetup() {
   const checkAdminExists = async () => {
     try {
       const response = await fetch("/api/admin/check");
-      const data = await response.json();
 
-      if (response.ok) {
-        setAdminExists(data.adminExists);
-        if (data.adminExists) {
-          toast.info("Admin user already exists. Redirecting to login...");
-          setTimeout(() => navigate("/admin/login"), 2000);
-        }
+      if (!response.ok) {
+        console.error("Admin check failed:", response.status, response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      setAdminExists(data.adminExists);
+
+      if (data.adminExists) {
+        toast.info("Admin user already exists. Redirecting to login...");
+        setTimeout(() => navigate("/admin/login"), 2000);
       }
     } catch (error) {
       console.error("Error checking admin:", error);
