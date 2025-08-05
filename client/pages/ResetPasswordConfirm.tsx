@@ -12,15 +12,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { 
-  CreditCard, 
-  Eye, 
-  EyeOff, 
-  Shield, 
-  Check, 
+import {
+  CreditCard,
+  Eye,
+  EyeOff,
+  Shield,
+  Check,
   X,
   AlertTriangle,
-  LogOut
+  LogOut,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -42,29 +42,33 @@ export default function ResetPasswordConfirm() {
   const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({
     score: 0,
     feedback: [],
-    isValid: false
+    isValid: false,
   });
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     // Check if we have the required URL parameters
-    const accessToken = searchParams.get('access_token');
-    const refreshToken = searchParams.get('refresh_token');
-    const type = searchParams.get('type');
+    const accessToken = searchParams.get("access_token");
+    const refreshToken = searchParams.get("refresh_token");
+    const type = searchParams.get("type");
 
-    if (type === 'recovery' && accessToken && refreshToken) {
+    if (type === "recovery" && accessToken && refreshToken) {
       // Set the session with the tokens from the URL
-      supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken
-      }).then(({ error }) => {
-        if (error) {
-          setError("Invalid or expired reset link. Please request a new password reset.");
-        } else {
-          setIsTokenValid(true);
-        }
-      });
+      supabase.auth
+        .setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        })
+        .then(({ error }) => {
+          if (error) {
+            setError(
+              "Invalid or expired reset link. Please request a new password reset.",
+            );
+          } else {
+            setIsTokenValid(true);
+          }
+        });
     } else {
       setError("Invalid reset link. Please request a new password reset.");
     }
@@ -112,7 +116,7 @@ export default function ResetPasswordConfirm() {
     return {
       score,
       feedback,
-      isValid: score >= 80 && password.length >= 8
+      isValid: score >= 80 && password.length >= 8,
     };
   };
 
@@ -155,7 +159,7 @@ export default function ResetPasswordConfirm() {
 
       // Update the password
       const { error: updateError } = await supabase.auth.updateUser({
-        password: password
+        password: password,
       });
 
       if (updateError) {
@@ -163,21 +167,23 @@ export default function ResetPasswordConfirm() {
       }
 
       // Sign out all other sessions (this invalidates all existing sessions except current)
-      await supabase.auth.signOut({ scope: 'others' });
+      await supabase.auth.signOut({ scope: "others" });
 
       setIsSuccess(true);
 
       // Redirect to login after a short delay
       setTimeout(() => {
-        navigate("/login", { 
-          state: { 
-            message: "Password updated successfully. Please sign in with your new password." 
-          } 
+        navigate("/login", {
+          state: {
+            message:
+              "Password updated successfully. Please sign in with your new password.",
+          },
         });
       }, 3000);
-
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update password");
+      setError(
+        err instanceof Error ? err.message : "Failed to update password",
+      );
     } finally {
       setLoading(false);
     }
@@ -191,7 +197,9 @@ export default function ResetPasswordConfirm() {
             <CardContent className="pt-6">
               <div className="text-center">
                 <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Validating reset link...</p>
+                <p className="text-muted-foreground">
+                  Validating reset link...
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -220,9 +228,12 @@ export default function ResetPasswordConfirm() {
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="w-6 h-6 text-green-600" />
               </div>
-              <CardTitle className="text-2xl">Password updated successfully</CardTitle>
+              <CardTitle className="text-2xl">
+                Password updated successfully
+              </CardTitle>
               <CardDescription>
-                Your password has been changed and all other sessions have been logged out
+                Your password has been changed and all other sessions have been
+                logged out
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -293,7 +304,7 @@ export default function ResetPasswordConfirm() {
                   <Button asChild className="w-full">
                     <Link to="/reset-password">Request new reset link</Link>
                   </Button>
-                  
+
                   <Button asChild variant="outline" className="w-full">
                     <Link to="/login">Back to login</Link>
                   </Button>
@@ -368,25 +379,32 @@ export default function ResetPasswordConfirm() {
                 {password && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">Password strength</span>
-                      <span className={`font-medium ${
-                        passwordStrength.score >= 80 ? 'text-green-600' :
-                        passwordStrength.score >= 60 ? 'text-yellow-600' :
-                        passwordStrength.score >= 40 ? 'text-orange-600' :
-                        'text-red-600'
-                      }`}>
+                      <span className="text-muted-foreground">
+                        Password strength
+                      </span>
+                      <span
+                        className={`font-medium ${
+                          passwordStrength.score >= 80
+                            ? "text-green-600"
+                            : passwordStrength.score >= 60
+                              ? "text-yellow-600"
+                              : passwordStrength.score >= 40
+                                ? "text-orange-600"
+                                : "text-red-600"
+                        }`}
+                      >
                         {getStrengthText(passwordStrength.score)}
                       </span>
                     </div>
-                    <Progress 
-                      value={passwordStrength.score} 
-                      className="h-2" 
-                    />
-                    
+                    <Progress value={passwordStrength.score} className="h-2" />
+
                     {passwordStrength.feedback.length > 0 && (
                       <div className="space-y-1">
                         {passwordStrength.feedback.map((item, index) => (
-                          <div key={index} className="flex items-center space-x-2 text-xs text-muted-foreground">
+                          <div
+                            key={index}
+                            className="flex items-center space-x-2 text-xs text-muted-foreground"
+                          >
                             <X className="w-3 h-3 text-red-500" />
                             <span>{item}</span>
                           </div>
@@ -435,7 +453,9 @@ export default function ResetPasswordConfirm() {
                     ) : (
                       <>
                         <X className="w-3 h-3 text-red-500" />
-                        <span className="text-red-600">Passwords do not match</span>
+                        <span className="text-red-600">
+                          Passwords do not match
+                        </span>
                       </>
                     )}
                   </div>
@@ -451,19 +471,20 @@ export default function ResetPasswordConfirm() {
                       Security action
                     </h4>
                     <p className="text-xs text-blue-700 dark:text-blue-300">
-                      Updating your password will automatically log out all other devices for your security.
+                      Updating your password will automatically log out all
+                      other devices for your security.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={
-                  loading || 
-                  !passwordStrength.isValid || 
-                  !confirmPassword || 
+                  loading ||
+                  !passwordStrength.isValid ||
+                  !confirmPassword ||
                   password !== confirmPassword
                 }
               >

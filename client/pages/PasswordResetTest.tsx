@@ -12,17 +12,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { 
-  CreditCard, 
-  TestTube, 
-  CheckCircle, 
-  XCircle, 
+import {
+  CreditCard,
+  TestTube,
+  CheckCircle,
+  XCircle,
   Mail,
   Lock,
   Shield,
   LogOut,
   ArrowRight,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 import { auth, supabase } from "@/lib/supabase";
 
@@ -30,7 +30,7 @@ interface TestStep {
   id: string;
   name: string;
   description: string;
-  status: 'pending' | 'running' | 'success' | 'error';
+  status: "pending" | "running" | "success" | "error";
   result?: string;
   error?: string;
 }
@@ -43,53 +43,61 @@ export default function PasswordResetTest() {
       id: "check-auth",
       name: "Check Authentication Status",
       description: "Verify current user authentication state",
-      status: "pending"
+      status: "pending",
     },
     {
       id: "reset-request",
       name: "Password Reset Request",
       description: "Test sending password reset email",
-      status: "pending"
+      status: "pending",
     },
     {
       id: "email-masking",
       name: "Email Masking",
       description: "Verify email address is properly masked",
-      status: "pending"
+      status: "pending",
     },
     {
       id: "session-management",
       name: "Session Management",
       description: "Test session invalidation functionality",
-      status: "pending"
+      status: "pending",
     },
     {
       id: "ui-navigation",
       name: "UI Navigation",
       description: "Test navigation between reset pages",
-      status: "pending"
-    }
+      status: "pending",
+    },
   ]);
   const [isTestRunning, setIsTestRunning] = useState(false);
 
-  const updateStepStatus = (stepId: string, status: TestStep['status'], result?: string, error?: string) => {
-    setTestSteps(prev => prev.map(step => 
-      step.id === stepId 
-        ? { ...step, status, result, error }
-        : step
-    ));
+  const updateStepStatus = (
+    stepId: string,
+    status: TestStep["status"],
+    result?: string,
+    error?: string,
+  ) => {
+    setTestSteps((prev) =>
+      prev.map((step) =>
+        step.id === stepId ? { ...step, status, result, error } : step,
+      ),
+    );
   };
 
   const maskEmail = (email: string): string => {
     const [localPart, domain] = email.split("@");
-    const maskedLocal = localPart.length > 2 
-      ? localPart.charAt(0) + "*".repeat(localPart.length - 2) + localPart.charAt(localPart.length - 1)
-      : localPart.charAt(0) + "*".repeat(localPart.length - 1);
+    const maskedLocal =
+      localPart.length > 2
+        ? localPart.charAt(0) +
+          "*".repeat(localPart.length - 2) +
+          localPart.charAt(localPart.length - 1)
+        : localPart.charAt(0) + "*".repeat(localPart.length - 1);
     return `${maskedLocal}@${domain}`;
   };
 
   const runTest = async (stepId: string) => {
-    updateStepStatus(stepId, 'running');
+    updateStepStatus(stepId, "running");
 
     try {
       switch (stepId) {
@@ -98,47 +106,62 @@ export default function PasswordResetTest() {
           if (authError) {
             throw new Error(`Auth check failed: ${authError.message}`);
           }
-          updateStepStatus(stepId, 'success', `User: ${user ? user.email : 'Not authenticated'}`);
+          updateStepStatus(
+            stepId,
+            "success",
+            `User: ${user ? user.email : "Not authenticated"}`,
+          );
           break;
 
         case "reset-request":
-          const { data, error: resetError } = await auth.resetPassword(testEmail);
+          const { data, error: resetError } =
+            await auth.resetPassword(testEmail);
           if (resetError) {
             throw new Error(`Reset request failed: ${resetError.message}`);
           }
-          updateStepStatus(stepId, 'success', 'Password reset email sent successfully');
+          updateStepStatus(
+            stepId,
+            "success",
+            "Password reset email sent successfully",
+          );
           break;
 
         case "email-masking":
           const masked = maskEmail(testEmail);
           const isProperlyMasked = masked.includes("*") && masked !== testEmail;
           if (!isProperlyMasked) {
-            throw new Error('Email masking not working correctly');
+            throw new Error("Email masking not working correctly");
           }
-          updateStepStatus(stepId, 'success', `Masked: ${masked}`);
+          updateStepStatus(stepId, "success", `Masked: ${masked}`);
           break;
 
         case "session-management":
           // Test session check
           const { data: sessionData } = await supabase.auth.getSession();
           const hasSession = !!sessionData.session;
-          
+
           if (hasSession) {
             // Test signing out others
             const { error: signOutError } = await auth.signOutOthers();
             if (signOutError) {
-              throw new Error(`Session management failed: ${signOutError.message}`);
+              throw new Error(
+                `Session management failed: ${signOutError.message}`,
+              );
             }
-            updateStepStatus(stepId, 'success', 'Session management working correctly');
+            updateStepStatus(
+              stepId,
+              "success",
+              "Session management working correctly",
+            );
           } else {
-            updateStepStatus(stepId, 'success', 'No active session to test');
+            updateStepStatus(stepId, "success", "No active session to test");
           }
           break;
 
         case "ui-navigation":
           // Check if routes are properly configured
-          const routes = ['/reset-password', '/reset-password-confirm'];
-          const routeTests = routes.map(route => {
+          const routes = ["/reset-password", "/reset-password-confirm"];
+          const routeTests = routes.map((route) => {
             try {
               // This is a basic check - in a real test, you'd navigate to these routes
               return `Route ${route}: OK`;
@@ -146,54 +169,76 @@ export default function PasswordResetTest() {
               return `Route ${route}: ERROR`;
             }
           });
-          updateStepStatus(stepId, 'success', routeTests.join(', '));
+          updateStepStatus(stepId, "success", routeTests.join(", "));
           break;
 
         default:
-          throw new Error('Unknown test step');
+          throw new Error("Unknown test step");
       }
     } catch (error) {
-      updateStepStatus(stepId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
+      updateStepStatus(
+        stepId,
+        "error",
+        undefined,
+        error instanceof Error ? error.message : "Unknown error",
+      );
     }
   };
 
   const runAllTests = async () => {
     setIsTestRunning(true);
-    
+
     // Reset all steps
-    setTestSteps(prev => prev.map(step => ({ ...step, status: 'pending', result: undefined, error: undefined })));
+    setTestSteps((prev) =>
+      prev.map((step) => ({
+        ...step,
+        status: "pending",
+        result: undefined,
+        error: undefined,
+      })),
+    );
 
     // Run tests sequentially
     for (const step of testSteps) {
       await runTest(step.id);
       // Small delay between tests
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
 
     setIsTestRunning(false);
   };
 
-  const getStatusIcon = (status: TestStep['status']) => {
+  const getStatusIcon = (status: TestStep["status"]) => {
     switch (status) {
-      case 'success':
+      case "success":
         return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'error':
+      case "error":
         return <XCircle className="w-4 h-4 text-red-500" />;
-      case 'running':
+      case "running":
         return <RefreshCw className="w-4 h-4 text-blue-500 animate-spin" />;
       default:
-        return <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />;
+        return (
+          <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />
+        );
     }
   };
 
-  const getStatusBadge = (status: TestStep['status']) => {
+  const getStatusBadge = (status: TestStep["status"]) => {
     switch (status) {
-      case 'success':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Passed</Badge>;
-      case 'error':
+      case "success":
+        return (
+          <Badge variant="default" className="bg-green-100 text-green-800">
+            Passed
+          </Badge>
+        );
+      case "error":
         return <Badge variant="destructive">Failed</Badge>;
-      case 'running':
-        return <Badge variant="default" className="bg-blue-100 text-blue-800">Running</Badge>;
+      case "running":
+        return (
+          <Badge variant="default" className="bg-blue-100 text-blue-800">
+            Running
+          </Badge>
+        );
       default:
         return <Badge variant="outline">Pending</Badge>;
     }
@@ -217,7 +262,8 @@ export default function PasswordResetTest() {
             <h1 className="text-2xl font-bold">Password Reset Testing Suite</h1>
           </div>
           <p className="text-muted-foreground">
-            Comprehensive testing of the password reset workflow and security features
+            Comprehensive testing of the password reset workflow and security
+            features
           </p>
         </div>
 
@@ -230,9 +276,7 @@ export default function PasswordResetTest() {
                   <Shield className="w-5 h-5" />
                   <span>Test Configuration</span>
                 </CardTitle>
-                <CardDescription>
-                  Configure test parameters
-                </CardDescription>
+                <CardDescription>Configure test parameters</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -247,8 +291,8 @@ export default function PasswordResetTest() {
                 </div>
 
                 <div className="space-y-3">
-                  <Button 
-                    onClick={runAllTests} 
+                  <Button
+                    onClick={runAllTests}
                     disabled={isTestRunning || !testEmail}
                     className="w-full"
                   >
@@ -267,7 +311,10 @@ export default function PasswordResetTest() {
 
                   <div className="space-y-2">
                     <Button asChild variant="outline" className="w-full">
-                      <Link to="/reset-password" className="flex items-center justify-center space-x-2">
+                      <Link
+                        to="/reset-password"
+                        className="flex items-center justify-center space-x-2"
+                      >
                         <Mail className="w-4 h-4" />
                         <span>Test Reset Flow</span>
                         <ArrowRight className="w-4 h-4" />
@@ -275,7 +322,10 @@ export default function PasswordResetTest() {
                     </Button>
 
                     <Button asChild variant="outline" className="w-full">
-                      <Link to="/login" className="flex items-center justify-center space-x-2">
+                      <Link
+                        to="/login"
+                        className="flex items-center justify-center space-x-2"
+                      >
                         <Lock className="w-4 h-4" />
                         <span>Back to Login</span>
                       </Link>
@@ -289,9 +339,7 @@ export default function PasswordResetTest() {
             <Card className="mt-6">
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
-                <CardDescription>
-                  Test individual components
-                </CardDescription>
+                <CardDescription>Test individual components</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <Button
@@ -337,7 +385,7 @@ export default function PasswordResetTest() {
               <CardContent>
                 <div className="space-y-4">
                   {testSteps.map((step) => (
-                    <div 
+                    <div
                       key={step.id}
                       className="border rounded-lg p-4 space-y-3"
                     >
@@ -387,13 +435,16 @@ export default function PasswordResetTest() {
                   <h4 className="font-medium mb-2">Test Summary</h4>
                   <div className="flex items-center space-x-4 text-sm">
                     <span>
-                      Passed: {testSteps.filter(s => s.status === 'success').length}
+                      Passed:{" "}
+                      {testSteps.filter((s) => s.status === "success").length}
                     </span>
                     <span>
-                      Failed: {testSteps.filter(s => s.status === 'error').length}
+                      Failed:{" "}
+                      {testSteps.filter((s) => s.status === "error").length}
                     </span>
                     <span>
-                      Pending: {testSteps.filter(s => s.status === 'pending').length}
+                      Pending:{" "}
+                      {testSteps.filter((s) => s.status === "pending").length}
                     </span>
                   </div>
                 </div>

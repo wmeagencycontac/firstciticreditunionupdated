@@ -33,9 +33,12 @@ export default function ResetPassword() {
 
   const maskEmail = (email: string): string => {
     const [localPart, domain] = email.split("@");
-    const maskedLocal = localPart.length > 2 
-      ? localPart.charAt(0) + "*".repeat(localPart.length - 2) + localPart.charAt(localPart.length - 1)
-      : localPart.charAt(0) + "*".repeat(localPart.length - 1);
+    const maskedLocal =
+      localPart.length > 2
+        ? localPart.charAt(0) +
+          "*".repeat(localPart.length - 2) +
+          localPart.charAt(localPart.length - 1)
+        : localPart.charAt(0) + "*".repeat(localPart.length - 1);
     return `${maskedLocal}@${domain}`;
   };
 
@@ -56,7 +59,7 @@ export default function ResetPassword() {
         email,
         {
           redirectTo: `${window.location.origin}/reset-password-confirm`,
-        }
+        },
       );
 
       if (resetError) {
@@ -66,9 +69,10 @@ export default function ResetPassword() {
       // Success - show confirmation
       setMaskedEmail(maskEmail(email));
       setIsEmailSent(true);
-
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+      );
     } finally {
       setLoading(false);
     }
@@ -76,7 +80,7 @@ export default function ResetPassword() {
 
   const handleResendEmail = async () => {
     if (!email) return;
-    
+
     setLoading(true);
     setError("");
 
@@ -85,7 +89,7 @@ export default function ResetPassword() {
         email,
         {
           redirectTo: `${window.location.origin}/reset-password-confirm`,
-        }
+        },
       );
 
       if (resetError) {
@@ -148,7 +152,9 @@ export default function ResetPassword() {
                       <ul className="text-xs text-blue-700 dark:text-blue-300 space-y-1">
                         <li>• Link expires in 1 hour for your security</li>
                         <li>• All active sessions will be terminated</li>
-                        <li>• Email verification required for password reset</li>
+                        <li>
+                          • Email verification required for password reset
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -159,7 +165,8 @@ export default function ResetPassword() {
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                     <span className="text-sm text-amber-700 dark:text-amber-300">
-                      Didn't receive the email? Check your spam folder or wait 60 seconds to resend.
+                      Didn't receive the email? Check your spam folder or wait
+                      60 seconds to resend.
                     </span>
                   </div>
                 </div>
@@ -180,9 +187,12 @@ export default function ResetPassword() {
                   >
                     {loading ? "Sending..." : "Resend email"}
                   </Button>
-                  
+
                   <Button asChild variant="ghost" className="w-full">
-                    <Link to="/login" className="flex items-center justify-center space-x-2">
+                    <Link
+                      to="/login"
+                      className="flex items-center justify-center space-x-2"
+                    >
                       <ArrowLeft className="w-4 h-4" />
                       <span>Back to login</span>
                     </Link>
@@ -222,7 +232,8 @@ export default function ResetPassword() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Reset your password</CardTitle>
             <CardDescription>
-              Enter your email address and we'll send you instructions to reset your password
+              Enter your email address and we'll send you instructions to reset
+              your password
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -246,8 +257,14 @@ export default function ResetPassword() {
                 />
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading || !email.trim()}>
-                {loading ? "Sending instructions..." : "Send reset instructions"}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={loading || !email.trim()}
+              >
+                {loading
+                  ? "Sending instructions..."
+                  : "Send reset instructions"}
               </Button>
             </form>
 
@@ -267,7 +284,10 @@ export default function ResetPassword() {
 
             <div className="mt-6 text-center">
               <Button asChild variant="ghost" className="text-sm">
-                <Link to="/login" className="flex items-center justify-center space-x-2">
+                <Link
+                  to="/login"
+                  className="flex items-center justify-center space-x-2"
+                >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back to login</span>
                 </Link>

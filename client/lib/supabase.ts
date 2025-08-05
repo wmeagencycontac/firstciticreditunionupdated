@@ -141,7 +141,8 @@ export const auth = {
   // Reset password
   async resetPassword(email: string, redirectTo?: string) {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectTo || `${window.location.origin}/reset-password-confirm`,
+      redirectTo:
+        redirectTo || `${window.location.origin}/reset-password-confirm`,
     });
     return { data, error };
   },
@@ -149,20 +150,20 @@ export const auth = {
   // Update password
   async updatePassword(password: string) {
     const { data, error } = await supabase.auth.updateUser({
-      password: password
+      password: password,
     });
     return { data, error };
   },
 
   // Sign out from other devices
   async signOutOthers() {
-    const { error } = await supabase.auth.signOut({ scope: 'others' });
+    const { error } = await supabase.auth.signOut({ scope: "others" });
     return { error };
   },
 
   // Sign out from all devices
   async signOutEverywhere() {
-    const { error } = await supabase.auth.signOut({ scope: 'global' });
+    const { error } = await supabase.auth.signOut({ scope: "global" });
     return { error };
   },
 };

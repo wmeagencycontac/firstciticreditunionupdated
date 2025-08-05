@@ -37,8 +37,14 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/otp-login" element={<OtpLogin />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/reset-password-confirm" element={<ResetPasswordConfirm />} />
-            <Route path="/password-reset-test" element={<PasswordResetTest />} />
+            <Route
+              path="/reset-password-confirm"
+              element={<ResetPasswordConfirm />}
+            />
+            <Route
+              path="/password-reset-test"
+              element={<PasswordResetTest />}
+            />
             <Route path="/dashboard" element={<Dashboard />} />
 
             {/* Admin Routes */}
