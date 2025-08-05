@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import EnhancedRegistration from "./pages/EnhancedRegistration";
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import PasswordResetTest from "./pages/PasswordResetTest";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminLogin from "./pages/AdminLogin";
