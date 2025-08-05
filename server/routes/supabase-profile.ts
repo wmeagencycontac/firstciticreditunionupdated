@@ -28,7 +28,7 @@ export const createBankingProfile: RequestHandler = async (req, res) => {
         id: userId,
         email,
         name,
-        bio: `Member since ${new Date().getFullYear()}. ${accountType === 'business' ? 'Business' : 'Personal'} banking.`,
+        bio: `Member since ${new Date().getFullYear()}. ${accountType === "business" ? "Business" : "Personal"} banking.`,
         email_verified: false,
         role: "user",
       })
@@ -37,7 +37,9 @@ export const createBankingProfile: RequestHandler = async (req, res) => {
 
     if (profileError) {
       console.error("Profile creation error:", profileError);
-      return res.status(500).json({ error: "Failed to create banking profile" });
+      return res
+        .status(500)
+        .json({ error: "Failed to create banking profile" });
     }
 
     // Create additional profile data table if needed (for extended info like address, phone, etc.)
@@ -60,7 +62,10 @@ export const createBankingProfile: RequestHandler = async (req, res) => {
 
     // Don't fail if extended profile creation fails (table might not exist yet)
     if (extendedProfileError) {
-      console.log("Extended profile creation failed (this might be expected):", extendedProfileError.message);
+      console.log(
+        "Extended profile creation failed (this might be expected):",
+        extendedProfileError.message,
+      );
     }
 
     // The trigger function will automatically create accounts and cards
@@ -142,10 +147,12 @@ export const getBankingProfile: RequestHandler = async (req, res) => {
     // Get recent transactions
     const { data: transactions, error: transactionsError } = await supabaseAdmin
       .from("transactions")
-      .select(`
+      .select(
+        `
         *,
         accounts!inner(user_id, account_number, account_type)
-      `)
+      `,
+      )
       .eq("accounts.user_id", userId)
       .order("timestamp", { ascending: false })
       .limit(10);
@@ -191,7 +198,9 @@ export const updateBankingProfile: RequestHandler = async (req, res) => {
 
     if (updateError) {
       console.error("Profile update error:", updateError);
-      return res.status(500).json({ error: "Failed to update banking profile" });
+      return res
+        .status(500)
+        .json({ error: "Failed to update banking profile" });
     }
 
     res.json({

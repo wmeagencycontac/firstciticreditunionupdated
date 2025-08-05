@@ -30,20 +30,20 @@ interface SignupFormData {
   email: string;
   phoneNumber: string;
   dateOfBirth: string;
-  
+
   // Address Information
   street: string;
   city: string;
   state: string;
   zipCode: string;
-  
+
   // Account Selection
   accountType: "personal" | "business";
-  
+
   // Security
   password: string;
   confirmPassword: string;
-  
+
   // Legal
   agreeToTerms: boolean;
   agreeToPrivacy: boolean;
@@ -74,17 +74,32 @@ export default function Signup() {
   });
 
   const updateFormData = (field: keyof SignupFormData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!(formData.firstName && formData.lastName && formData.email && formData.phoneNumber && formData.dateOfBirth);
+        return !!(
+          formData.firstName &&
+          formData.lastName &&
+          formData.email &&
+          formData.phoneNumber &&
+          formData.dateOfBirth
+        );
       case 2:
-        return !!(formData.street && formData.city && formData.state && formData.zipCode);
+        return !!(
+          formData.street &&
+          formData.city &&
+          formData.state &&
+          formData.zipCode
+        );
       case 3:
-        return !!(formData.password && formData.confirmPassword && formData.password === formData.confirmPassword);
+        return !!(
+          formData.password &&
+          formData.confirmPassword &&
+          formData.password === formData.confirmPassword
+        );
       case 4:
         return formData.agreeToTerms && formData.agreeToPrivacy;
       default:
@@ -94,7 +109,7 @@ export default function Signup() {
 
   const nextStep = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 4));
+      setCurrentStep((prev) => Math.min(prev + 1, 4));
       setError("");
     } else {
       setError("Please fill in all required fields correctly.");
@@ -102,7 +117,7 @@ export default function Signup() {
   };
 
   const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
     setError("");
   };
 
@@ -126,7 +141,7 @@ export default function Signup() {
         formData.email,
         formData.password,
         `${formData.firstName} ${formData.lastName}`,
-        `Member since ${new Date().getFullYear()}. ${formData.accountType === 'business' ? 'Business' : 'Personal'} banking.`
+        `Member since ${new Date().getFullYear()}. ${formData.accountType === "business" ? "Business" : "Personal"} banking.`,
       );
 
       if (signupError) {
@@ -135,10 +150,10 @@ export default function Signup() {
 
       if (data.user) {
         // Create banking profile
-        const response = await fetch('/api/supabase/auth/create-profile', {
-          method: 'POST',
+        const response = await fetch("/api/supabase/auth/create-profile", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             userId: data.user.id,
@@ -160,16 +175,22 @@ export default function Signup() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to create banking profile');
+          throw new Error("Failed to create banking profile");
         }
 
-        toast.success("Account created successfully! Please check your email to verify your account.");
-        
+        toast.success(
+          "Account created successfully! Please check your email to verify your account.",
+        );
+
         // Redirect to a success page or login
-        navigate('/login?message=Please check your email to verify your account before signing in.');
+        navigate(
+          "/login?message=Please check your email to verify your account before signing in.",
+        );
       }
     } catch (err: any) {
-      setError(err.message || "An error occurred during signup. Please try again.");
+      setError(
+        err.message || "An error occurred during signup. Please try again.",
+      );
       toast.error("Signup failed. Please try again.");
     } finally {
       setLoading(false);
@@ -189,7 +210,7 @@ export default function Signup() {
                   id="firstName"
                   type="text"
                   value={formData.firstName}
-                  onChange={(e) => updateFormData('firstName', e.target.value)}
+                  onChange={(e) => updateFormData("firstName", e.target.value)}
                   placeholder="John"
                   required
                 />
@@ -200,7 +221,7 @@ export default function Signup() {
                   id="lastName"
                   type="text"
                   value={formData.lastName}
-                  onChange={(e) => updateFormData('lastName', e.target.value)}
+                  onChange={(e) => updateFormData("lastName", e.target.value)}
                   placeholder="Doe"
                   required
                 />
@@ -212,7 +233,7 @@ export default function Signup() {
                 id="email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => updateFormData('email', e.target.value)}
+                onChange={(e) => updateFormData("email", e.target.value)}
                 placeholder="john.doe@example.com"
                 required
               />
@@ -223,7 +244,7 @@ export default function Signup() {
                 id="phoneNumber"
                 type="tel"
                 value={formData.phoneNumber}
-                onChange={(e) => updateFormData('phoneNumber', e.target.value)}
+                onChange={(e) => updateFormData("phoneNumber", e.target.value)}
                 placeholder="(555) 123-4567"
                 required
               />
@@ -234,7 +255,7 @@ export default function Signup() {
                 id="dateOfBirth"
                 type="date"
                 value={formData.dateOfBirth}
-                onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
+                onChange={(e) => updateFormData("dateOfBirth", e.target.value)}
                 required
               />
             </div>
@@ -251,7 +272,7 @@ export default function Signup() {
                 id="street"
                 type="text"
                 value={formData.street}
-                onChange={(e) => updateFormData('street', e.target.value)}
+                onChange={(e) => updateFormData("street", e.target.value)}
                 placeholder="123 Main Street"
                 required
               />
@@ -263,14 +284,17 @@ export default function Signup() {
                   id="city"
                   type="text"
                   value={formData.city}
-                  onChange={(e) => updateFormData('city', e.target.value)}
+                  onChange={(e) => updateFormData("city", e.target.value)}
                   placeholder="New York"
                   required
                 />
               </div>
               <div>
                 <Label htmlFor="state">State *</Label>
-                <Select value={formData.state} onValueChange={(value) => updateFormData('state', value)}>
+                <Select
+                  value={formData.state}
+                  onValueChange={(value) => updateFormData("state", value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select state" />
                   </SelectTrigger>
@@ -291,7 +315,7 @@ export default function Signup() {
                 id="zipCode"
                 type="text"
                 value={formData.zipCode}
-                onChange={(e) => updateFormData('zipCode', e.target.value)}
+                onChange={(e) => updateFormData("zipCode", e.target.value)}
                 placeholder="12345"
                 required
               />
@@ -305,7 +329,12 @@ export default function Signup() {
             <h3 className="text-lg font-semibold">Account Security</h3>
             <div>
               <Label htmlFor="accountType">Account Type</Label>
-              <Select value={formData.accountType} onValueChange={(value: "personal" | "business") => updateFormData('accountType', value)}>
+              <Select
+                value={formData.accountType}
+                onValueChange={(value: "personal" | "business") =>
+                  updateFormData("accountType", value)
+                }
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select account type" />
                 </SelectTrigger>
@@ -321,7 +350,7 @@ export default function Signup() {
                 id="password"
                 type="password"
                 value={formData.password}
-                onChange={(e) => updateFormData('password', e.target.value)}
+                onChange={(e) => updateFormData("password", e.target.value)}
                 placeholder="Enter a strong password"
                 required
               />
@@ -335,16 +364,19 @@ export default function Signup() {
                 id="confirmPassword"
                 type="password"
                 value={formData.confirmPassword}
-                onChange={(e) => updateFormData('confirmPassword', e.target.value)}
+                onChange={(e) =>
+                  updateFormData("confirmPassword", e.target.value)
+                }
                 placeholder="Confirm your password"
                 required
               />
             </div>
-            
+
             <Alert>
               <CheckCircle className="h-4 w-4" />
               <AlertDescription>
-                Your initial account balance will be $0.00. You can fund your account after verification.
+                Your initial account balance will be $0.00. You can fund your
+                account after verification.
               </AlertDescription>
             </Alert>
           </div>
@@ -354,40 +386,67 @@ export default function Signup() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Terms & Conditions</h3>
-            
+
             <div className="space-y-4">
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="agreeToTerms"
                   checked={formData.agreeToTerms}
-                  onCheckedChange={(checked) => updateFormData('agreeToTerms', checked)}
+                  onCheckedChange={(checked) =>
+                    updateFormData("agreeToTerms", checked)
+                  }
                 />
-                <Label htmlFor="agreeToTerms" className="text-sm leading-relaxed">
-                  I agree to the <Link to="/terms" className="text-[#00754A] hover:underline">Terms of Service</Link> and 
-                  understand my rights and responsibilities as a First City Credit Union member. *
+                <Label
+                  htmlFor="agreeToTerms"
+                  className="text-sm leading-relaxed"
+                >
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-[#00754A] hover:underline">
+                    Terms of Service
+                  </Link>{" "}
+                  and understand my rights and responsibilities as a First City
+                  Credit Union member. *
                 </Label>
               </div>
-              
+
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="agreeToPrivacy"
                   checked={formData.agreeToPrivacy}
-                  onCheckedChange={(checked) => updateFormData('agreeToPrivacy', checked)}
+                  onCheckedChange={(checked) =>
+                    updateFormData("agreeToPrivacy", checked)
+                  }
                 />
-                <Label htmlFor="agreeToPrivacy" className="text-sm leading-relaxed">
-                  I have read and agree to the <Link to="/privacy" className="text-[#00754A] hover:underline">Privacy Policy</Link> and 
-                  consent to the collection and use of my personal information. *
+                <Label
+                  htmlFor="agreeToPrivacy"
+                  className="text-sm leading-relaxed"
+                >
+                  I have read and agree to the{" "}
+                  <Link
+                    to="/privacy"
+                    className="text-[#00754A] hover:underline"
+                  >
+                    Privacy Policy
+                  </Link>{" "}
+                  and consent to the collection and use of my personal
+                  information. *
                 </Label>
               </div>
-              
+
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="optInMarketing"
                   checked={formData.optInMarketing}
-                  onCheckedChange={(checked) => updateFormData('optInMarketing', checked)}
+                  onCheckedChange={(checked) =>
+                    updateFormData("optInMarketing", checked)
+                  }
                 />
-                <Label htmlFor="optInMarketing" className="text-sm leading-relaxed">
-                  I would like to receive promotional emails and updates about First City Credit Union products and services.
+                <Label
+                  htmlFor="optInMarketing"
+                  className="text-sm leading-relaxed"
+                >
+                  I would like to receive promotional emails and updates about
+                  First City Credit Union products and services.
                 </Label>
               </div>
             </div>
@@ -395,8 +454,9 @@ export default function Signup() {
             <Alert>
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                Your account will be created with $0.00 balance and will be NCUA insured up to $250,000.
-                You'll receive email verification instructions to activate your account.
+                Your account will be created with $0.00 balance and will be NCUA
+                insured up to $250,000. You'll receive email verification
+                instructions to activate your account.
               </AlertDescription>
             </Alert>
           </div>
@@ -417,8 +477,12 @@ export default function Signup() {
               <Building2 className="w-7 h-7 text-white" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-[#00754A]">First City Credit Union</div>
-              <div className="text-sm text-muted-foreground">Join today and start banking smarter</div>
+              <div className="text-2xl font-bold text-[#00754A]">
+                First City Credit Union
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Join today and start banking smarter
+              </div>
             </div>
           </div>
         </div>
@@ -435,9 +499,7 @@ export default function Signup() {
                   <div
                     key={step}
                     className={`w-3 h-3 rounded-full ${
-                      step <= currentStep 
-                        ? 'bg-[#00754A]' 
-                        : 'bg-gray-200'
+                      step <= currentStep ? "bg-[#00754A]" : "bg-gray-200"
                     }`}
                   />
                 ))}
@@ -447,7 +509,9 @@ export default function Signup() {
           <CardContent>
             {error && (
               <Alert className="mb-4 border-destructive">
-                <AlertDescription className="text-destructive">{error}</AlertDescription>
+                <AlertDescription className="text-destructive">
+                  {error}
+                </AlertDescription>
               </Alert>
             )}
 
@@ -456,13 +520,13 @@ export default function Signup() {
             <div className="flex justify-between mt-6">
               <Button
                 variant="outline"
-                onClick={currentStep === 1 ? () => navigate('/') : prevStep}
+                onClick={currentStep === 1 ? () => navigate("/") : prevStep}
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                {currentStep === 1 ? 'Back to Home' : 'Previous'}
+                {currentStep === 1 ? "Back to Home" : "Previous"}
               </Button>
-              
+
               {currentStep < 4 ? (
                 <Button
                   onClick={nextStep}
@@ -477,15 +541,18 @@ export default function Signup() {
                   disabled={loading || !validateStep(4)}
                   className="bg-[#00754A] hover:bg-[#005A39]"
                 >
-                  {loading ? 'Creating Account...' : 'Create Account'}
+                  {loading ? "Creating Account..." : "Create Account"}
                 </Button>
               )}
             </div>
 
             <div className="text-center mt-6">
               <p className="text-sm text-muted-foreground">
-                Already have an account?{' '}
-                <Link to="/login" className="text-[#00754A] hover:underline font-medium">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="text-[#00754A] hover:underline font-medium"
+                >
                   Sign in here
                 </Link>
               </p>

@@ -50,7 +50,9 @@ export default function Index() {
               <div className="text-xl font-bold text-[#00754A]">
                 First City Credit Union
               </div>
-              <div className="text-xs text-muted-foreground">Your Future. Your Credit Union.</div>
+              <div className="text-xs text-muted-foreground">
+                Your Future. Your Credit Union.
+              </div>
             </div>
           </div>
           <div className="hidden lg:flex items-center space-x-8">
@@ -86,10 +88,17 @@ export default function Index() {
               </Button>
             </Link>
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">Login</Button>
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
+                Login
+              </Button>
             </Link>
             <Link to="/signup">
-              <Button className="bg-[#00754A] hover:bg-[#005A39] text-white">Open an Account</Button>
+              <Button className="bg-[#00754A] hover:bg-[#005A39] text-white">
+                Open an Account
+              </Button>
             </Link>
           </div>
         </nav>
@@ -104,17 +113,25 @@ export default function Index() {
               <span className="text-[#00754A]">Your Credit Union.</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              Experience banking that puts you first. From mobile deposit to instant transfers,
-              we're here to help you achieve your financial goals with trust and convenience.
+              Experience banking that puts you first. From mobile deposit to
+              instant transfers, we're here to help you achieve your financial
+              goals with trust and convenience.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Link to="/signup">
-                <Button size="lg" className="w-full sm:w-auto bg-[#00754A] hover:bg-[#005A39] text-white px-8">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto bg-[#00754A] hover:bg-[#005A39] text-white px-8"
+                >
                   Open an Account
                 </Button>
               </Link>
               <Link to="/login">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto border-[#00754A] text-[#00754A] hover:bg-green-50 px-8">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto border-[#00754A] text-[#00754A] hover:bg-green-50 px-8"
+                >
                   Login
                 </Button>
               </Link>
@@ -147,8 +164,13 @@ export default function Index() {
                       <Camera className="w-6 h-6 text-[#00754A]" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mb-2">Mobile Deposit</h3>
-                      <p className="text-muted-foreground">Deposit checks instantly with your smartphone camera. Available 24/7.</p>
+                      <h3 className="font-semibold text-lg mb-2">
+                        Mobile Deposit
+                      </h3>
+                      <p className="text-muted-foreground">
+                        Deposit checks instantly with your smartphone camera.
+                        Available 24/7.
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -161,8 +183,13 @@ export default function Index() {
                       <ArrowUpDown className="w-6 h-6 text-[#00754A]" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mb-2">Instant Transfers</h3>
-                      <p className="text-muted-foreground">Send money between accounts instantly with real-time notifications.</p>
+                      <h3 className="font-semibold text-lg mb-2">
+                        Instant Transfers
+                      </h3>
+                      <p className="text-muted-foreground">
+                        Send money between accounts instantly with real-time
+                        notifications.
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -175,8 +202,13 @@ export default function Index() {
                       <Bell className="w-6 h-6 text-[#00754A]" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mb-2">Smart Alerts</h3>
-                      <p className="text-muted-foreground">Stay informed with customizable alerts for transactions and balances.</p>
+                      <h3 className="font-semibold text-lg mb-2">
+                        Smart Alerts
+                      </h3>
+                      <p className="text-muted-foreground">
+                        Stay informed with customizable alerts for transactions
+                        and balances.
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -232,8 +264,9 @@ export default function Index() {
               Ready to join First City Credit Union?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Join over 150,000 members who trust First City Credit Union with their
-              financial future. Open your account in minutes and start banking smarter today.
+              Join over 150,000 members who trust First City Credit Union with
+              their financial future. Open your account in minutes and start
+              banking smarter today.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <div className="flex gap-2 w-full sm:w-auto">
@@ -245,7 +278,11 @@ export default function Index() {
                   className="bg-white text-foreground border-0 w-full sm:w-64"
                 />
                 <Link to="/signup">
-                  <Button variant="secondary" size="default" className="bg-white text-[#00754A] hover:bg-gray-100">
+                  <Button
+                    variant="secondary"
+                    size="default"
+                    className="bg-white text-[#00754A] hover:bg-gray-100"
+                  >
                     Get Started
                   </Button>
                 </Link>
@@ -268,12 +305,17 @@ export default function Index() {
                   <Building2 className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-xl font-bold">First City Credit Union</div>
-                  <div className="text-xs text-gray-400">Your Future. Your Credit Union.</div>
+                  <div className="text-xl font-bold">
+                    First City Credit Union
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    Your Future. Your Credit Union.
+                  </div>
                 </div>
               </div>
               <p className="text-gray-400 mb-4">
-                Your trusted partner for modern banking and financial services since 1952.
+                Your trusted partner for modern banking and financial services
+                since 1952.
               </p>
             </div>
 
@@ -376,11 +418,29 @@ export default function Index() {
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p>&copy; 2024 First City Credit Union. All rights reserved. Member NCUA. Equal Housing Lender.</p>
+              <p>
+                &copy; 2024 First City Credit Union. All rights reserved. Member
+                NCUA. Equal Housing Lender.
+              </p>
               <div className="flex items-center gap-6 text-sm">
-                <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
-                <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-                <Link to="/accessibility" className="hover:text-white transition-colors">Accessibility</Link>
+                <Link
+                  to="/terms"
+                  className="hover:text-white transition-colors"
+                >
+                  Terms
+                </Link>
+                <Link
+                  to="/privacy"
+                  className="hover:text-white transition-colors"
+                >
+                  Privacy
+                </Link>
+                <Link
+                  to="/accessibility"
+                  className="hover:text-white transition-colors"
+                >
+                  Accessibility
+                </Link>
               </div>
             </div>
           </div>

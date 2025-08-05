@@ -114,7 +114,9 @@ export default function Login() {
               <div className="text-xl font-bold text-[#00754A]">
                 First City Credit Union
               </div>
-              <div className="text-xs text-muted-foreground">Your Future. Your Credit Union.</div>
+              <div className="text-xs text-muted-foreground">
+                Your Future. Your Credit Union.
+              </div>
             </div>
           </Link>
         </div>
@@ -188,7 +190,11 @@ export default function Login() {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full bg-[#00754A] hover:bg-[#005A39]" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full bg-[#00754A] hover:bg-[#005A39]"
+                disabled={loading}
+              >
                 {loading ? "Signing in..." : "Sign in"}
               </Button>
             </form>
@@ -212,7 +218,10 @@ export default function Login() {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/signup" className="text-[#00754A] hover:underline font-medium">
+                <Link
+                  to="/signup"
+                  className="text-[#00754A] hover:underline font-medium"
+                >
                   Open an Account
                 </Link>
               </p>
@@ -220,7 +229,9 @@ export default function Login() {
 
             {/* Demo Notice */}
             <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-              <h4 className="text-sm font-medium mb-2 text-[#00754A]">Demo Instructions</h4>
+              <h4 className="text-sm font-medium mb-2 text-[#00754A]">
+                Demo Instructions
+              </h4>
               <div className="text-xs text-muted-foreground space-y-1">
                 <p>• Create a new account with "Open an Account" above</p>
                 <p>• Your account starts with $0.00 balance (as requested)</p>
