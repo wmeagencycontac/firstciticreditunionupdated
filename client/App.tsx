@@ -18,7 +18,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminSetup from "./pages/AdminSetup";
 import TestSetup from "./pages/TestSetup";
 import Debug from "./pages/Debug";
-import QuickTest from "./pages/QuickTest";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
@@ -43,10 +42,6 @@ const App = () => (
 
           {/* Test Setup Route */}
           <Route path="/test-setup" element={<TestSetup />} />
-
-          {/* Debug Route */}
-          <Route path="/debug" element={<Debug />} />
-          <Route path="/quick-test" element={<QuickTest />} />
 
           {/* Banking Pages */}
           <Route path="/register" element={<Register />} />
