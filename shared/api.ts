@@ -46,6 +46,38 @@ export interface Transaction {
   timestamp: string;
 }
 
+// Dashboard-specific extended types
+export interface DashboardUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdAt: string;
+}
+
+export interface DashboardAccount {
+  id: string;
+  userId: string;
+  accountNumber: string;
+  accountType: "checking" | "savings";
+  balance: number;
+  currency: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface DashboardTransaction {
+  id: string;
+  accountId: string;
+  type: "debit" | "credit";
+  amount: number;
+  description: string;
+  category: string;
+  merchant: string;
+  createdAt: string;
+  status: "completed" | "pending" | "failed";
+}
+
 export interface Card {
   id: number;
   user_id: number;
