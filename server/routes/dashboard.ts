@@ -62,7 +62,7 @@ export const handleGetDashboard: RequestHandler = async (req, res) => {
         .reduce((sum, txn) => sum + txn.amount, 0);
 
       // Transform account to match frontend expectations
-      const transformedAccount = {
+      const transformedAccount: DashboardAccount = {
         id: account.id.toString(),
         userId: account.user_id.toString(),
         accountNumber: `****${account.account_number.slice(-4)}`,
@@ -74,7 +74,7 @@ export const handleGetDashboard: RequestHandler = async (req, res) => {
       };
 
       // Transform transactions to match frontend expectations
-      const transformedTransactions = accountTransactions.map(txn => ({
+      const transformedTransactions: DashboardTransaction[] = accountTransactions.map(txn => ({
         id: txn.id.toString(),
         accountId: txn.account_id.toString(),
         type: txn.type,
