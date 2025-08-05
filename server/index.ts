@@ -27,6 +27,11 @@ import {
   handleAdminProfile,
 } from "./routes/admin-auth";
 import {
+  handleCreateTestUser,
+  handleGetTestUserInfo,
+} from "./routes/test-setup";
+import { getBankingDatabase } from "./banking-database";
+import {
   handleRequestOTP,
   handleVerifyOTP,
   handleGetOTPUser,
@@ -110,6 +115,10 @@ export function createServer() {
   const emailService = getEmailService();
   emailService.verifyConnection();
 
+  // Initialize banking database
+  const bankingDb = getBankingDatabase();
+  console.log("Banking database initialized");
+
   // Middleware
   app.use(cors());
   app.use(express.json());
@@ -171,6 +180,10 @@ export function createServer() {
   // Admin banking endpoints
   app.get("/api/admin/users-pending", authenticateToken, handleGetPendingUsers);
   app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
+
+  // Test setup endpoints (for development/testing)
+  app.post("/api/test-setup/create", handleCreateTestUser);
+  app.get("/api/test-setup/info", handleGetTestUserInfo);
 
   return { app, httpServer, io };
 }
