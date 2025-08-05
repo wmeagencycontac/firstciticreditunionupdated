@@ -150,17 +150,17 @@ export interface RegistrationResponse {
 }
 
 export interface AccountSummary {
-  account: Account;
-  recentTransactions: Transaction[];
+  account: DashboardAccount;
+  recentTransactions: DashboardTransaction[];
   monthlySpending: number;
   monthlyIncome: number;
 }
 
 export interface DashboardData {
-  user: User;
+  user: DashboardUser;
   accounts: AccountSummary[];
   totalBalance: number;
-  recentActivity: Transaction[];
+  recentActivity: DashboardTransaction[];
 }
 
 export interface TransactionFilters {
