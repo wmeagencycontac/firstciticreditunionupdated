@@ -114,6 +114,11 @@ export function createServer() {
   const emailService = getEmailService();
   emailService.verifyConnection();
 
+  // Initialize banking database
+  const { getBankingDatabase } = await import("./banking-database");
+  const bankingDb = getBankingDatabase();
+  console.log("Banking database initialized");
+
   // Middleware
   app.use(cors());
   app.use(express.json());
