@@ -248,7 +248,14 @@ export async function runTestUserSetup(): Promise<void> {
 }
 
 // Run if this file is executed directly
-if (require.main === module) {
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Check if this file is being run directly
+if (process.argv[1] === __filename) {
   runTestUserSetup().then(() => {
     console.log("\n👍 Setup complete! Use the credentials above to login and test the banking features.");
     process.exit(0);
