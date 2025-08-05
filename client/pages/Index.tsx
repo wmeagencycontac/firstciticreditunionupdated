@@ -244,7 +244,7 @@ export default function Index() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white text-foreground border-0 w-full sm:w-64"
                 />
-                <Link to="/register">
+                <Link to="/signup">
                   <Button variant="secondary" size="default" className="bg-white text-[#00754A] hover:bg-gray-100">
                     Get Started
                   </Button>
