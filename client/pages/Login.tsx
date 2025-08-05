@@ -219,28 +219,28 @@ export default function Login() {
             </div>
 
             {/* Demo Notice */}
-            <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-              <h4 className="text-sm font-medium mb-2">Demo Instructions</h4>
+            <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+              <h4 className="text-sm font-medium mb-2 text-[#00754A]">Demo Instructions</h4>
               <div className="text-xs text-muted-foreground space-y-1">
-                <p>• Create a new account with the sign up link</p>
-                <p>• Or test with the Supabase test page</p>
+                <p>• Create a new account with "Open an Account" above</p>
+                <p>• Your account starts with $0.00 balance (as requested)</p>
                 <p>
                   • Visit{" "}
                   <Link
                     to="/supabase-test"
-                    className="text-primary hover:underline"
+                    className="text-[#00754A] hover:underline"
                   >
                     /supabase-test
                   </Link>{" "}
-                  to get started
+                  for Supabase testing
                 </p>
                 <p>
-                  • Test password reset at{" "}
+                  • Test admin features at{" "}
                   <Link
-                    to="/password-reset-test"
-                    className="text-primary hover:underline"
+                    to="/admin/login"
+                    className="text-[#00754A] hover:underline"
                   >
-                    /password-reset-test
+                    /admin/login
                   </Link>
                 </p>
               </div>
