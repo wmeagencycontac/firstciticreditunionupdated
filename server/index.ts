@@ -40,6 +40,11 @@ import {
   authenticateUser as supabaseAuthenticateUser,
 } from "./routes/supabase-auth";
 import {
+  createBankingProfile,
+  getBankingProfile,
+  updateBankingProfile,
+} from "./routes/supabase-profile";
+import {
   getAccounts as supabaseGetAccounts,
   createAccount as supabaseCreateAccount,
   getTransactions as supabaseGetTransactions,
@@ -220,6 +225,11 @@ export function createServer() {
     supabaseAuthenticateUser,
     supabaseGetProfile,
   );
+
+  // Banking Profile routes
+  app.post("/api/supabase/auth/create-profile", createBankingProfile);
+  app.get("/api/supabase/profile/:userId", getBankingProfile);
+  app.put("/api/supabase/profile/:userId", updateBankingProfile);
 
   // Supabase Banking routes
   app.get(

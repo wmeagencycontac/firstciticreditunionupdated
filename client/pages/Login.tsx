@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CreditCard, Eye, EyeOff } from "lucide-react";
+import { Building2, Eye, EyeOff } from "lucide-react";
 import { auth } from "@/lib/supabase";
 
 export default function Login() {
@@ -102,17 +102,22 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background to-green-50/50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <CreditCard className="w-5 h-5 text-primary-foreground" />
+          <Link to="/" className="inline-flex items-center space-x-3 mb-6">
+            <div className="w-10 h-10 bg-[#00754A] rounded-lg flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-foreground">
-              SecureBank
-            </span>
+            <div>
+              <div className="text-xl font-bold text-[#00754A]">
+                First City Credit Union
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Your Future. Your Credit Union.
+              </div>
+            </div>
           </Link>
         </div>
 
@@ -120,7 +125,7 @@ export default function Login() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Welcome back</CardTitle>
             <CardDescription>
-              Sign in to your SecureBank account
+              Sign in to your First City Credit Union account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -179,13 +184,17 @@ export default function Login() {
               <div className="flex items-center justify-between">
                 <Link
                   to="/reset-password"
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-[#00754A] hover:underline"
                 >
                   Forgot password?
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full bg-[#00754A] hover:bg-[#005A39]"
+                disabled={loading}
+              >
                 {loading ? "Signing in..." : "Sign in"}
               </Button>
             </form>
@@ -209,35 +218,40 @@ export default function Login() {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/register" className="text-primary hover:underline">
-                  Sign up
+                <Link
+                  to="/signup"
+                  className="text-[#00754A] hover:underline font-medium"
+                >
+                  Open an Account
                 </Link>
               </p>
             </div>
 
             {/* Demo Notice */}
-            <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-              <h4 className="text-sm font-medium mb-2">Demo Instructions</h4>
+            <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+              <h4 className="text-sm font-medium mb-2 text-[#00754A]">
+                Demo Instructions
+              </h4>
               <div className="text-xs text-muted-foreground space-y-1">
-                <p>• Create a new account with the sign up link</p>
-                <p>• Or test with the Supabase test page</p>
+                <p>• Create a new account with "Open an Account" above</p>
+                <p>• Your account starts with $0.00 balance (as requested)</p>
                 <p>
                   • Visit{" "}
                   <Link
                     to="/supabase-test"
-                    className="text-primary hover:underline"
+                    className="text-[#00754A] hover:underline"
                   >
                     /supabase-test
                   </Link>{" "}
-                  to get started
+                  for Supabase testing
                 </p>
                 <p>
-                  • Test password reset at{" "}
+                  • Test admin features at{" "}
                   <Link
-                    to="/password-reset-test"
-                    className="text-primary hover:underline"
+                    to="/admin/login"
+                    className="text-[#00754A] hover:underline"
                   >
-                    /password-reset-test
+                    /admin/login
                   </Link>
                 </p>
               </div>
@@ -248,7 +262,7 @@ export default function Login() {
         {/* Security Notice */}
         <div className="mt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            Your connection is secured with Supabase Authentication
+            Your connection is secured with 256-bit SSL encryption • Member NCUA
           </p>
         </div>
       </div>
