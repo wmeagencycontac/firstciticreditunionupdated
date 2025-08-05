@@ -38,103 +38,170 @@ export default function Index() {
   const [email, setEmail] = useState("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-green-50/50">
       {/* Header */}
-      <header className="container mx-auto px-4 py-6">
+      <header className="container mx-auto px-4 py-6 border-b">
         <nav className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <CreditCard className="w-5 h-5 text-primary-foreground" />
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-[#00754A] rounded-lg flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-foreground">
-              SecureBank
-            </span>
+            <div>
+              <div className="text-xl font-bold text-[#00754A]">
+                First City Credit Union
+              </div>
+              <div className="text-xs text-muted-foreground">Your Future. Your Credit Union.</div>
+            </div>
           </div>
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             <a
               href="#personal"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
             >
               Personal
             </a>
             <a
               href="#business"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
             >
               Business
             </a>
             <a
               href="#investments"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
             >
               Investments
             </a>
             <a
               href="#about"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
             >
               About
             </a>
           </div>
           <div className="flex items-center space-x-4">
             <Link to="/test-setup">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="hidden md:flex">
                 Test Setup
               </Button>
             </Link>
             <Link to="/login">
-              <Button variant="ghost">Sign In</Button>
+              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">Login</Button>
             </Link>
             <Link to="/register">
-              <Button>Get Started</Button>
+              <Button className="bg-[#00754A] hover:bg-[#005A39] text-white">Open an Account</Button>
             </Link>
           </div>
         </nav>
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-            Banking made <span className="text-primary">simple</span> and{" "}
-            <span className="text-primary">secure</span>
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Experience the future of banking with our comprehensive digital
-            platform. Manage your finances, make payments, and grow your wealth
-            with confidence.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
-            <Link to="/register">
-              <Button size="lg" className="w-full sm:w-auto">
-                Open Account Today
-              </Button>
-            </Link>
-            <Link to="/demo">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                Try Demo
-              </Button>
-            </Link>
+      <section className="container mx-auto px-4 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+              Your Future. <br />
+              <span className="text-[#00754A]">Your Credit Union.</span>
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              Experience banking that puts you first. From mobile deposit to instant transfers,
+              we're here to help you achieve your financial goals with trust and convenience.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <Link to="/register">
+                <Button size="lg" className="w-full sm:w-auto bg-[#00754A] hover:bg-[#005A39] text-white px-8">
+                  Open an Account
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto border-[#00754A] text-[#00754A] hover:bg-green-50 px-8">
+                  Login
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-[#00754A]" />
+                <span>NCUA Insured</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-[#00754A]" />
+                <span>256-bit SSL Secure</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-[#00754A]" />
+                <span>2FA Protected</span>
+              </div>
+            </div>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary">2M+</div>
-              <div className="text-sm text-muted-foreground">Customers</div>
+          <div className="lg:pl-8">
+            {/* Feature Cards */}
+            <div className="grid gap-4">
+              <Card className="border-l-4 border-l-[#00754A] hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Camera className="w-6 h-6 text-[#00754A]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">Mobile Deposit</h3>
+                      <p className="text-muted-foreground">Deposit checks instantly with your smartphone camera. Available 24/7.</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-[#00754A] hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                      <ArrowUpDown className="w-6 h-6 text-[#00754A]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">Instant Transfers</h3>
+                      <p className="text-muted-foreground">Send money between accounts instantly with real-time notifications.</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-[#00754A] hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Bell className="w-6 h-6 text-[#00754A]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">Smart Alerts</h3>
+                      <p className="text-muted-foreground">Stay informed with customizable alerts for transactions and balances.</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary">$50B+</div>
-              <div className="text-sm text-muted-foreground">Assets</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary">99.9%</div>
-              <div className="text-sm text-muted-foreground">Uptime</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary">24/7</div>
-              <div className="text-sm text-muted-foreground">Support</div>
-            </div>
+          </div>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-20 pt-16 border-t">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-[#00754A]">150K+</div>
+            <div className="text-sm text-muted-foreground">Members</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-[#00754A]">$2.5B+</div>
+            <div className="text-sm text-muted-foreground">Assets</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-[#00754A]">99.9%</div>
+            <div className="text-sm text-muted-foreground">Uptime</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-[#00754A]">24/7</div>
+            <div className="text-sm text-muted-foreground">Support</div>
           </div>
         </div>
       </section>
