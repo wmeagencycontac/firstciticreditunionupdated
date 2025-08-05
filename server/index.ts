@@ -226,6 +226,11 @@ export function createServer() {
     supabaseGetProfile,
   );
 
+  // Banking Profile routes
+  app.post("/api/supabase/auth/create-profile", createBankingProfile);
+  app.get("/api/supabase/profile/:userId", getBankingProfile);
+  app.put("/api/supabase/profile/:userId", updateBankingProfile);
+
   // Supabase Banking routes
   app.get(
     "/api/supabase/accounts",
