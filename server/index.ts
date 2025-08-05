@@ -27,6 +27,10 @@ import {
   handleAdminProfile,
 } from "./routes/admin-auth";
 import {
+  handleCreateTestUser,
+  handleGetTestUserInfo,
+} from "./routes/test-setup";
+import {
   handleRequestOTP,
   handleVerifyOTP,
   handleGetOTPUser,
