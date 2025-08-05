@@ -48,6 +48,9 @@ export default function Index() {
             <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
           </div>
           <div className="flex items-center space-x-4">
+            <Link to="/quick-test">
+              <Button variant="outline" size="sm">Quick Test</Button>
+            </Link>
             <Link to="/test-setup">
               <Button variant="outline" size="sm">Test Setup</Button>
             </Link>
