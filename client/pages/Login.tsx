@@ -251,7 +251,7 @@ export default function Login() {
         {/* Security Notice */}
         <div className="mt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            Your connection is secured with Supabase Authentication
+            Your connection is secured with 256-bit SSL encryption • Member NCUA
           </p>
         </div>
       </div>
