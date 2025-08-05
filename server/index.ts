@@ -40,6 +40,11 @@ import {
   authenticateUser as supabaseAuthenticateUser,
 } from "./routes/supabase-auth";
 import {
+  createBankingProfile,
+  getBankingProfile,
+  updateBankingProfile,
+} from "./routes/supabase-profile";
+import {
   getAccounts as supabaseGetAccounts,
   createAccount as supabaseCreateAccount,
   getTransactions as supabaseGetTransactions,
