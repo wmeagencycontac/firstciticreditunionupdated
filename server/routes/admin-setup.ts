@@ -64,6 +64,31 @@ export const handleCheckAdminExists: RequestHandler = async (req, res) => {
   try {
     const db = getBankingDatabase();
 
+    // First ensure the users table exists
+    await new Promise<void>((resolve, reject) => {
+      db.getDatabase().run(
+        `CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          email TEXT UNIQUE NOT NULL,
+          name TEXT NOT NULL,
+          bio TEXT,
+          picture TEXT,
+          password_hash TEXT,
+          email_verified INTEGER DEFAULT 0,
+          role TEXT DEFAULT 'user',
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`,
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        },
+      );
+    });
+
     const adminExists = await new Promise<boolean>((resolve, reject) => {
       db.getDatabase().get(
         `SELECT id FROM users WHERE role = 'admin' LIMIT 1`,
