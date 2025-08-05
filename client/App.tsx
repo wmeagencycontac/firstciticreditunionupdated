@@ -39,6 +39,9 @@ const App = () => (
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
+          {/* Test Setup Route */}
+          <Route path="/test-setup" element={<TestSetup />} />
+
           {/* Banking Pages */}
           <Route path="/register" element={<Register />} />
           <Route path="/register-enhanced" element={<EnhancedRegistration />} />
