@@ -105,11 +105,11 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
-httpServer.listen(port, () => {
+httpServer.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Fusion Starter server running on port ${port}`);
-  console.log(`📱 Frontend: http://localhost:${port}`);
-  console.log(`🔧 API: http://localhost:${port}/api`);
-  console.log(`🟢 Socket.IO: ws://localhost:${port}`);
+  console.log(`📱 Frontend: http://0.0.0.0:${port}`);
+  console.log(`🔧 API: http://0.0.0.0:${port}/api`);
+  console.log(`🟢 Socket.IO: ws://0.0.0.0:${port}`);
 });
 
 // Graceful shutdown
