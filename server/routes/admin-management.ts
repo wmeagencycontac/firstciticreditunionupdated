@@ -26,21 +26,21 @@ export const requireAdmin: RequestHandler = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-    
+
     // Verify admin user (you would implement your own admin auth)
     const adminId = req.user?.id; // Assuming you have user from middleware
-    
+
     if (!adminId) {
       return res.status(401).json({ error: "Admin authentication required" });
     }
 
     const { data: adminUser, error } = await supabaseAdmin
-      .from('banking_users')
-      .select('role')
-      .eq('id', adminId)
+      .from("banking_users")
+      .select("role")
+      .eq("id", adminId)
       .single();
 
-    if (error || !adminUser || adminUser.role !== 'admin') {
+    if (error || !adminUser || adminUser.role !== "admin") {
       return res.status(403).json({ error: "Admin access required" });
     }
 
@@ -60,44 +60,60 @@ export const getDashboardStats: RequestHandler = async (req, res) => {
 
     // Get user count
     const { count: totalUsers, error: usersError } = await supabaseAdmin
-      .from('banking_users')
-      .select('*', { count: 'exact', head: true });
+      .from("banking_users")
+      .select("*", { count: "exact", head: true });
 
     // Get pending KYC count
     const { count: pendingKyc, error: kycError } = await supabaseAdmin
-      .from('banking_users')
-      .select('*', { count: 'exact', head: true })
-      .eq('kyc_status', 'pending');
+      .from("banking_users")
+      .select("*", { count: "exact", head: true })
+      .eq("kyc_status", "pending");
 
     // Get locked accounts count
     const { count: lockedAccounts, error: lockedError } = await supabaseAdmin
-      .from('banking_users')
-      .select('*', { count: 'exact', head: true })
-      .eq('account_locked', true);
+      .from("banking_users")
+      .select("*", { count: "exact", head: true })
+      .eq("account_locked", true);
 
     // Get total balance across all accounts
     const { data: balanceData, error: balanceError } = await supabaseAdmin
-      .from('accounts')
-      .select('balance')
-      .eq('status', 'active');
+      .from("accounts")
+      .select("balance")
+      .eq("status", "active");
 
-    const totalBalance = balanceData?.reduce((sum, account) => sum + account.balance, 0) || 0;
+    const totalBalance =
+      balanceData?.reduce((sum, account) => sum + account.balance, 0) || 0;
 
     // Get today's transactions count
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     const { count: dailyTransactions, error: dailyError } = await supabaseAdmin
-      .from('transactions')
-      .select('*', { count: 'exact', head: true })
-      .gte('timestamp', `${today}T00:00:00Z`)
-      .lt('timestamp', `${today}T23:59:59Z`);
+      .from("transactions")
+      .select("*", { count: "exact", head: true })
+      .gte("timestamp", `${today}T00:00:00Z`)
+      .lt("timestamp", `${today}T23:59:59Z`);
 
     // Get total transactions count
-    const { count: totalTransactions, error: transactionsError } = await supabaseAdmin
-      .from('transactions')
-      .select('*', { count: 'exact', head: true });
+    const { count: totalTransactions, error: transactionsError } =
+      await supabaseAdmin
+        .from("transactions")
+        .select("*", { count: "exact", head: true });
 
-    if (usersError || kycError || lockedError || balanceError || dailyError || transactionsError) {
-      console.error("Stats query errors:", { usersError, kycError, lockedError, balanceError, dailyError, transactionsError });
+    if (
+      usersError ||
+      kycError ||
+      lockedError ||
+      balanceError ||
+      dailyError ||
+      transactionsError
+    ) {
+      console.error("Stats query errors:", {
+        usersError,
+        kycError,
+        lockedError,
+        balanceError,
+        dailyError,
+        transactionsError,
+      });
       return res.status(500).json({ error: "Failed to load statistics" });
     }
 
@@ -123,9 +139,11 @@ export const getDashboardStats: RequestHandler = async (req, res) => {
 export const getAllUsers: RequestHandler = async (req, res) => {
   try {
     const { data: users, error } = await supabaseAdmin
-      .from('banking_users')
-      .select('id, email, name, kyc_status, account_locked, role, created_at, last_login_at')
-      .order('created_at', { ascending: false });
+      .from("banking_users")
+      .select(
+        "id, email, name, kyc_status, account_locked, role, created_at, last_login_at",
+      )
+      .order("created_at", { ascending: false });
 
     if (error) {
       return res.status(500).json({ error: "Failed to load users" });
@@ -146,7 +164,8 @@ export const getUserDetailed: RequestHandler = async (req, res) => {
     const { userId } = req.params;
     const secureBankingService = getSecureBankingService();
 
-    const { data: user, error } = await secureBankingService.getBankingUserDecrypted(userId);
+    const { data: user, error } =
+      await secureBankingService.getBankingUserDecrypted(userId);
 
     if (error) {
       return res.status(404).json({ error: "User not found" });
@@ -157,12 +176,12 @@ export const getUserDetailed: RequestHandler = async (req, res) => {
     if (adminId) {
       await secureBankingService.logAdminAction({
         adminId,
-        action: 'view_user_details',
-        resourceType: 'user',
+        action: "view_user_details",
+        resourceType: "user",
         resourceId: userId,
         targetUserId: userId,
         ipAddress: req.ip,
-        userAgent: req.get('User-Agent'),
+        userAgent: req.get("User-Agent"),
       });
     }
 
@@ -182,19 +201,19 @@ export const lockUnlockUser: RequestHandler = async (req, res) => {
     const { reason } = lockUserSchema.parse(req.body);
     const adminId = req.user?.id;
 
-    if (!['lock', 'unlock'].includes(action)) {
+    if (!["lock", "unlock"].includes(action)) {
       return res.status(400).json({ error: "Invalid action" });
     }
 
-    const isLocking = action === 'lock';
-    
+    const isLocking = action === "lock";
+
     const updateData: any = {
       account_locked: isLocking,
       updated_at: new Date().toISOString(),
     };
 
     if (isLocking) {
-      updateData.locked_reason = reason || 'Locked by administrator';
+      updateData.locked_reason = reason || "Locked by administrator";
       updateData.locked_at = new Date().toISOString();
     } else {
       updateData.locked_reason = null;
@@ -202,9 +221,9 @@ export const lockUnlockUser: RequestHandler = async (req, res) => {
     }
 
     const { error } = await supabaseAdmin
-      .from('banking_users')
+      .from("banking_users")
       .update(updateData)
-      .eq('id', userId);
+      .eq("id", userId);
 
     if (error) {
       return res.status(500).json({ error: `Failed to ${action} user` });
@@ -216,12 +235,12 @@ export const lockUnlockUser: RequestHandler = async (req, res) => {
       await secureBankingService.logAdminAction({
         adminId,
         action: `${action}_user`,
-        resourceType: 'user',
+        resourceType: "user",
         resourceId: userId,
         newValues: { account_locked: isLocking, reason },
         targetUserId: userId,
         ipAddress: req.ip,
-        userAgent: req.get('User-Agent'),
+        userAgent: req.get("User-Agent"),
       });
     }
 
@@ -229,7 +248,9 @@ export const lockUnlockUser: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Lock/unlock user error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: error.errors });
+      return res
+        .status(400)
+        .json({ error: "Invalid input", details: error.errors });
     }
     res.status(500).json({ error: "Failed to update user status" });
   }
@@ -241,8 +262,9 @@ export const lockUnlockUser: RequestHandler = async (req, res) => {
 export const getAllAccounts: RequestHandler = async (req, res) => {
   try {
     const { data: accounts, error } = await supabaseAdmin
-      .from('accounts')
-      .select(`
+      .from("accounts")
+      .select(
+        `
         id,
         user_id,
         account_number,
@@ -251,8 +273,9 @@ export const getAllAccounts: RequestHandler = async (req, res) => {
         status,
         created_at,
         banking_users!inner(name)
-      `)
-      .order('created_at', { ascending: false });
+      `,
+      )
+      .order("created_at", { ascending: false });
 
     if (error) {
       return res.status(500).json({ error: "Failed to load accounts" });
@@ -276,9 +299,9 @@ export const updateAccountBalance: RequestHandler = async (req, res) => {
 
     // Get current account data
     const { data: currentAccount, error: accountError } = await supabaseAdmin
-      .from('accounts')
-      .select('balance, user_id')
-      .eq('id', accountId)
+      .from("accounts")
+      .select("balance, user_id")
+      .eq("id", accountId)
       .single();
 
     if (accountError || !currentAccount) {
@@ -290,13 +313,13 @@ export const updateAccountBalance: RequestHandler = async (req, res) => {
 
     // Update account balance
     const { error: updateError } = await supabaseAdmin
-      .from('accounts')
-      .update({ 
+      .from("accounts")
+      .update({
         balance: newBalance,
         available_balance: newBalance,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
-      .eq('id', accountId);
+      .eq("id", accountId);
 
     if (updateError) {
       return res.status(500).json({ error: "Failed to update balance" });
@@ -306,25 +329,25 @@ export const updateAccountBalance: RequestHandler = async (req, res) => {
     const secureBankingService = getSecureBankingService();
     await secureBankingService.createTransaction({
       accountId,
-      type: difference > 0 ? 'credit' : 'debit',
+      type: difference > 0 ? "credit" : "debit",
       amount: Math.abs(difference),
       description: `Admin balance adjustment: ${reason}`,
-      category: 'admin_adjustment',
-      merchantName: 'First City Credit Union',
+      category: "admin_adjustment",
+      merchantName: "First City Credit Union",
     });
 
     // Log admin action
     if (adminId) {
       await secureBankingService.logAdminAction({
         adminId,
-        action: 'update_account_balance',
-        resourceType: 'account',
+        action: "update_account_balance",
+        resourceType: "account",
         resourceId: accountId,
         oldValues: { balance: oldBalance },
         newValues: { balance: newBalance, reason },
         targetUserId: currentAccount.user_id,
         ipAddress: req.ip,
-        userAgent: req.get('User-Agent'),
+        userAgent: req.get("User-Agent"),
       });
     }
 
@@ -332,7 +355,9 @@ export const updateAccountBalance: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Update account balance error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: error.errors });
+      return res
+        .status(400)
+        .json({ error: "Invalid input", details: error.errors });
     }
     res.status(500).json({ error: "Failed to update account balance" });
   }
@@ -344,10 +369,11 @@ export const updateAccountBalance: RequestHandler = async (req, res) => {
 export const getAllTransactions: RequestHandler = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 100;
-    
+
     const { data: transactions, error } = await supabaseAdmin
-      .from('transactions')
-      .select(`
+      .from("transactions")
+      .select(
+        `
         id,
         account_id,
         type,
@@ -356,8 +382,9 @@ export const getAllTransactions: RequestHandler = async (req, res) => {
         status,
         timestamp,
         accounts!inner(account_number, user_id, banking_users!inner(name))
-      `)
-      .order('timestamp', { ascending: false })
+      `,
+      )
+      .order("timestamp", { ascending: false })
       .limit(limit);
 
     if (error) {
@@ -376,11 +403,12 @@ export const getAllTransactions: RequestHandler = async (req, res) => {
  */
 export const getKYCDocuments: RequestHandler = async (req, res) => {
   try {
-    const status = req.query.status as string || 'pending';
-    
+    const status = (req.query.status as string) || "pending";
+
     const { data: documents, error } = await supabaseAdmin
-      .from('kyc_documents')
-      .select(`
+      .from("kyc_documents")
+      .select(
+        `
         id,
         user_id,
         document_type,
@@ -389,9 +417,10 @@ export const getKYCDocuments: RequestHandler = async (req, res) => {
         verified_at,
         rejection_reason,
         banking_users!inner(name)
-      `)
-      .eq('verification_status', status)
-      .order('uploaded_at', { ascending: false });
+      `,
+      )
+      .eq("verification_status", status)
+      .order("uploaded_at", { ascending: false });
 
     if (error) {
       return res.status(500).json({ error: "Failed to load KYC documents" });
@@ -413,11 +442,11 @@ export const handleKYCAction: RequestHandler = async (req, res) => {
     const { notes } = kycActionSchema.parse(req.body);
     const adminId = req.user?.id;
 
-    if (!['approve', 'reject'].includes(action)) {
+    if (!["approve", "reject"].includes(action)) {
       return res.status(400).json({ error: "Invalid action" });
     }
 
-    const status = action === 'approve' ? 'verified' : 'rejected';
+    const status = action === "approve" ? "verified" : "rejected";
     const secureBankingService = getSecureBankingService();
 
     // Update document status
@@ -425,7 +454,7 @@ export const handleKYCAction: RequestHandler = async (req, res) => {
       documentId,
       adminId!,
       status,
-      notes
+      notes,
     );
 
     if (error) {
@@ -433,31 +462,33 @@ export const handleKYCAction: RequestHandler = async (req, res) => {
     }
 
     // Check if user has all required documents verified
-    if (action === 'approve') {
+    if (action === "approve") {
       const { data: document } = await supabaseAdmin
-        .from('kyc_documents')
-        .select('user_id')
-        .eq('id', documentId)
+        .from("kyc_documents")
+        .select("user_id")
+        .eq("id", documentId)
         .single();
 
       if (document) {
         const { data: userDocs } = await supabaseAdmin
-          .from('kyc_documents')
-          .select('document_type, verification_status')
-          .eq('user_id', document.user_id);
+          .from("kyc_documents")
+          .select("document_type, verification_status")
+          .eq("user_id", document.user_id);
 
-        const requiredDocs = ['drivers_license', 'selfie', 'proof_of_address'];
-        const verifiedDocs = userDocs?.filter(doc => doc.verification_status === 'verified') || [];
-        const hasAllRequired = requiredDocs.every(reqDoc => 
-          verifiedDocs.some(verDoc => verDoc.document_type === reqDoc)
+        const requiredDocs = ["drivers_license", "selfie", "proof_of_address"];
+        const verifiedDocs =
+          userDocs?.filter((doc) => doc.verification_status === "verified") ||
+          [];
+        const hasAllRequired = requiredDocs.every((reqDoc) =>
+          verifiedDocs.some((verDoc) => verDoc.document_type === reqDoc),
         );
 
         if (hasAllRequired) {
           // Update user KYC status to approved
           await supabaseAdmin
-            .from('banking_users')
-            .update({ kyc_status: 'approved' })
-            .eq('id', document.user_id);
+            .from("banking_users")
+            .update({ kyc_status: "approved" })
+            .eq("id", document.user_id);
         }
       }
     }
@@ -467,11 +498,11 @@ export const handleKYCAction: RequestHandler = async (req, res) => {
       await secureBankingService.logAdminAction({
         adminId,
         action: `${action}_kyc_document`,
-        resourceType: 'kyc_document',
+        resourceType: "kyc_document",
         resourceId: documentId,
         newValues: { status, notes },
         ipAddress: req.ip,
-        userAgent: req.get('User-Agent'),
+        userAgent: req.get("User-Agent"),
       });
     }
 
@@ -479,7 +510,9 @@ export const handleKYCAction: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("KYC action error:", error);
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: error.errors });
+      return res
+        .status(400)
+        .json({ error: "Invalid input", details: error.errors });
     }
     res.status(500).json({ error: "Failed to process KYC action" });
   }
@@ -491,10 +524,11 @@ export const handleKYCAction: RequestHandler = async (req, res) => {
 export const getAdminAuditLog: RequestHandler = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 100;
-    
+
     const { data: auditLog, error } = await supabaseAdmin
-      .from('admin_audit_log')
-      .select(`
+      .from("admin_audit_log")
+      .select(
+        `
         id,
         action,
         resource_type,
@@ -502,8 +536,9 @@ export const getAdminAuditLog: RequestHandler = async (req, res) => {
         timestamp,
         ip_address,
         banking_users!inner(name)
-      `)
-      .order('timestamp', { ascending: false })
+      `,
+      )
+      .order("timestamp", { ascending: false })
       .limit(limit);
 
     if (error) {

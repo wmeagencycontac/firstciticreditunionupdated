@@ -5,6 +5,7 @@ This guide covers the complete production deployment of the upgraded First City 
 ## 🎯 Platform Overview
 
 **Upgraded Features:**
+
 - ✅ **Secure PII Encryption**: AES-256-GCM encryption with key rotation
 - ✅ **KYC Document Verification**: Automated identity verification workflow
 - ✅ **Mobile Check Deposits**: Real-time check processing with image analysis
@@ -83,6 +84,7 @@ ENCRYPTION_MASTER_KEY=your-64-char-hex-key
 ```
 
 **🔐 Generate Encryption Key:**
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
@@ -115,15 +117,16 @@ pm2 start ecosystem.config.js
 ### 1. SSL/HTTPS Setup
 
 **Option A: Reverse Proxy (Recommended)**
+
 ```nginx
 # /etc/nginx/sites-available/banking-app
 server {
     listen 443 ssl http2;
     server_name yourdomain.com;
-    
+
     ssl_certificate /path/to/certificate.crt;
     ssl_certificate_key /path/to/private.key;
-    
+
     location / {
         proxy_pass http://localhost:3000;
         proxy_set_header Host $host;
@@ -135,6 +138,7 @@ server {
 ```
 
 **Option B: Direct SSL**
+
 ```bash
 # Set in .env.production
 SSL_CERT_PATH=/etc/ssl/certs/banking-app.crt
@@ -173,11 +177,13 @@ ADMIN_ALLOWED_IPS=192.168.1.100,10.0.0.50
 ### 1. Database Setup
 
 1. **Create Supabase Project**
+
    - Go to [supabase.com](https://supabase.com)
    - Create new project
    - Note down URL and keys
 
 2. **Run Schema Migration**
+
    ```sql
    -- Copy contents of database/schema.sql
    -- Paste in Supabase SQL Editor
@@ -187,8 +193,8 @@ ADMIN_ALLOWED_IPS=192.168.1.100,10.0.0.50
 3. **Configure Row-Level Security**
    ```sql
    -- Verify RLS is enabled on all tables
-   SELECT schemaname, tablename, rowsecurity 
-   FROM pg_tables 
+   SELECT schemaname, tablename, rowsecurity
+   FROM pg_tables
    WHERE schemaname = 'public';
    ```
 
@@ -251,6 +257,7 @@ FROM_EMAIL=noreply@yourdomain.com
 ### Email Templates
 
 The system automatically sends:
+
 - ✅ Account verification emails
 - ✅ KYC status updates
 - ✅ Transaction notifications
@@ -315,7 +322,7 @@ https://yourdomain.com/admin/dashboard
 ### Admin Features
 
 - ✅ **User Management**: View, lock/unlock accounts
-- ✅ **KYC Verification**: Approve/reject identity documents  
+- ✅ **KYC Verification**: Approve/reject identity documents
 - ✅ **Transaction Monitoring**: Real-time transaction oversight
 - ✅ **Balance Management**: Adjust account balances with audit trail
 - ✅ **Audit Logging**: Complete admin action history
@@ -409,11 +416,11 @@ gpg --cipher-algo AES256 --compress-algo 1 --s2k-mode 3 \
 
 ```sql
 -- Create indexes for performance
-CREATE INDEX CONCURRENTLY idx_transactions_user_date 
+CREATE INDEX CONCURRENTLY idx_transactions_user_date
 ON transactions(user_id, timestamp DESC);
 
 -- Analyze query performance
-EXPLAIN ANALYZE SELECT * FROM transactions 
+EXPLAIN ANALYZE SELECT * FROM transactions
 WHERE user_id = $1 ORDER BY timestamp DESC LIMIT 50;
 ```
 
@@ -478,6 +485,7 @@ DETAILED_TRANSACTION_LOGGING=true
 ### Common Issues
 
 **Database Connection Errors**
+
 ```bash
 # Check Supabase connection
 curl -I https://your-project.supabase.co
@@ -486,6 +494,7 @@ echo $SUPABASE_URL
 ```
 
 **File Upload Issues**
+
 ```bash
 # Check directory permissions
 ls -la /secure/banking-data
@@ -494,6 +503,7 @@ df -h
 ```
 
 **Authentication Problems**
+
 ```bash
 # Verify JWT tokens
 # Check Supabase auth logs
@@ -520,7 +530,7 @@ df -h
 Your First City Credit Union banking platform is now production-ready with:
 
 - 🔒 **Bank-grade security** with encryption and compliance
-- 📱 **Modern user experience** with mobile-first design  
+- 📱 **Modern user experience** with mobile-first design
 - 👨‍💼 **Powerful admin tools** for complete platform management
 - 🏦 **Real banking features** including mobile deposits and KYC
 - 📊 **Production monitoring** and audit capabilities

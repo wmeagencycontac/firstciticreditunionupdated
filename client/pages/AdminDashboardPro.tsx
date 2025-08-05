@@ -7,12 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -74,9 +69,9 @@ interface User {
   id: string;
   email: string;
   name: string;
-  kyc_status: 'pending' | 'in_review' | 'approved' | 'rejected';
+  kyc_status: "pending" | "in_review" | "approved" | "rejected";
   account_locked: boolean;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   created_at: string;
   last_login_at?: string;
   phoneNumber?: string;
@@ -140,19 +135,19 @@ export default function AdminDashboardPro() {
     dailyTransactions: 0,
     lockedAccounts: 0,
   });
-  
+
   const [users, setUsers] = useState<User[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [kycDocuments, setKycDocuments] = useState<KYCDocument[]>([]);
-  
+
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [viewUserDialog, setViewUserDialog] = useState(false);
   const [balanceUpdateDialog, setBalanceUpdateDialog] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [newBalance, setNewBalance] = useState("");
   const [balanceReason, setBalanceReason] = useState("");
-  
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [kycFilter, setKycFilter] = useState("all");
@@ -277,16 +272,23 @@ export default function AdminDashboardPro() {
     }
   };
 
-  const handleKYCAction = async (documentId: string, action: 'approve' | 'reject', notes?: string) => {
+  const handleKYCAction = async (
+    documentId: string,
+    action: "approve" | "reject",
+    notes?: string,
+  ) => {
     try {
-      const response = await fetch(`/api/admin/kyc-documents/${documentId}/${action}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+      const response = await fetch(
+        `/api/admin/kyc-documents/${documentId}/${action}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+          },
+          body: JSON.stringify({ notes }),
         },
-        body: JSON.stringify({ notes }),
-      });
+      );
 
       if (response.ok) {
         toast.success(`Document ${action}d successfully`);
@@ -300,7 +302,11 @@ export default function AdminDashboardPro() {
     }
   };
 
-  const handleLockUnlockUser = async (userId: string, action: 'lock' | 'unlock', reason?: string) => {
+  const handleLockUnlockUser = async (
+    userId: string,
+    action: "lock" | "unlock",
+    reason?: string,
+  ) => {
     try {
       const response = await fetch(`/api/admin/users/${userId}/${action}`, {
         method: "POST",
@@ -329,17 +335,20 @@ export default function AdminDashboardPro() {
     }
 
     try {
-      const response = await fetch(`/api/admin/accounts/${selectedAccount.id}/balance`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+      const response = await fetch(
+        `/api/admin/accounts/${selectedAccount.id}/balance`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+          },
+          body: JSON.stringify({
+            newBalance: parseFloat(newBalance),
+            reason: balanceReason,
+          }),
         },
-        body: JSON.stringify({
-          newBalance: parseFloat(newBalance),
-          reason: balanceReason,
-        }),
-      });
+      );
 
       if (response.ok) {
         toast.success("Balance updated successfully");
@@ -362,14 +371,16 @@ export default function AdminDashboardPro() {
     navigate("/admin/login");
   };
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || 
-                         (statusFilter === "locked" && user.account_locked) ||
-                         (statusFilter === "active" && !user.account_locked);
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "locked" && user.account_locked) ||
+      (statusFilter === "active" && !user.account_locked);
     const matchesKyc = kycFilter === "all" || user.kyc_status === kycFilter;
-    
+
     return matchesSearch && matchesStatus && matchesKyc;
   });
 
@@ -377,15 +388,30 @@ export default function AdminDashboardPro() {
     const statusConfig = {
       pending: { variant: "secondary" as const, label: "Pending" },
       in_review: { variant: "default" as const, label: "In Review" },
-      approved: { variant: "default" as const, label: "Approved", className: "bg-green-100 text-green-800" },
+      approved: {
+        variant: "default" as const,
+        label: "Approved",
+        className: "bg-green-100 text-green-800",
+      },
       rejected: { variant: "destructive" as const, label: "Rejected" },
-      active: { variant: "default" as const, label: "Active", className: "bg-green-100 text-green-800" },
+      active: {
+        variant: "default" as const,
+        label: "Active",
+        className: "bg-green-100 text-green-800",
+      },
       suspended: { variant: "secondary" as const, label: "Suspended" },
-      completed: { variant: "default" as const, label: "Completed", className: "bg-green-100 text-green-800" },
+      completed: {
+        variant: "default" as const,
+        label: "Completed",
+        className: "bg-green-100 text-green-800",
+      },
       failed: { variant: "destructive" as const, label: "Failed" },
     };
 
-    const config = statusConfig[status as keyof typeof statusConfig] || { variant: "secondary" as const, label: status };
+    const config = statusConfig[status as keyof typeof statusConfig] || {
+      variant: "secondary" as const,
+      label: status,
+    };
     return (
       <Badge variant={config.variant} className={config.className}>
         {config.label}
@@ -404,7 +430,9 @@ export default function AdminDashboardPro() {
                 <Building2 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
+                <h1 className="text-xl font-bold text-gray-900">
+                  Admin Dashboard
+                </h1>
                 <p className="text-sm text-gray-500">First City Credit Union</p>
               </div>
             </div>
@@ -435,7 +463,9 @@ export default function AdminDashboardPro() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalUsers.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {stats.totalUsers.toLocaleString()}
+              </div>
               <p className="text-xs text-muted-foreground">
                 {stats.lockedAccounts} locked accounts
               </p>
@@ -457,12 +487,17 @@ export default function AdminDashboardPro() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Balance
+              </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                ${stats.totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                $
+                {stats.totalBalance.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
               </div>
               <p className="text-xs text-muted-foreground">
                 Across all accounts
@@ -472,14 +507,16 @@ export default function AdminDashboardPro() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Daily Transactions</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Daily Transactions
+              </CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.dailyTransactions}</div>
-              <p className="text-xs text-muted-foreground">
-                Today's activity
-              </p>
+              <div className="text-2xl font-bold">
+                {stats.dailyTransactions}
+              </div>
+              <p className="text-xs text-muted-foreground">Today's activity</p>
             </CardContent>
           </Card>
         </div>
@@ -501,7 +538,9 @@ export default function AdminDashboardPro() {
                 <div className="flex justify-between items-center">
                   <div>
                     <CardTitle>User Management</CardTitle>
-                    <CardDescription>Manage user accounts and verification status</CardDescription>
+                    <CardDescription>
+                      Manage user accounts and verification status
+                    </CardDescription>
                   </div>
                   <div className="flex gap-2">
                     <div className="flex items-center space-x-2">
@@ -513,7 +552,10 @@ export default function AdminDashboardPro() {
                         className="w-64"
                       />
                     </div>
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <Select
+                      value={statusFilter}
+                      onValueChange={setStatusFilter}
+                    >
                       <SelectTrigger className="w-32">
                         <SelectValue />
                       </SelectTrigger>
@@ -552,7 +594,9 @@ export default function AdminDashboardPro() {
                   <TableBody>
                     {filteredUsers.map((user) => (
                       <TableRow key={user.id}>
-                        <TableCell className="font-medium">{user.name}</TableCell>
+                        <TableCell className="font-medium">
+                          {user.name}
+                        </TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{getStatusBadge(user.kyc_status)}</TableCell>
                         <TableCell>
@@ -562,7 +606,10 @@ export default function AdminDashboardPro() {
                               Locked
                             </Badge>
                           ) : (
-                            <Badge variant="default" className="bg-green-100 text-green-800">
+                            <Badge
+                              variant="default"
+                              className="bg-green-100 text-green-800"
+                            >
                               <Unlock className="w-3 h-3 mr-1" />
                               Active
                             </Badge>
@@ -583,10 +630,10 @@ export default function AdminDashboardPro() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => 
+                              onClick={() =>
                                 handleLockUnlockUser(
-                                  user.id, 
-                                  user.account_locked ? 'unlock' : 'lock'
+                                  user.id,
+                                  user.account_locked ? "unlock" : "lock",
                                 )
                               }
                             >
@@ -611,7 +658,9 @@ export default function AdminDashboardPro() {
             <Card>
               <CardHeader>
                 <CardTitle>Account Management</CardTitle>
-                <CardDescription>Manage user accounts and balances</CardDescription>
+                <CardDescription>
+                  Manage user accounts and balances
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -628,10 +677,15 @@ export default function AdminDashboardPro() {
                   <TableBody>
                     {accounts.map((account) => (
                       <TableRow key={account.id}>
-                        <TableCell className="font-mono">{account.account_number}</TableCell>
+                        <TableCell className="font-mono">
+                          {account.account_number}
+                        </TableCell>
                         <TableCell>{account.account_type}</TableCell>
                         <TableCell>
-                          ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          $
+                          {account.balance.toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                          })}
                         </TableCell>
                         <TableCell>{getStatusBadge(account.status)}</TableCell>
                         <TableCell>
@@ -664,7 +718,9 @@ export default function AdminDashboardPro() {
             <Card>
               <CardHeader>
                 <CardTitle>Recent Transactions</CardTitle>
-                <CardDescription>Monitor all platform transactions</CardDescription>
+                <CardDescription>
+                  Monitor all platform transactions
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -681,18 +737,36 @@ export default function AdminDashboardPro() {
                   <TableBody>
                     {transactions.map((transaction) => (
                       <TableRow key={transaction.id}>
-                        <TableCell className="font-mono">{transaction.account_number}</TableCell>
+                        <TableCell className="font-mono">
+                          {transaction.account_number}
+                        </TableCell>
                         <TableCell>
-                          <Badge variant={transaction.type === 'credit' ? 'default' : 'secondary'}>
+                          <Badge
+                            variant={
+                              transaction.type === "credit"
+                                ? "default"
+                                : "secondary"
+                            }
+                          >
                             {transaction.type}
                           </Badge>
                         </TableCell>
-                        <TableCell className={transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}>
-                          {transaction.type === 'credit' ? '+' : '-'}
-                          ${transaction.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        <TableCell
+                          className={
+                            transaction.type === "credit"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }
+                        >
+                          {transaction.type === "credit" ? "+" : "-"}$
+                          {transaction.amount.toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                          })}
                         </TableCell>
                         <TableCell>{transaction.description}</TableCell>
-                        <TableCell>{getStatusBadge(transaction.status)}</TableCell>
+                        <TableCell>
+                          {getStatusBadge(transaction.status)}
+                        </TableCell>
                         <TableCell>
                           {new Date(transaction.timestamp).toLocaleDateString()}
                         </TableCell>
@@ -709,7 +783,9 @@ export default function AdminDashboardPro() {
             <Card>
               <CardHeader>
                 <CardTitle>KYC Document Verification</CardTitle>
-                <CardDescription>Review and approve user identity documents</CardDescription>
+                <CardDescription>
+                  Review and approve user identity documents
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -728,15 +804,17 @@ export default function AdminDashboardPro() {
                         <TableCell>{document.user_name}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            {document.document_type === 'selfie' ? (
+                            {document.document_type === "selfie" ? (
                               <Camera className="w-4 h-4" />
                             ) : (
                               <FileText className="w-4 h-4" />
                             )}
-                            {document.document_type.replace('_', ' ')}
+                            {document.document_type.replace("_", " ")}
                           </div>
                         </TableCell>
-                        <TableCell>{getStatusBadge(document.verification_status)}</TableCell>
+                        <TableCell>
+                          {getStatusBadge(document.verification_status)}
+                        </TableCell>
                         <TableCell>
                           {new Date(document.uploaded_at).toLocaleDateString()}
                         </TableCell>
@@ -746,13 +824,19 @@ export default function AdminDashboardPro() {
                               variant="outline"
                               size="sm"
                               className="text-green-600"
-                              onClick={() => handleKYCAction(document.id, 'approve')}
+                              onClick={() =>
+                                handleKYCAction(document.id, "approve")
+                              }
                             >
                               <CheckCircle className="w-3 h-3" />
                             </Button>
                             <Dialog>
                               <DialogTrigger asChild>
-                                <Button variant="outline" size="sm" className="text-red-600">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-red-600"
+                                >
                                   <XCircle className="w-3 h-3" />
                                 </Button>
                               </DialogTrigger>
@@ -760,7 +844,8 @@ export default function AdminDashboardPro() {
                                 <DialogHeader>
                                   <DialogTitle>Reject Document</DialogTitle>
                                   <DialogDescription>
-                                    Please provide a reason for rejecting this document.
+                                    Please provide a reason for rejecting this
+                                    document.
                                   </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4">
@@ -774,8 +859,14 @@ export default function AdminDashboardPro() {
                                   <Button
                                     variant="destructive"
                                     onClick={() => {
-                                      const textarea = document.getElementById('rejection-reason') as HTMLTextAreaElement;
-                                      handleKYCAction(document.id, 'reject', textarea.value);
+                                      const textarea = document.getElementById(
+                                        "rejection-reason",
+                                      ) as HTMLTextAreaElement;
+                                      handleKYCAction(
+                                        document.id,
+                                        "reject",
+                                        textarea.value,
+                                      );
                                     }}
                                   >
                                     Reject Document
@@ -799,7 +890,9 @@ export default function AdminDashboardPro() {
               <Card>
                 <CardHeader>
                   <CardTitle>System Tools</CardTitle>
-                  <CardDescription>Administrative utilities and bulk operations</CardDescription>
+                  <CardDescription>
+                    Administrative utilities and bulk operations
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Button className="w-full" variant="outline">
@@ -824,19 +917,27 @@ export default function AdminDashboardPro() {
               <Card>
                 <CardHeader>
                   <CardTitle>System Status</CardTitle>
-                  <CardDescription>Monitor system health and performance</CardDescription>
+                  <CardDescription>
+                    Monitor system health and performance
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span>Database Connection</span>
-                    <Badge variant="default" className="bg-green-100 text-green-800">
+                    <Badge
+                      variant="default"
+                      className="bg-green-100 text-green-800"
+                    >
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Healthy
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Encryption Service</span>
-                    <Badge variant="default" className="bg-green-100 text-green-800">
+                    <Badge
+                      variant="default"
+                      className="bg-green-100 text-green-800"
+                    >
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Active
                     </Badge>
@@ -850,7 +951,10 @@ export default function AdminDashboardPro() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Email Service</span>
-                    <Badge variant="default" className="bg-green-100 text-green-800">
+                    <Badge
+                      variant="default"
+                      className="bg-green-100 text-green-800"
+                    >
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Operational
                     </Badge>
@@ -884,26 +988,31 @@ export default function AdminDashboardPro() {
                 </div>
                 <div>
                   <Label>Phone Number</Label>
-                  <div className="font-medium">{selectedUser.phoneNumber || 'N/A'}</div>
+                  <div className="font-medium">
+                    {selectedUser.phoneNumber || "N/A"}
+                  </div>
                 </div>
                 <div>
                   <Label>SSN</Label>
-                  <div className="font-medium">{selectedUser.ssn || 'N/A'}</div>
+                  <div className="font-medium">{selectedUser.ssn || "N/A"}</div>
                 </div>
               </div>
               {selectedUser.address && (
                 <div>
                   <Label>Address</Label>
                   <div className="font-medium">
-                    {selectedUser.address.street}<br />
-                    {selectedUser.address.city}, {selectedUser.address.state} {selectedUser.address.zipCode}
+                    {selectedUser.address.street}
+                    <br />
+                    {selectedUser.address.city}, {selectedUser.address.state}{" "}
+                    {selectedUser.address.zipCode}
                   </div>
                 </div>
               )}
               <Alert>
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription>
-                  This information is encrypted in the database and only accessible to authorized administrators.
+                  This information is encrypted in the database and only
+                  accessible to authorized administrators.
                 </AlertDescription>
               </Alert>
             </div>
@@ -943,12 +1052,13 @@ export default function AdminDashboardPro() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setBalanceUpdateDialog(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setBalanceUpdateDialog(false)}
+            >
               Cancel
             </Button>
-            <Button onClick={handleUpdateBalance}>
-              Update Balance
-            </Button>
+            <Button onClick={handleUpdateBalance}>Update Balance</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

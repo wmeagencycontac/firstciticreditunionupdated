@@ -59,7 +59,7 @@ export default function MobileDeposit() {
   const [currentStep, setCurrentStep] = useState(1);
   const [error, setError] = useState("");
   const [accounts, setAccounts] = useState<Account[]>([]);
-  
+
   const [depositData, setDepositData] = useState<DepositData>({
     amount: "",
     accountId: "",
@@ -70,10 +70,12 @@ export default function MobileDeposit() {
     backImage: null,
   });
 
-  const [frontImagePreview, setFrontImagePreview] = useState<string | null>(null);
+  const [frontImagePreview, setFrontImagePreview] = useState<string | null>(
+    null,
+  );
   const [backImagePreview, setBackImagePreview] = useState<string | null>(null);
   const [depositId, setDepositId] = useState<string | null>(null);
-  
+
   const frontInputRef = useRef<HTMLInputElement>(null);
   const backInputRef = useRef<HTMLInputElement>(null);
 
@@ -89,15 +91,20 @@ export default function MobileDeposit() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setAccounts(data.accounts || []);
-        
+
         // Auto-select first checking account if available
-        const checkingAccount = data.accounts?.find((acc: Account) => acc.account_type === 'checking');
+        const checkingAccount = data.accounts?.find(
+          (acc: Account) => acc.account_type === "checking",
+        );
         if (checkingAccount) {
-          setDepositData(prev => ({ ...prev, accountId: checkingAccount.id }));
+          setDepositData((prev) => ({
+            ...prev,
+            accountId: checkingAccount.id,
+          }));
         }
       }
     } catch (error) {
@@ -106,41 +113,45 @@ export default function MobileDeposit() {
   };
 
   const updateDepositData = (field: keyof DepositData, value: any) => {
-    setDepositData(prev => ({ ...prev, [field]: value }));
+    setDepositData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageUpload = useCallback((type: 'front' | 'back', file: File) => {
-    if (file.size > 10 * 1024 * 1024) { // 10MB limit
-      toast.error("Image file too large. Maximum size is 10MB.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result as string;
-      if (type === 'front') {
-        setFrontImagePreview(result);
-        updateDepositData('frontImage', file);
-      } else {
-        setBackImagePreview(result);
-        updateDepositData('backImage', file);
+  const handleImageUpload = useCallback(
+    (type: "front" | "back", file: File) => {
+      if (file.size > 10 * 1024 * 1024) {
+        // 10MB limit
+        toast.error("Image file too large. Maximum size is 10MB.");
+        return;
       }
-    };
-    reader.readAsDataURL(file);
-  }, []);
 
-  const clearImage = (type: 'front' | 'back') => {
-    if (type === 'front') {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        if (type === "front") {
+          setFrontImagePreview(result);
+          updateDepositData("frontImage", file);
+        } else {
+          setBackImagePreview(result);
+          updateDepositData("backImage", file);
+        }
+      };
+      reader.readAsDataURL(file);
+    },
+    [],
+  );
+
+  const clearImage = (type: "front" | "back") => {
+    if (type === "front") {
       setFrontImagePreview(null);
-      updateDepositData('frontImage', null);
+      updateDepositData("frontImage", null);
       if (frontInputRef.current) {
-        frontInputRef.current.value = '';
+        frontInputRef.current.value = "";
       }
     } else {
       setBackImagePreview(null);
-      updateDepositData('backImage', null);
+      updateDepositData("backImage", null);
       if (backInputRef.current) {
-        backInputRef.current.value = '';
+        backInputRef.current.value = "";
       }
     }
   };
@@ -148,10 +159,12 @@ export default function MobileDeposit() {
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!(depositData.amount && 
-                 parseFloat(depositData.amount) > 0 && 
-                 parseFloat(depositData.amount) <= 10000 &&
-                 depositData.accountId);
+        return !!(
+          depositData.amount &&
+          parseFloat(depositData.amount) > 0 &&
+          parseFloat(depositData.amount) <= 10000 &&
+          depositData.accountId
+        );
       case 2:
         return !!(depositData.frontImage && depositData.backImage);
       case 3:
@@ -163,11 +176,13 @@ export default function MobileDeposit() {
 
   const nextStep = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 4));
+      setCurrentStep((prev) => Math.min(prev + 1, 4));
       setError("");
     } else {
       if (currentStep === 1) {
-        setError("Please enter a valid amount between $0.01 and $10,000 and select an account.");
+        setError(
+          "Please enter a valid amount between $0.01 and $10,000 and select an account.",
+        );
       } else if (currentStep === 2) {
         setError("Please upload both front and back images of the check.");
       }
@@ -175,7 +190,7 @@ export default function MobileDeposit() {
   };
 
   const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
     setError("");
   };
 
@@ -190,13 +205,13 @@ export default function MobileDeposit() {
 
     try {
       const formData = new FormData();
-      formData.append('amount', depositData.amount);
-      formData.append('accountId', depositData.accountId);
-      formData.append('checkNumber', depositData.checkNumber || '');
-      formData.append('checkDate', depositData.checkDate || '');
-      formData.append('bankName', depositData.bankName || '');
-      formData.append('frontImage', depositData.frontImage!);
-      formData.append('backImage', depositData.backImage!);
+      formData.append("amount", depositData.amount);
+      formData.append("accountId", depositData.accountId);
+      formData.append("checkNumber", depositData.checkNumber || "");
+      formData.append("checkDate", depositData.checkDate || "");
+      formData.append("bankName", depositData.bankName || "");
+      formData.append("frontImage", depositData.frontImage!);
+      formData.append("backImage", depositData.backImage!);
 
       const response = await fetch("/api/mobile-deposit", {
         method: "POST",
@@ -215,9 +230,10 @@ export default function MobileDeposit() {
       setDepositId(data.deposit.id);
       toast.success("Mobile deposit submitted successfully!");
       setCurrentStep(4); // Move to success step
-
     } catch (err: any) {
-      setError(err.message || "Failed to submit mobile deposit. Please try again.");
+      setError(
+        err.message || "Failed to submit mobile deposit. Please try again.",
+      );
       toast.error("Mobile deposit failed");
     } finally {
       setLoading(false);
@@ -229,8 +245,8 @@ export default function MobileDeposit() {
   };
 
   const formatAmount = (value: string) => {
-    const number = parseFloat(value.replace(/[^0-9.]/g, ''));
-    if (isNaN(number)) return '';
+    const number = parseFloat(value.replace(/[^0-9.]/g, ""));
+    if (isNaN(number)) return "";
     return number.toFixed(2);
   };
 
@@ -258,7 +274,9 @@ export default function MobileDeposit() {
                     min="0.01"
                     max="10000"
                     value={depositData.amount}
-                    onChange={(e) => updateDepositData("amount", e.target.value)}
+                    onChange={(e) =>
+                      updateDepositData("amount", e.target.value)
+                    }
                     placeholder="0.00"
                     className="pl-10"
                     required
@@ -271,9 +289,11 @@ export default function MobileDeposit() {
 
               <div>
                 <Label htmlFor="accountId">Deposit To Account *</Label>
-                <Select 
-                  value={depositData.accountId} 
-                  onValueChange={(value) => updateDepositData("accountId", value)}
+                <Select
+                  value={depositData.accountId}
+                  onValueChange={(value) =>
+                    updateDepositData("accountId", value)
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select account" />
@@ -283,11 +303,14 @@ export default function MobileDeposit() {
                       <SelectItem key={account.id} value={account.id}>
                         <div className="flex justify-between items-center w-full">
                           <span>
-                            {account.nickname || account.account_type} 
+                            {account.nickname || account.account_type}
                             (***{account.account_number.slice(-4)})
                           </span>
                           <span className="text-muted-foreground ml-2">
-                            ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            $
+                            {account.balance.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                            })}
                           </span>
                         </div>
                       </SelectItem>
@@ -303,7 +326,9 @@ export default function MobileDeposit() {
                     id="checkNumber"
                     type="text"
                     value={depositData.checkNumber}
-                    onChange={(e) => updateDepositData("checkNumber", e.target.value)}
+                    onChange={(e) =>
+                      updateDepositData("checkNumber", e.target.value)
+                    }
                     placeholder="Optional"
                   />
                 </div>
@@ -313,8 +338,10 @@ export default function MobileDeposit() {
                     id="checkDate"
                     type="date"
                     value={depositData.checkDate}
-                    onChange={(e) => updateDepositData("checkDate", e.target.value)}
-                    max={new Date().toISOString().split('T')[0]}
+                    onChange={(e) =>
+                      updateDepositData("checkDate", e.target.value)
+                    }
+                    max={new Date().toISOString().split("T")[0]}
                   />
                 </div>
               </div>
@@ -325,7 +352,9 @@ export default function MobileDeposit() {
                   id="bankName"
                   type="text"
                   value={depositData.bankName}
-                  onChange={(e) => updateDepositData("bankName", e.target.value)}
+                  onChange={(e) =>
+                    updateDepositData("bankName", e.target.value)
+                  }
                   placeholder="Bank that issued the check (optional)"
                 />
               </div>
@@ -334,8 +363,9 @@ export default function MobileDeposit() {
             <Alert>
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                Your deposit will be reviewed and funds typically become available within 1-2 business days.
-                Some deposits may be subject to a hold period for security.
+                Your deposit will be reviewed and funds typically become
+                available within 1-2 business days. Some deposits may be subject
+                to a hold period for security.
               </AlertDescription>
             </Alert>
           </div>
@@ -345,7 +375,9 @@ export default function MobileDeposit() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Capture Check Images</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Capture Check Images
+              </h3>
               <p className="text-muted-foreground">
                 Take clear photos of both sides of your endorsed check
               </p>
@@ -367,7 +399,7 @@ export default function MobileDeposit() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        onClick={() => clearImage('front')}
+                        onClick={() => clearImage("front")}
                       >
                         <RotateCcw className="w-4 h-4" />
                       </Button>
@@ -386,7 +418,7 @@ export default function MobileDeposit() {
                       capture="environment"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        if (file) handleImageUpload('front', file);
+                        if (file) handleImageUpload("front", file);
                       }}
                       className="hidden"
                       id="front-image"
@@ -418,7 +450,7 @@ export default function MobileDeposit() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        onClick={() => clearImage('back')}
+                        onClick={() => clearImage("back")}
                       >
                         <RotateCcw className="w-4 h-4" />
                       </Button>
@@ -437,7 +469,7 @@ export default function MobileDeposit() {
                       capture="environment"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        if (file) handleImageUpload('back', file);
+                        if (file) handleImageUpload("back", file);
                       }}
                       className="hidden"
                       id="back-image"
@@ -458,19 +490,24 @@ export default function MobileDeposit() {
             <Alert>
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
-                <strong>Important:</strong> Make sure to endorse the back of your check by signing it 
-                and writing "For Mobile Deposit Only" below your signature.
+                <strong>Important:</strong> Make sure to endorse the back of
+                your check by signing it and writing "For Mobile Deposit Only"
+                below your signature.
               </AlertDescription>
             </Alert>
           </div>
         );
 
       case 3:
-        const selectedAccount = accounts.find(acc => acc.id === depositData.accountId);
+        const selectedAccount = accounts.find(
+          (acc) => acc.id === depositData.accountId,
+        );
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Review Your Deposit</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Review Your Deposit
+              </h3>
               <p className="text-muted-foreground">
                 Please review the details before submitting your deposit
               </p>
@@ -483,13 +520,19 @@ export default function MobileDeposit() {
                   <div className="flex justify-between">
                     <span>Amount:</span>
                     <span className="font-semibold text-green-600">
-                      ${parseFloat(depositData.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      $
+                      {parseFloat(depositData.amount).toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                      })}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Deposit to:</span>
-                    <span>{selectedAccount?.nickname || selectedAccount?.account_type} 
-                      (***{selectedAccount?.account_number.slice(-4)})</span>
+                    <span>
+                      {selectedAccount?.nickname ||
+                        selectedAccount?.account_type}
+                      (***{selectedAccount?.account_number.slice(-4)})
+                    </span>
                   </div>
                   {depositData.checkNumber && (
                     <div className="flex justify-between">
@@ -500,7 +543,9 @@ export default function MobileDeposit() {
                   {depositData.checkDate && (
                     <div className="flex justify-between">
                       <span>Check Date:</span>
-                      <span>{new Date(depositData.checkDate).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(depositData.checkDate).toLocaleDateString()}
+                      </span>
                     </div>
                   )}
                   {depositData.bankName && (
@@ -542,8 +587,9 @@ export default function MobileDeposit() {
             <Alert>
               <Clock className="h-4 w-4" />
               <AlertDescription>
-                <strong>Processing Time:</strong> Deposits are typically processed within 1-2 business days. 
-                You'll receive a notification when funds are available.
+                <strong>Processing Time:</strong> Deposits are typically
+                processed within 1-2 business days. You'll receive a
+                notification when funds are available.
               </AlertDescription>
             </Alert>
           </div>
@@ -555,9 +601,11 @@ export default function MobileDeposit() {
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            
+
             <div>
-              <h3 className="text-lg font-semibold mb-2">Deposit Submitted Successfully!</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Deposit Submitted Successfully!
+              </h3>
               <p className="text-muted-foreground">
                 Your mobile deposit has been received and is being processed.
               </p>
@@ -569,7 +617,10 @@ export default function MobileDeposit() {
                 <li>✅ Your deposit is being reviewed for approval</li>
                 <li>⏳ Processing typically takes 1-2 business days</li>
                 <li>📧 You'll receive email notifications on status updates</li>
-                <li>💰 Funds will be available according to our funds availability policy</li>
+                <li>
+                  💰 Funds will be available according to our funds availability
+                  policy
+                </li>
               </ul>
             </div>
 
@@ -667,7 +718,9 @@ export default function MobileDeposit() {
             <div className="flex justify-between mt-6">
               <Button
                 variant="outline"
-                onClick={currentStep === 1 ? () => navigate("/dashboard") : prevStep}
+                onClick={
+                  currentStep === 1 ? () => navigate("/dashboard") : prevStep
+                }
                 className="flex items-center gap-2"
                 disabled={loading}
               >

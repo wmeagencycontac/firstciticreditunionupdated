@@ -20,16 +20,16 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Building2, 
-  Shield, 
-  CheckCircle, 
-  ArrowLeft, 
-  Upload, 
-  FileText, 
+import {
+  Building2,
+  Shield,
+  CheckCircle,
+  ArrowLeft,
+  Upload,
+  FileText,
   Camera,
   AlertTriangle,
-  Lock
+  Lock,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -62,13 +62,19 @@ interface SignupFormData {
 }
 
 interface KYCDocument {
-  type: 'drivers_license' | 'passport' | 'state_id' | 'selfie' | 'proof_of_address' | 'ssn_card';
+  type:
+    | "drivers_license"
+    | "passport"
+    | "state_id"
+    | "selfie"
+    | "proof_of_address"
+    | "ssn_card";
   name: string;
   description: string;
   required: boolean;
   file?: File;
   uploaded?: boolean;
-  status?: 'pending' | 'verified' | 'rejected';
+  status?: "pending" | "verified" | "rejected";
 }
 
 export default function EnhancedSignup() {
@@ -77,7 +83,7 @@ export default function EnhancedSignup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
-  
+
   const [formData, setFormData] = useState<SignupFormData>({
     firstName: "",
     lastName: "",
@@ -99,27 +105,28 @@ export default function EnhancedSignup() {
 
   const [kycDocuments, setKycDocuments] = useState<KYCDocument[]>([
     {
-      type: 'drivers_license',
-      name: 'Driver\'s License',
-      description: 'Front and back of your driver\'s license or state ID',
+      type: "drivers_license",
+      name: "Driver's License",
+      description: "Front and back of your driver's license or state ID",
       required: true,
     },
     {
-      type: 'selfie',
-      name: 'Selfie Photo',
-      description: 'A clear photo of yourself holding your ID',
+      type: "selfie",
+      name: "Selfie Photo",
+      description: "A clear photo of yourself holding your ID",
       required: true,
     },
     {
-      type: 'proof_of_address',
-      name: 'Proof of Address',
-      description: 'Utility bill, bank statement, or lease agreement (last 3 months)',
+      type: "proof_of_address",
+      name: "Proof of Address",
+      description:
+        "Utility bill, bank statement, or lease agreement (last 3 months)",
       required: true,
     },
     {
-      type: 'ssn_card',
-      name: 'Social Security Card',
-      description: 'Your Social Security card (optional but recommended)',
+      type: "ssn_card",
+      name: "Social Security Card",
+      description: "Your Social Security card (optional but recommended)",
       required: false,
     },
   ]);
@@ -129,20 +136,24 @@ export default function EnhancedSignup() {
   };
 
   const formatSSN = (value: string) => {
-    const cleaned = value.replace(/\D/g, '');
+    const cleaned = value.replace(/\D/g, "");
     const match = cleaned.match(/^(\d{0,3})(\d{0,2})(\d{0,4})$/);
     if (match) {
-      return [match[1], match[2], match[3]].filter(Boolean).join('-');
+      return [match[1], match[2], match[3]].filter(Boolean).join("-");
     }
     return cleaned;
   };
 
   const formatPhoneNumber = (value: string) => {
-    const cleaned = value.replace(/\D/g, '');
+    const cleaned = value.replace(/\D/g, "");
     const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
     if (match) {
-      const formatted = [match[1], match[2], match[3]].filter(Boolean).join('-');
-      return formatted.length > 0 ? `(${match[1]}) ${match[2]}-${match[3]}`.replace(/[^\d\(\)\-\s]/g, '') : '';
+      const formatted = [match[1], match[2], match[3]]
+        .filter(Boolean)
+        .join("-");
+      return formatted.length > 0
+        ? `(${match[1]}) ${match[2]}-${match[3]}`.replace(/[^\d\(\)\-\s]/g, "")
+        : "";
     }
     return cleaned;
   };
@@ -156,7 +167,7 @@ export default function EnhancedSignup() {
           formData.email &&
           formData.phoneNumber &&
           formData.dateOfBirth &&
-          formData.ssn.replace(/\D/g, '').length === 9
+          formData.ssn.replace(/\D/g, "").length === 9
         );
       case 2:
         return !!(
@@ -175,8 +186,8 @@ export default function EnhancedSignup() {
       case 4:
         return formData.agreeToTerms && formData.agreeToPrivacy;
       case 5:
-        const requiredDocs = kycDocuments.filter(doc => doc.required);
-        return requiredDocs.every(doc => doc.file);
+        const requiredDocs = kycDocuments.filter((doc) => doc.required);
+        return requiredDocs.every((doc) => doc.file);
       default:
         return false;
     }
@@ -236,38 +247,40 @@ export default function EnhancedSignup() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.details || data.error || "Account creation failed");
+        throw new Error(
+          data.details || data.error || "Account creation failed",
+        );
       }
 
       setUserId(data.user.id);
       toast.success("Account created successfully!");
       setCurrentStep(5); // Move to KYC document upload
-
     } catch (err: any) {
-      setError(err.message || "An error occurred during signup. Please try again.");
+      setError(
+        err.message || "An error occurred during signup. Please try again.",
+      );
       toast.error("Signup failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleFileUpload = useCallback((documentType: KYCDocument['type'], file: File) => {
-    setKycDocuments(prev => 
-      prev.map(doc => 
-        doc.type === documentType 
-          ? { ...doc, file }
-          : doc
-      )
-    );
-  }, []);
+  const handleFileUpload = useCallback(
+    (documentType: KYCDocument["type"], file: File) => {
+      setKycDocuments((prev) =>
+        prev.map((doc) => (doc.type === documentType ? { ...doc, file } : doc)),
+      );
+    },
+    [],
+  );
 
   const uploadKYCDocument = async (document: KYCDocument) => {
     if (!document.file || !userId) return;
 
     const formData = new FormData();
-    formData.append('file', document.file);
-    formData.append('documentType', document.type);
-    formData.append('userId', userId);
+    formData.append("file", document.file);
+    formData.append("documentType", document.type);
+    formData.append("userId", userId);
 
     try {
       const response = await fetch("/api/kyc/upload", {
@@ -281,12 +294,12 @@ export default function EnhancedSignup() {
         throw new Error(data.details || data.error || "Upload failed");
       }
 
-      setKycDocuments(prev => 
-        prev.map(doc => 
-          doc.type === document.type 
-            ? { ...doc, uploaded: true, status: 'pending' }
-            : doc
-        )
+      setKycDocuments((prev) =>
+        prev.map((doc) =>
+          doc.type === document.type
+            ? { ...doc, uploaded: true, status: "pending" }
+            : doc,
+        ),
       );
 
       toast.success(`${document.name} uploaded successfully`);
@@ -299,15 +312,19 @@ export default function EnhancedSignup() {
 
   const handleUploadAllDocuments = async () => {
     setLoading(true);
-    
-    const documentsToUpload = kycDocuments.filter(doc => doc.file && !doc.uploaded);
-    const uploadPromises = documentsToUpload.map(doc => uploadKYCDocument(doc));
-    
+
+    const documentsToUpload = kycDocuments.filter(
+      (doc) => doc.file && !doc.uploaded,
+    );
+    const uploadPromises = documentsToUpload.map((doc) =>
+      uploadKYCDocument(doc),
+    );
+
     const results = await Promise.all(uploadPromises);
-    const allUploaded = results.every(result => result);
-    
+    const allUploaded = results.every((result) => result);
+
     setLoading(false);
-    
+
     if (allUploaded) {
       setCurrentStep(6); // Move to completion step
       toast.success("All documents uploaded successfully!");
@@ -330,10 +347,11 @@ export default function EnhancedSignup() {
             <Alert>
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                Your personal information is encrypted and securely stored. We use bank-level security to protect your data.
+                Your personal information is encrypted and securely stored. We
+                use bank-level security to protect your data.
               </AlertDescription>
             </Alert>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="firstName">First Name *</Label>
@@ -358,7 +376,7 @@ export default function EnhancedSignup() {
                 />
               </div>
             </div>
-            
+
             <div>
               <Label htmlFor="email">Email Address *</Label>
               <Input
@@ -370,19 +388,24 @@ export default function EnhancedSignup() {
                 required
               />
             </div>
-            
+
             <div>
               <Label htmlFor="phoneNumber">Phone Number *</Label>
               <Input
                 id="phoneNumber"
                 type="tel"
                 value={formData.phoneNumber}
-                onChange={(e) => updateFormData("phoneNumber", formatPhoneNumber(e.target.value))}
+                onChange={(e) =>
+                  updateFormData(
+                    "phoneNumber",
+                    formatPhoneNumber(e.target.value),
+                  )
+                }
                 placeholder="(555) 123-4567"
                 required
               />
             </div>
-            
+
             <div>
               <Label htmlFor="dateOfBirth">Date of Birth *</Label>
               <Input
@@ -390,18 +413,24 @@ export default function EnhancedSignup() {
                 type="date"
                 value={formData.dateOfBirth}
                 onChange={(e) => updateFormData("dateOfBirth", e.target.value)}
-                max={new Date(Date.now() - 18 * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                max={
+                  new Date(Date.now() - 18 * 365 * 24 * 60 * 60 * 1000)
+                    .toISOString()
+                    .split("T")[0]
+                }
                 required
               />
             </div>
-            
+
             <div>
               <Label htmlFor="ssn">Social Security Number *</Label>
               <Input
                 id="ssn"
                 type="text"
                 value={formData.ssn}
-                onChange={(e) => updateFormData("ssn", formatSSN(e.target.value))}
+                onChange={(e) =>
+                  updateFormData("ssn", formatSSN(e.target.value))
+                }
                 placeholder="123-45-6789"
                 maxLength={11}
                 required
@@ -527,11 +556,12 @@ export default function EnhancedSignup() {
                 required
               />
             </div>
-            
+
             <Alert>
               <CheckCircle className="h-4 w-4" />
               <AlertDescription>
-                Your account will be created with $0.00 balance and protected by industry-standard encryption.
+                Your account will be created with $0.00 balance and protected by
+                industry-standard encryption.
               </AlertDescription>
             </Alert>
           </div>
@@ -609,8 +639,9 @@ export default function EnhancedSignup() {
             <Alert>
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                Your account will be NCUA insured up to $250,000. Email verification
-                and document verification are required to activate your account.
+                Your account will be NCUA insured up to $250,000. Email
+                verification and document verification are required to activate
+                your account.
               </AlertDescription>
             </Alert>
           </div>
@@ -620,9 +651,12 @@ export default function EnhancedSignup() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Identity Verification</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Identity Verification
+              </h3>
               <p className="text-muted-foreground">
-                Upload the required documents to verify your identity and activate your account.
+                Upload the required documents to verify your identity and
+                activate your account.
               </p>
             </div>
 
@@ -631,7 +665,9 @@ export default function EnhancedSignup() {
                 <div
                   key={document.type}
                   className={`border rounded-lg p-4 ${
-                    document.uploaded ? 'bg-green-50 border-green-200' : 'bg-gray-50'
+                    document.uploaded
+                      ? "bg-green-50 border-green-200"
+                      : "bg-gray-50"
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -677,12 +713,12 @@ export default function EnhancedSignup() {
                           size="sm"
                           className="flex items-center gap-1"
                         >
-                          {document.type === 'selfie' ? (
+                          {document.type === "selfie" ? (
                             <Camera className="w-4 h-4" />
                           ) : (
                             <Upload className="w-4 h-4" />
                           )}
-                          {document.file ? 'Change' : 'Upload'}
+                          {document.file ? "Change" : "Upload"}
                         </Button>
                       </Label>
                     </div>
@@ -694,7 +730,8 @@ export default function EnhancedSignup() {
             <Alert>
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
-                Documents are encrypted and securely stored. Processing typically takes 1-2 business days.
+                Documents are encrypted and securely stored. Processing
+                typically takes 1-2 business days.
               </AlertDescription>
             </Alert>
           </div>
@@ -707,12 +744,15 @@ export default function EnhancedSignup() {
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">Account Created Successfully!</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Account Created Successfully!
+              </h3>
               <p className="text-muted-foreground">
-                Your First City Credit Union account has been created and your documents have been submitted for verification.
+                Your First City Credit Union account has been created and your
+                documents have been submitted for verification.
               </p>
             </div>
-            
+
             <div className="bg-blue-50 p-4 rounded-lg text-left">
               <h4 className="font-semibold mb-2">Next Steps:</h4>
               <ul className="space-y-1 text-sm text-muted-foreground">
