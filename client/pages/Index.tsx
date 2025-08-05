@@ -225,15 +225,15 @@ export default function Index() {
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">
-        <Card className="bg-primary text-primary-foreground border-0">
-          <CardContent className="text-center py-16">
+        <Card className="bg-[#00754A] text-white border-0 overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#00754A] to-[#005A39] opacity-90"></div>
+          <CardContent className="text-center py-16 relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to get started?
+              Ready to join First City Credit Union?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Join millions of customers who trust SecureBank with their
-              financial future. Open your account in minutes and start banking
-              smarter today.
+              Join over 150,000 members who trust First City Credit Union with their
+              financial future. Open your account in minutes and start banking smarter today.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <div className="flex gap-2 w-full sm:w-auto">
@@ -244,57 +244,62 @@ export default function Index() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white text-foreground border-0 w-full sm:w-64"
                 />
-                <Button variant="secondary" size="default">
-                  Get Started
-                </Button>
+                <Link to="/register">
+                  <Button variant="secondary" size="default" className="bg-white text-[#00754A] hover:bg-gray-100">
+                    Get Started
+                  </Button>
+                </Link>
               </div>
             </div>
             <p className="text-sm opacity-75 mt-4">
-              No fees, no minimum balance. FDIC insured up to $250,000.
+              No fees, no minimum balance. NCUA insured up to $250,000.
             </p>
           </CardContent>
         </Card>
       </section>
 
       {/* Footer */}
-      <footer className="bg-muted/30 border-t">
+      <footer className="bg-gray-900 text-white">
         <div className="container mx-auto px-4 py-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <CreditCard className="w-5 h-5 text-primary-foreground" />
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-[#00754A] rounded-lg flex items-center justify-center">
+                  <Building2 className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-xl font-bold">SecureBank</span>
+                <div>
+                  <div className="text-xl font-bold">First City Credit Union</div>
+                  <div className="text-xs text-gray-400">Your Future. Your Credit Union.</div>
+                </div>
               </div>
-              <p className="text-muted-foreground mb-4">
-                Your trusted partner for modern banking and financial services.
+              <p className="text-gray-400 mb-4">
+                Your trusted partner for modern banking and financial services since 1952.
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Banking</h3>
-              <ul className="space-y-2 text-muted-foreground">
+              <h3 className="font-semibold mb-4 text-[#00754A]">Banking</h3>
+              <ul className="space-y-2 text-gray-400">
                 <li>
                   <Link
                     to="/checking"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
-                    Checking
+                    Checking Accounts
                   </Link>
                 </li>
                 <li>
                   <Link
                     to="/savings"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
-                    Savings
+                    Savings Accounts
                   </Link>
                 </li>
                 <li>
                   <Link
                     to="/credit-cards"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
                     Credit Cards
                   </Link>
@@ -302,21 +307,21 @@ export default function Index() {
                 <li>
                   <Link
                     to="/loans"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
-                    Loans
+                    Loans & Mortgages
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-muted-foreground">
+              <h3 className="font-semibold mb-4 text-[#00754A]">Support</h3>
+              <ul className="space-y-2 text-gray-400">
                 <li>
                   <Link
                     to="/help"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
                     Help Center
                   </Link>
@@ -324,7 +329,7 @@ export default function Index() {
                 <li>
                   <Link
                     to="/contact"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
                     Contact Us
                   </Link>
@@ -332,39 +337,52 @@ export default function Index() {
                 <li>
                   <Link
                     to="/security"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
-                    Security
+                    Security Center
                   </Link>
                 </li>
                 <li>
                   <Link
                     to="/privacy"
-                    className="hover:text-foreground transition-colors"
+                    className="hover:text-white transition-colors"
                   >
-                    Privacy
+                    Privacy Policy
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
-              <div className="space-y-2 text-muted-foreground">
+              <h3 className="font-semibold mb-4 text-[#00754A]">Contact</h3>
+              <div className="space-y-3 text-gray-400">
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  <span>1-800-SECURE</span>
+                  <span>(555) 123-FCCU</span>
                 </div>
                 <div>
+                  <p className="font-medium text-white">Member Services:</p>
                   <p>Available 24/7</p>
-                  <p>Mon-Fri: 8am-8pm EST</p>
+                  <p>Mon-Fri: 7am-10pm EST</p>
+                  <p>Sat-Sun: 8am-6pm EST</p>
+                </div>
+                <div className="flex items-center gap-4 pt-2">
+                  <Shield className="w-5 h-5 text-[#00754A]" />
+                  <span className="text-sm">NCUA Member</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 SecureBank. All rights reserved. Member FDIC.</p>
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p>&copy; 2024 First City Credit Union. All rights reserved. Member NCUA. Equal Housing Lender.</p>
+              <div className="flex items-center gap-6 text-sm">
+                <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
+                <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+                <Link to="/accessibility" className="hover:text-white transition-colors">Accessibility</Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
