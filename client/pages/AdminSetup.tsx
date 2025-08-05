@@ -45,7 +45,11 @@ export default function AdminSetup() {
       const response = await fetch("/api/admin/check");
 
       if (!response.ok) {
-        console.error("Admin check failed:", response.status, response.statusText);
+        console.error(
+          "Admin check failed:",
+          response.status,
+          response.statusText,
+        );
         return;
       }
 

@@ -85,7 +85,7 @@ export const handleCheckAdminExists: RequestHandler = async (req, res) => {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
 
