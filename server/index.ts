@@ -30,6 +30,7 @@ import {
   handleCreateTestUser,
   handleGetTestUserInfo,
 } from "./routes/test-setup";
+import { getBankingDatabase } from "./banking-database";
 import {
   handleRequestOTP,
   handleVerifyOTP,
