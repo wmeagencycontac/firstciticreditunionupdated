@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { AlertCircle, CheckCircle, Database, User, CreditCard, ArrowRightLeft } from 'lucide-react';
-import { auth, db, realtimeManager, Account, Transaction, Card, BankingUser } from '@/lib/supabase';
+import { auth, db, realtimeManager, Account, Transaction, Card as CardType, BankingUser } from '@/lib/supabase';
 
 export default function SupabaseTest() {
   const [user, setUser] = useState<any>(null);
