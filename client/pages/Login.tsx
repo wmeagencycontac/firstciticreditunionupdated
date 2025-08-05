@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CreditCard, Eye, EyeOff } from "lucide-react";
-import { LoginRequest, LoginResponse } from "@shared/api";
+import { auth } from "@/lib/supabase";
 
 export default function Login() {
   const location = useLocation();
@@ -38,6 +38,13 @@ export default function Login() {
       // Clear the location state to prevent message from persisting
       navigate(location.pathname, { replace: true });
     }
+
+    // Check if user is already logged in
+    auth.getUser().then(({ user }) => {
+      if (user) {
+        navigate("/dashboard");
+      }
+    });
   }, [location, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,30 +53,49 @@ export default function Login() {
     setError("");
 
     try {
-      const loginData: LoginRequest = { email, password };
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginData),
-      });
+      const { data, error: signInError } = await auth.signIn(email, password);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Login failed");
+      if (signInError) {
+        throw new Error(signInError.message);
       }
 
-      const data: LoginResponse = await response.json();
+      if (!data.user) {
+        throw new Error("Authentication failed");
+      }
 
-      // Store token in localStorage (in real app, use secure storage)
-      localStorage.setItem("auth_token", data.token);
-      localStorage.setItem("user_data", JSON.stringify(data.user));
+      // Store session info in localStorage for compatibility
+      if (data.session) {
+        localStorage.setItem("supabase_session", JSON.stringify(data.session));
+        localStorage.setItem(
+          "user_data",
+          JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.user_metadata?.name || "User",
+          }),
+        );
+      }
 
       // Redirect to dashboard
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOAuthSignIn = async (provider: "google" | "github") => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const { error } = await auth.signIn(email, password); // This will be replaced with OAuth
+      if (error) {
+        throw new Error(error.message);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "OAuth sign in failed");
     } finally {
       setLoading(false);
     }
@@ -152,7 +178,7 @@ export default function Login() {
 
               <div className="flex items-center justify-between">
                 <Link
-                  to="/forgot-password"
+                  to="/reset-password"
                   className="text-sm text-primary hover:underline"
                 >
                   Forgot password?
@@ -189,12 +215,31 @@ export default function Login() {
               </p>
             </div>
 
-            {/* Demo Credentials */}
+            {/* Demo Notice */}
             <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-              <h4 className="text-sm font-medium mb-2">Demo Credentials</h4>
+              <h4 className="text-sm font-medium mb-2">Demo Instructions</h4>
               <div className="text-xs text-muted-foreground space-y-1">
-                <p>Email: john.doe@email.com</p>
-                <p>Password: demo123</p>
+                <p>• Create a new account with the sign up link</p>
+                <p>• Or test with the Supabase test page</p>
+                <p>
+                  • Visit{" "}
+                  <Link
+                    to="/supabase-test"
+                    className="text-primary hover:underline"
+                  >
+                    /supabase-test
+                  </Link>{" "}
+                  to get started
+                </p>
+                <p>
+                  • Test password reset at{" "}
+                  <Link
+                    to="/password-reset-test"
+                    className="text-primary hover:underline"
+                  >
+                    /password-reset-test
+                  </Link>
+                </p>
               </div>
             </div>
           </CardContent>
@@ -203,7 +248,7 @@ export default function Login() {
         {/* Security Notice */}
         <div className="mt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            Your connection is secured with 256-bit SSL encryption
+            Your connection is secured with Supabase Authentication
           </p>
         </div>
       </div>

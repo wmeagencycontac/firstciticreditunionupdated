@@ -8,6 +8,9 @@ import Login from "./pages/Login";
 import OtpLogin from "./pages/OtpLogin";
 import Register from "./pages/Register";
 import EnhancedRegistration from "./pages/EnhancedRegistration";
+import ResetPassword from "./pages/ResetPassword";
+import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import PasswordResetTest from "./pages/PasswordResetTest";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminLogin from "./pages/AdminLogin";
@@ -15,6 +18,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminSetup from "./pages/AdminSetup";
 import TestSetup from "./pages/TestSetup";
 import Debug from "./pages/Debug";
+import SupabaseTest from "./pages/SupabaseTest";
+import IntegrationTest from "./pages/IntegrationTest";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +36,15 @@ export default function App() {
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/otp-login" element={<OtpLogin />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/reset-password-confirm"
+              element={<ResetPasswordConfirm />}
+            />
+            <Route
+              path="/password-reset-test"
+              element={<PasswordResetTest />}
+            />
             <Route path="/dashboard" element={<Dashboard />} />
 
             {/* Admin Routes */}
@@ -43,6 +57,12 @@ export default function App() {
 
             {/* Debug Route */}
             <Route path="/debug" element={<Debug />} />
+
+            {/* Supabase Test Route */}
+            <Route path="/supabase-test" element={<SupabaseTest />} />
+
+            {/* Integration Test Route */}
+            <Route path="/integration-test" element={<IntegrationTest />} />
 
             {/* Banking Pages */}
             <Route path="/register" element={<Register />} />

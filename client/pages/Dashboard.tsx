@@ -23,66 +23,118 @@ import {
   LogOut,
   Eye,
   EyeOff,
+  AlertCircle,
 } from "lucide-react";
-import { DashboardData, Transaction } from "@shared/api";
-import io from "socket.io-client";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  auth,
+  db,
+  realtimeManager,
+  Account,
+  Transaction,
+  BankingUser,
+} from "@/lib/supabase";
 
 export default function Dashboard() {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const [bankingProfile, setBankingProfile] = useState<BankingUser | null>(
+    null,
+  );
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [recentTransactions, setRecentTransactions] = useState<Transaction[]>(
+    [],
+  );
   const [loading, setLoading] = useState(true);
   const [balanceVisible, setBalanceVisible] = useState(true);
-  const [liveTransactions, setLiveTransactions] = useState<any[]>([]);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchDashboardData();
-
-    // Connect to Socket.IO server for real-time updates
-    const socket = io();
-
-    socket.on("transaction", (tx) => {
-      setLiveTransactions((prev) => [tx, ...prev].slice(0, 5)); // keep last 5
-    });
-
-    return () => {
-      socket.disconnect();
-    };
+    initializeDashboard();
   }, []);
 
-  const fetchDashboardData = async () => {
+  const initializeDashboard = async () => {
     try {
-      const token = localStorage.getItem("auth_token");
-      if (!token) {
+      // Check authentication
+      const { user: currentUser } = await auth.getUser();
+      if (!currentUser) {
         navigate("/login");
         return;
       }
 
-      const response = await fetch("/api/dashboard", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch dashboard data");
-      }
-
-      const data: DashboardData = await response.json();
-      setDashboardData(data);
+      setUser(currentUser);
+      await loadDashboardData(currentUser.id);
+      setupRealtimeSubscriptions(currentUser.id);
     } catch (error) {
-      console.error("Error fetching dashboard:", error);
-      localStorage.removeItem("auth_token");
-      localStorage.removeItem("user_data");
-      navigate("/login");
+      console.error("Error initializing dashboard:", error);
+      setError("Failed to load dashboard. Please try again.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("user_data");
-    navigate("/");
+  const loadDashboardData = async (userId: string) => {
+    try {
+      // Load banking profile
+      const { data: profile, error: profileError } =
+        await db.getBankingProfile(userId);
+      if (profileError) {
+        console.error("Error loading profile:", profileError);
+      } else {
+        setBankingProfile(profile);
+      }
+
+      // Load accounts
+      const { data: accountsData, error: accountsError } =
+        await db.getAccounts(userId);
+      if (accountsError) {
+        console.error("Error loading accounts:", accountsError);
+      } else {
+        setAccounts(accountsData || []);
+      }
+
+      // Load recent transactions
+      const { data: transactionsData, error: transactionsError } =
+        await db.getTransactions(userId, undefined, 10);
+      if (transactionsError) {
+        console.error("Error loading transactions:", transactionsError);
+      } else {
+        setRecentTransactions(transactionsData || []);
+      }
+    } catch (error) {
+      console.error("Error loading dashboard data:", error);
+      setError("Failed to load some dashboard data. Please refresh the page.");
+    }
+  };
+
+  const setupRealtimeSubscriptions = (userId: string) => {
+    // Subscribe to real-time transaction updates
+    realtimeManager.subscribeToTransactions(userId, (payload) => {
+      console.log("Real-time transaction update:", payload);
+      // Reload transactions and accounts to get fresh data
+      loadDashboardData(userId);
+    });
+
+    // Subscribe to real-time account updates
+    realtimeManager.subscribeToAccounts(userId, (payload) => {
+      console.log("Real-time account update:", payload);
+      // Reload accounts to get updated balances
+      loadDashboardData(userId);
+    });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      // Force logout anyway
+      navigate("/");
+    }
   };
 
   const formatCurrency = (amount: number) => {
@@ -106,6 +158,32 @@ export default function Dashboard() {
     return <ArrowUpRight className="w-4 h-4 text-destructive" />;
   };
 
+  const calculateTotalBalance = () => {
+    return accounts.reduce((sum, account) => sum + account.balance, 0);
+  };
+
+  const getAccountTypeIcon = (accountType: string) => {
+    switch (accountType) {
+      case "checking":
+        return <CreditCard className="w-5 h-5 text-primary" />;
+      case "savings":
+        return <PiggyBank className="w-5 h-5 text-primary" />;
+      default:
+        return <TrendingUp className="w-5 h-5 text-primary" />;
+    }
+  };
+
+  const getUserInitials = () => {
+    if (bankingProfile?.name) {
+      const names = bankingProfile.name.split(" ");
+      if (names.length >= 2) {
+        return `${names[0][0]}${names[1][0]}`;
+      }
+      return names[0][0];
+    }
+    return user?.email?.[0]?.toUpperCase() || "U";
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex items-center justify-center">
@@ -117,31 +195,19 @@ export default function Dashboard() {
     );
   }
 
-  if (!dashboardData) {
-    return null;
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex items-center justify-center p-4">
+        <Alert variant="destructive" className="max-w-md">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
-      {/* Live Transactions Feed */}
-      {liveTransactions.length > 0 && (
-        <div className="container mx-auto px-4 pt-4">
-          <div className="mb-4 bg-green-50 border border-green-200 rounded p-4 shadow">
-            <h3 className="text-lg font-semibold mb-2">Live Transactions</h3>
-            <ul className="space-y-2">
-              {liveTransactions.map((tx) => (
-                <li key={tx.id} className="flex items-center justify-between">
-                  <span className="font-bold text-green-700">{tx.type.toUpperCase()}</span>
-                  <span>${tx.amount}</span>
-                  <span className="text-xs text-gray-500">{new Date(tx.timestamp).toLocaleTimeString()}</span>
-                  <span className="text-gray-700">{tx.description}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
-      {/* ...existing dashboard code... */}
       <header className="border-b bg-card/50 backdrop-blur">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -163,14 +229,11 @@ export default function Dashboard() {
               </Button>
               <div className="flex items-center space-x-2">
                 <Avatar>
-                  <AvatarFallback>
-                    {dashboardData.user.firstName[0]}
-                    {dashboardData.user.lastName[0]}
-                  </AvatarFallback>
+                  <AvatarFallback>{getUserInitials()}</AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block">
                   <p className="text-sm font-medium">
-                    {dashboardData.user.firstName} {dashboardData.user.lastName}
+                    {bankingProfile?.name || user?.email}
                   </p>
                   <p className="text-xs text-muted-foreground">Welcome back</p>
                 </div>
@@ -179,7 +242,25 @@ export default function Dashboard() {
           </div>
         </div>
       </header>
+
       <div className="container mx-auto px-4 py-8">
+        {/* Show notice if no accounts exist */}
+        {accounts.length === 0 && (
+          <Alert className="mb-8">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              You don't have any accounts yet. Visit{" "}
+              <Link
+                to="/supabase-test"
+                className="text-primary hover:underline"
+              >
+                /supabase-test
+              </Link>{" "}
+              to create your first account and start banking with us!
+            </AlertDescription>
+          </Alert>
+        )}
+
         {/* Total Balance Card */}
         <Card className="mb-8 border-0 shadow-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
           <CardContent className="p-8">
@@ -191,7 +272,7 @@ export default function Dashboard() {
                 <div className="flex items-center space-x-2">
                   <h1 className="text-4xl font-bold">
                     {balanceVisible
-                      ? formatCurrency(dashboardData.totalBalance)
+                      ? formatCurrency(calculateTotalBalance())
                       : "••••••"}
                   </h1>
                   <Button
@@ -201,7 +282,7 @@ export default function Dashboard() {
                     className="text-primary-foreground hover:bg-primary-foreground/10"
                   >
                     {balanceVisible ? (
-                      <EyeOff className="w-4 h-4" />
+                      <EyeOff className="w-4 w-4" />
                     ) : (
                       <Eye className="w-4 h-4" />
                     )}
@@ -209,121 +290,113 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex space-x-2">
-                <Button variant="secondary" size="sm">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Money
+                <Button variant="secondary" size="sm" asChild>
+                  <Link to="/supabase-test">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Manage
+                  </Link>
                 </Button>
-                <Button variant="secondary" size="sm">
-                  <Send className="w-4 h-4 mr-2" />
-                  Transfer
+                <Button variant="secondary" size="sm" asChild>
+                  <Link to="/supabase-test">
+                    <Send className="w-4 h-4 mr-2" />
+                    Transfer
+                  </Link>
                 </Button>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-6">
               <div>
-                <p className="text-primary-foreground/80 text-xs">This Month</p>
-                <p className="text-lg font-semibold">
-                  +
-                  {formatCurrency(
-                    dashboardData.accounts.reduce(
-                      (sum, acc) => sum + acc.monthlyIncome,
-                      0,
-                    ),
-                  )}
-                </p>
+                <p className="text-primary-foreground/80 text-xs">Accounts</p>
+                <p className="text-lg font-semibold">{accounts.length}</p>
               </div>
               <div>
-                <p className="text-primary-foreground/80 text-xs">Spent</p>
+                <p className="text-primary-foreground/80 text-xs">
+                  Recent Transactions
+                </p>
                 <p className="text-lg font-semibold">
-                  -
-                  {formatCurrency(
-                    dashboardData.accounts.reduce(
-                      (sum, acc) => sum + acc.monthlySpending,
-                      0,
-                    ),
-                  )}
+                  {recentTransactions.length}
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
+
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Accounts */}
           <div className="lg:col-span-2 space-y-6">
             <div>
               <h2 className="text-2xl font-bold mb-4">Your Accounts</h2>
-              <div className="space-y-4">
-                {dashboardData.accounts.map((accountSummary) => (
-                  <Card
-                    key={accountSummary.account.id}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                            {accountSummary.account.accountType ===
-                            "checking" ? (
-                              <CreditCard className="w-5 h-5 text-primary" />
-                            ) : accountSummary.account.accountType ===
-                              "savings" ? (
-                              <PiggyBank className="w-5 h-5 text-primary" />
-                            ) : (
-                              <TrendingUp className="w-5 h-5 text-primary" />
-                            )}
+              {accounts.length > 0 ? (
+                <div className="space-y-4">
+                  {accounts.map((account) => (
+                    <Card
+                      key={account.id}
+                      className="border-0 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                              {getAccountTypeIcon(account.account_type)}
+                            </div>
+                            <div>
+                              <h3 className="font-semibold capitalize">
+                                {account.account_type} Account
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                {account.account_number}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-2xl font-bold">
+                              {balanceVisible
+                                ? formatCurrency(account.balance)
+                                : "••••••"}
+                            </p>
+                            <Badge variant="default">Active</Badge>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <p className="text-muted-foreground">Currency</p>
+                            <p className="font-semibold">{account.currency}</p>
                           </div>
                           <div>
-                            <h3 className="font-semibold capitalize">
-                              {accountSummary.account.accountType} Account
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              {accountSummary.account.accountNumber}
+                            <p className="text-muted-foreground">Created</p>
+                            <p className="font-semibold">
+                              {formatDate(account.created_at)}
                             </p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold">
-                            {balanceVisible
-                              ? formatCurrency(accountSummary.account.balance)
-                              : "••••••"}
-                          </p>
-                          <Badge
-                            variant={
-                              accountSummary.account.isActive
-                                ? "default"
-                                : "secondary"
-                            }
-                          >
-                            {accountSummary.account.isActive
-                              ? "Active"
-                              : "Inactive"}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <p className="text-muted-foreground">
-                            Monthly Income
-                          </p>
-                          <p className="font-semibold text-success">
-                            +{formatCurrency(accountSummary.monthlyIncome)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground">
-                            Monthly Spending
-                          </p>
-                          <p className="font-semibold text-destructive">
-                            -{formatCurrency(accountSummary.monthlySpending)}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <Card className="border-0 shadow-lg">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CreditCard className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      No Accounts Yet
+                    </h3>
+                    <p className="text-muted-foreground mb-4">
+                      Create your first account to start banking with us
+                    </p>
+                    <Button asChild>
+                      <Link to="/supabase-test">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create Account
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
+
           {/* Recent Activity */}
           <div>
             <h2 className="text-2xl font-bold mb-4">Recent Activity</h2>
@@ -335,47 +408,59 @@ export default function Dashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {dashboardData.recentActivity.map((transaction) => (
-                    <div
-                      key={transaction.id}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
-                          {getTransactionIcon(transaction)}
+                {recentTransactions.length > 0 ? (
+                  <div className="space-y-4">
+                    {recentTransactions.slice(0, 5).map((transaction) => (
+                      <div
+                        key={transaction.id}
+                        className="flex items-center justify-between"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+                            {getTransactionIcon(transaction)}
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">
+                              {transaction.description}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDate(transaction.timestamp)}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-medium text-sm">
-                            {transaction.description}
+                        <div className="text-right">
+                          <p
+                            className={`font-semibold text-sm ${
+                              transaction.type === "credit"
+                                ? "text-success"
+                                : "text-foreground"
+                            }`}
+                          >
+                            {transaction.type === "credit" ? "+" : "-"}
+                            {formatCurrency(transaction.amount)}
                           </p>
-                          <p className="text-xs text-muted-foreground">
-                            {transaction.merchant} •{" "}
-                            {formatDate(transaction.createdAt)}
-                          </p>
+                          <Badge variant="outline" className="text-xs">
+                            {transaction.type}
+                          </Badge>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p
-                          className={`font-semibold text-sm ${
-                            transaction.amount > 0
-                              ? "text-success"
-                              : "text-foreground"
-                          }`}
-                        >
-                          {transaction.amount > 0 ? "+" : ""}
-                          {formatCurrency(transaction.amount)}
-                        </p>
-                        <Badge variant="outline" className="text-xs">
-                          {transaction.status}
-                        </Badge>
-                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-3">
+                      <ArrowUpRight className="w-6 h-6 text-muted-foreground" />
                     </div>
-                  ))}
-                </div>
-                <Link to="/transactions" className="block mt-4">
+                    <p className="text-sm text-muted-foreground">
+                      No transactions yet
+                    </p>
+                  </div>
+                )}
+                <Link to="/supabase-test" className="block mt-4">
                   <Button variant="outline" className="w-full">
-                    View All Transactions
+                    {recentTransactions.length > 0
+                      ? "View All Transactions"
+                      : "Start Banking"}
                   </Button>
                 </Link>
               </CardContent>
