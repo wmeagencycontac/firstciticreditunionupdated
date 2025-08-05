@@ -3,6 +3,9 @@ import { getBankingDatabase } from "../banking-database";
 import {
   DashboardData,
   AccountSummary,
+  DashboardUser,
+  DashboardAccount,
+  DashboardTransaction,
 } from "@shared/api";
 
 export const handleGetDashboard: RequestHandler = async (req, res) => {
