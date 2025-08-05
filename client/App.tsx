@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminSetup from "./pages/AdminSetup";
 import TestSetup from "./pages/TestSetup";
 import Debug from "./pages/Debug";
+import QuickTest from "./pages/QuickTest";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
