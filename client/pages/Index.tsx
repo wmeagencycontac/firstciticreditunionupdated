@@ -23,6 +23,15 @@ import {
   Users,
   Globe,
   Phone,
+  Building2,
+  Zap,
+  Clock,
+  CheckCircle,
+  Star,
+  Award,
+  Camera,
+  ArrowUpDown,
+  Bell,
 } from "lucide-react";
 
 export default function Index() {
