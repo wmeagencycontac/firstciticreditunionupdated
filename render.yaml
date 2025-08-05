@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: starter
     region: oregon
-    buildCommand: npm install && npm run build
+    buildCommand: npm ci && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -12,12 +12,8 @@ services:
       - key: PORT
         value: 10000
       - key: SECURE_STORAGE_PATH
-        value: /tmp/banking-data
+        value: /opt/render/project/src/data
       - key: ENABLE_SUPABASE_INTEGRATION
         value: "false"
     healthCheckPath: /api/ping
     autoDeploy: false
-    disk:
-      name: banking-data
-      mountPath: /tmp/banking-data
-      sizeGB: 1
