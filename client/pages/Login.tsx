@@ -231,6 +231,15 @@ export default function Login() {
                   </Link>{" "}
                   to get started
                 </p>
+                <p>
+                  • Test password reset at{" "}
+                  <Link
+                    to="/password-reset-test"
+                    className="text-primary hover:underline"
+                  >
+                    /password-reset-test
+                  </Link>
+                </p>
               </div>
             </div>
           </CardContent>
