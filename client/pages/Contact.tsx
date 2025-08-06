@@ -1,10 +1,22 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 
@@ -18,7 +30,7 @@ export default function Contact() {
 
     try {
       const formData = new FormData(e.currentTarget);
-      
+
       // Submit to Netlify Forms
       const response = await fetch("/", {
         method: "POST",
@@ -52,7 +64,8 @@ export default function Contact() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Get in touch with First City Credit Union. We're here to help with all your banking needs.
+            Get in touch with First City Credit Union. We're here to help with
+            all your banking needs.
           </p>
         </div>
 
@@ -70,8 +83,10 @@ export default function Contact() {
                 <div>
                   <h3 className="font-semibold">Main Branch</h3>
                   <p className="text-gray-600">
-                    123 Financial Avenue<br />
-                    Downtown District<br />
+                    123 Financial Avenue
+                    <br />
+                    Downtown District
+                    <br />
                     City, State 12345
                   </p>
                 </div>
@@ -147,14 +162,15 @@ export default function Contact() {
             <CardHeader>
               <CardTitle>Send us a Message</CardTitle>
               <CardDescription>
-                Fill out the form below and we'll get back to you as soon as possible.
+                Fill out the form below and we'll get back to you as soon as
+                possible.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form 
-                name="contact" 
-                method="POST" 
-                data-netlify="true" 
+              <form
+                name="contact"
+                method="POST"
+                data-netlify="true"
                 data-netlify-honeypot="bot-field"
                 onSubmit={handleSubmit}
                 className="space-y-6"
@@ -212,11 +228,19 @@ export default function Contact() {
                       <SelectValue placeholder="Select a topic" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="account-inquiry">Account Inquiry</SelectItem>
-                      <SelectItem value="loan-application">Loan Application</SelectItem>
-                      <SelectItem value="technical-support">Technical Support</SelectItem>
+                      <SelectItem value="account-inquiry">
+                        Account Inquiry
+                      </SelectItem>
+                      <SelectItem value="loan-application">
+                        Loan Application
+                      </SelectItem>
+                      <SelectItem value="technical-support">
+                        Technical Support
+                      </SelectItem>
                       <SelectItem value="fraud-report">Fraud Report</SelectItem>
-                      <SelectItem value="general-question">General Question</SelectItem>
+                      <SelectItem value="general-question">
+                        General Question
+                      </SelectItem>
                       <SelectItem value="complaint">Complaint</SelectItem>
                       <SelectItem value="compliment">Compliment</SelectItem>
                     </SelectContent>
@@ -243,15 +267,19 @@ export default function Contact() {
                       required
                       className="mt-1"
                     />
-                    <Label htmlFor="consent" className="text-sm leading-relaxed">
-                      I consent to First City Credit Union collecting and processing my personal 
-                      information for the purpose of responding to my inquiry. *
+                    <Label
+                      htmlFor="consent"
+                      className="text-sm leading-relaxed"
+                    >
+                      I consent to First City Credit Union collecting and
+                      processing my personal information for the purpose of
+                      responding to my inquiry. *
                     </Label>
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
+                  <Button
+                    type="submit"
+                    className="w-full"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
@@ -266,11 +294,14 @@ export default function Contact() {
         <Card className="mt-12 bg-blue-50 border-blue-200">
           <CardContent className="pt-6">
             <div className="text-center">
-              <h3 className="font-semibold text-blue-900 mb-2">Security Notice</h3>
+              <h3 className="font-semibold text-blue-900 mb-2">
+                Security Notice
+              </h3>
               <p className="text-blue-800 text-sm">
-                Never share sensitive information like account numbers, SSN, or passwords through 
-                email or contact forms. For secure account inquiries, please log into your online 
-                banking account or visit our branch.
+                Never share sensitive information like account numbers, SSN, or
+                passwords through email or contact forms. For secure account
+                inquiries, please log into your online banking account or visit
+                our branch.
               </p>
             </div>
           </CardContent>
