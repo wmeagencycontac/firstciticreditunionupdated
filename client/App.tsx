@@ -22,6 +22,7 @@ import Debug from "./pages/Debug";
 import SupabaseTest from "./pages/SupabaseTest";
 import IntegrationTest from "./pages/IntegrationTest";
 import Placeholder from "./pages/Placeholder";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -162,16 +163,7 @@ export default function App() {
                 />
               }
             />
-            <Route
-              path="/contact"
-              element={
-                <Placeholder
-                  title="Contact Us"
-                  description="Get in touch with our customer service team for assistance."
-                  suggestedPrompt="Can you build a contact page with multiple contact methods, branch locations, and a contact form?"
-                />
-              }
-            />
+            <Route path="/contact" element={<Contact />} />
             <Route
               path="/security"
               element={
