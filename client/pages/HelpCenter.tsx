@@ -68,9 +68,11 @@ export default function HelpCenter() {
               placeholder="Search for help articles, FAQs, or topics..."
               className="pl-12 h-14 text-lg bg-white border-2 border-green-200 focus:border-[#00754A] rounded-xl"
             />
-            <Button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-              Search
-            </Button>
+            <Link to={`/search?q=${encodeURIComponent(searchQuery)}`}>
+              <Button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                Search
+              </Button>
+            </Link>
           </div>
         </div>
 
@@ -100,9 +102,11 @@ export default function HelpCenter() {
                 <br />
                 Sun: Closed
               </div>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Call Now
-              </Button>
+              <a href="tel:+15551234567">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Call Now
+                </Button>
+              </a>
             </CardContent>
           </Card>
 
@@ -128,9 +132,11 @@ export default function HelpCenter() {
                 <br />
                 Less than 2 minutes
               </div>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Start Chat
-              </Button>
+              <Link to="/chat">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Start Chat
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -156,9 +162,11 @@ export default function HelpCenter() {
                 <br />
                 Within 24 hours
               </div>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Send Email
-              </Button>
+              <a href="mailto:support@fccu.com?subject=Support Request">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Send Email
+                </Button>
+              </a>
             </CardContent>
           </Card>
         </div>
