@@ -3,6 +3,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./hooks/useAuth";
+import PrivateRoute from "./components/auth/PrivateRoute";
+import AdminRoute from "./components/auth/AdminRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import OtpLogin from "./pages/OtpLogin";
@@ -56,29 +59,34 @@ export default function App() {
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/otp-login" element={<OtpLogin />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route
-              path="/reset-password-confirm"
-              element={<ResetPasswordConfirm />}
-            />
-            <Route
-              path="/password-reset-test"
-              element={<PasswordResetTest />}
-            />
-            <Route path="/dashboard" element={<Dashboard />} />
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/otp-login" element={<OtpLogin />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route
+                path="/reset-password-confirm"
+                element={<ResetPasswordConfirm />}
+              />
+              <Route
+                path="/password-reset-test"
+                element={<PasswordResetTest />}
+              />
+              <Route path="/dashboard" element={<PrivateRoute />}>
+                <Route index element={<Dashboard />} />
+              </Route>
 
-            {/* Admin Routes */}
-            <Route path="/admin/setup" element={<AdminSetup />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              {/* Admin Routes */}
+              <Route path="/admin/setup" element={<AdminSetup />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminRoute />}>
+                <Route index element={<AdminDashboard />} />
+              </Route>
 
-            {/* Test Setup Route */}
-            <Route path="/test-setup" element={<TestSetup />} />
+              {/* Test Setup Route */}
+              <Route path="/test-setup" element={<TestSetup />} />
 
             {/* Debug Route */}
             <Route path="/debug" element={<Debug />} />
@@ -129,6 +137,7 @@ export default function App() {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+        </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

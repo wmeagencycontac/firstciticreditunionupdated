@@ -26,8 +26,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth } from "@/hooks/useAuth";
 import {
-  auth,
   db,
   realtimeManager,
   Account,
@@ -36,10 +36,7 @@ import {
 } from "@/lib/supabase";
 
 export default function Dashboard() {
-  const [user, setUser] = useState<any>(null);
-  const [bankingProfile, setBankingProfile] = useState<BankingUser | null>(
-    null,
-  );
+  const { user, profile: bankingProfile, signOut } = useAuth();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [recentTransactions, setRecentTransactions] = useState<Transaction[]>(
     [],
@@ -50,63 +47,31 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    initializeDashboard();
-  }, []);
-
-  const initializeDashboard = async () => {
-    try {
-      // Check authentication
-      const { user: currentUser } = await auth.getUser();
-      if (!currentUser) {
-        navigate("/login");
-        return;
-      }
-
-      setUser(currentUser);
-      await loadDashboardData(currentUser.id);
-      setupRealtimeSubscriptions(currentUser.id);
-    } catch (error) {
-      console.error("Error initializing dashboard:", error);
-      setError("Failed to load dashboard. Please try again.");
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-    } finally {
-      setLoading(false);
+    if (user) {
+      loadDashboardData(user.id);
+      setupRealtimeSubscriptions(user.id);
     }
-  };
+  }, [user]);
 
   const loadDashboardData = async (userId: string) => {
+    setLoading(true);
     try {
-      // Load banking profile
-      const { data: profile, error: profileError } =
-        await db.getBankingProfile(userId);
-      if (profileError) {
-        console.error("Error loading profile:", profileError);
-      } else {
-        setBankingProfile(profile);
-      }
-
       // Load accounts
       const { data: accountsData, error: accountsError } =
         await db.getAccounts(userId);
-      if (accountsError) {
-        console.error("Error loading accounts:", accountsError);
-      } else {
-        setAccounts(accountsData || []);
-      }
+      if (accountsError) throw accountsError;
+      setAccounts(accountsData || []);
 
       // Load recent transactions
       const { data: transactionsData, error: transactionsError } =
         await db.getTransactions(userId, undefined, 10);
-      if (transactionsError) {
-        console.error("Error loading transactions:", transactionsError);
-      } else {
-        setRecentTransactions(transactionsData || []);
-      }
+      if (transactionsError) throw transactionsError;
+      setRecentTransactions(transactionsData || []);
     } catch (error) {
       console.error("Error loading dashboard data:", error);
-      setError("Failed to load some dashboard data. Please refresh the page.");
+      setError("Failed to load dashboard data. Please refresh the page.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,14 +92,8 @@ export default function Dashboard() {
   };
 
   const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      navigate("/");
-    } catch (error) {
-      console.error("Error signing out:", error);
-      // Force logout anyway
-      navigate("/");
-    }
+    await signOut();
+    navigate("/");
   };
 
   const formatCurrency = (amount: number) => {

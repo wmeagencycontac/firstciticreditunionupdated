@@ -25,13 +25,8 @@ import {
 import { toast } from "sonner";
 import { User, AdminPendingUsersResponse } from "@shared/api";
 import { AdminActivityFeed } from "@/components/AdminActivityFeed";
-
-interface AdminUser {
-  id: number;
-  email: string;
-  name: string;
-  role: string;
-}
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/lib/supabase";
 
 interface PendingUser {
   id: number;
@@ -44,7 +39,7 @@ interface PendingUser {
 }
 
 export default function AdminDashboard() {
-  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+  const { profile: adminUser, signOut } = useAuth();
   const [pendingUsers, setPendingUsers] = useState<PendingUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [verifyingUsers, setVerifyingUsers] = useState<Set<number>>(new Set());
@@ -52,59 +47,35 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkAuth();
     fetchPendingUsers();
   }, []);
 
-  const checkAuth = () => {
-    const token = localStorage.getItem("adminToken");
-    const userStr = localStorage.getItem("adminUser");
-
-    if (!token || !userStr) {
-      navigate("/admin/login");
-      return;
-    }
-
-    try {
-      const user = JSON.parse(userStr) as AdminUser;
-      if (user.role !== "admin") {
-        handleLogout();
-        return;
-      }
-      setAdminUser(user);
-    } catch (error) {
-      console.error("Error parsing admin user:", error);
-      handleLogout();
-    }
-  };
-
   const fetchPendingUsers = async () => {
+    setIsLoading(true);
+    setError("");
     try {
-      const token = localStorage.getItem("adminToken");
-      if (!token) {
-        navigate("/admin/login");
-        return;
+      // This would typically be a secure call to a serverless function
+      // that verifies admin privileges before returning data.
+      // For this example, we'll call a placeholder function.
+      const { data, error: rpcError } = await supabase.rpc(
+        "get_pending_users",
+      );
+
+      if (rpcError) {
+        // Handle RLS errors, which might indicate not an admin
+        if (rpcError.code === "42501") {
+          setError("You do not have permission to view this data.");
+          toast.error("Permission denied.");
+        } else {
+          throw rpcError;
+        }
       }
 
-      const response = await fetch("/api/admin/users-pending", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data: AdminPendingUsersResponse = await response.json();
-        setPendingUsers(data.users);
-      } else if (response.status === 401 || response.status === 403) {
-        handleLogout();
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || "Failed to fetch pending users");
-      }
-    } catch (error) {
-      console.error("Error fetching pending users:", error);
-      setError("Connection error. Please try again.");
+      setPendingUsers(data || []);
+    } catch (err) {
+      console.error("Error fetching pending users:", err);
+      setError("Failed to fetch pending users. Please try again.");
+      toast.error("Could not load pending users.");
     } finally {
       setIsLoading(false);
     }
@@ -112,38 +83,19 @@ export default function AdminDashboard() {
 
   const handleVerifyUser = async (userId: number, userEmail: string) => {
     setVerifyingUsers((prev) => new Set([...prev, userId]));
-
     try {
-      const token = localStorage.getItem("adminToken");
-      if (!token) {
-        navigate("/admin/login");
-        return;
-      }
-
-      const response = await fetch("/api/admin/verify-users", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id: userId }),
+      // This should also be a secure serverless function call
+      const { error: rpcError } = await supabase.rpc("approve_user", {
+        user_id_to_approve: userId,
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        toast.success(`User ${userEmail} verified successfully!`);
+      if (rpcError) throw rpcError;
 
-        // Remove user from pending list
-        setPendingUsers((prev) => prev.filter((user) => user.id !== userId));
-      } else if (response.status === 401 || response.status === 403) {
-        handleLogout();
-      } else {
-        const errorData = await response.json();
-        toast.error(errorData.error || "Failed to verify user");
-      }
-    } catch (error) {
-      console.error("Error verifying user:", error);
-      toast.error("Connection error. Please try again.");
+      toast.success(`User ${userEmail} verified successfully!`);
+      setPendingUsers((prev) => prev.filter((user) => user.id !== userId));
+    } catch (err) {
+      console.error("Error verifying user:", err);
+      toast.error("Failed to verify user.");
     } finally {
       setVerifyingUsers((prev) => {
         const newSet = new Set(prev);
@@ -153,9 +105,8 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminUser");
+  const handleLogout = async () => {
+    await signOut();
     navigate("/admin/login");
   };
 
