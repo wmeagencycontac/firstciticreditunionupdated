@@ -179,9 +179,11 @@ export default function SavingsAccounts() {
               <p className="text-muted-foreground mb-4">
                 See how your money can grow with our competitive interest rates and compound interest.
               </p>
-              <Button variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
-                Use Calculator
-              </Button>
+              <Link to="/calculator">
+                <Button variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+                  Use Calculator
+                </Button>
+              </Link>
             </div>
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6">
               <h4 className="font-semibold text-[#00754A] mb-2">Example Calculation</h4>
