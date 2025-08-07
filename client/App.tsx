@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import AdminRoute from "./components/auth/AdminRoute";
@@ -79,6 +79,10 @@ export default function App() {
               </Route>
 
               {/* Admin Routes */}
+              <Route
+                path="/AdminLogin"
+                element={<Navigate to="/admin/login" replace />}
+              />
               <Route path="/admin/setup" element={<AdminSetup />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminRoute />}>
@@ -88,56 +92,59 @@ export default function App() {
               {/* Test Setup Route */}
               <Route path="/test-setup" element={<TestSetup />} />
 
-            {/* Debug Route */}
-            <Route path="/debug" element={<Debug />} />
+              {/* Debug Route */}
+              <Route path="/debug" element={<Debug />} />
 
-            {/* Supabase Test Route */}
-            <Route path="/supabase-test" element={<SupabaseTest />} />
+              {/* Supabase Test Route */}
+              <Route path="/supabase-test" element={<SupabaseTest />} />
 
-            {/* Integration Test Route */}
-            <Route path="/integration-test" element={<IntegrationTest />} />
+              {/* Integration Test Route */}
+              <Route path="/integration-test" element={<IntegrationTest />} />
 
-            {/* Banking Pages */}
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/register-enhanced"
-              element={<EnhancedRegistration />}
-            />
-            <Route path="/personal" element={<Personal />} />
-            <Route path="/business" element={<Business />} />
-            <Route path="/investments" element={<Investments />} />
-            <Route path="/checking" element={<CheckingAccounts />} />
-            <Route path="/savings" element={<SavingsAccounts />} />
-            <Route path="/credit-cards" element={<CreditCards />} />
-            <Route path="/loans" element={<Loans />} />
-            <Route path="/help" element={<HelpCenter />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/security" element={<SecurityCenter />} />
-            <Route path="/transactions" element={<Transactions />} />
-            <Route path="/demo" element={<DemoExperience />} />
+              {/* Banking Pages */}
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/register-enhanced"
+                element={<EnhancedRegistration />}
+              />
+              <Route path="/personal" element={<Personal />} />
+              <Route path="/business" element={<Business />} />
+              <Route path="/investments" element={<Investments />} />
+              <Route path="/checking" element={<CheckingAccounts />} />
+              <Route path="/savings" element={<SavingsAccounts />} />
+              <Route path="/credit-cards" element={<CreditCards />} />
+              <Route path="/loans" element={<Loans />} />
+              <Route path="/help" element={<HelpCenter />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/security" element={<SecurityCenter />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/demo" element={<DemoExperience />} />
 
-            {/* Legal Pages */}
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/accessibility" element={<Accessibility />} />
+              {/* Legal Pages */}
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/accessibility" element={<Accessibility />} />
 
-            {/* Interactive Features */}
-            <Route path="/apply" element={<ApplicationForm />} />
-            <Route path="/chat" element={<LiveChat />} />
-            <Route path="/calculator" element={<SavingsCalculator />} />
-            <Route path="/search" element={<HelpSearch />} />
-            <Route path="/demo-interactive" element={<InteractiveDemo />} />
+              {/* Interactive Features */}
+              <Route path="/apply" element={<ApplicationForm />} />
+              <Route path="/chat" element={<LiveChat />} />
+              <Route path="/calculator" element={<SavingsCalculator />} />
+              <Route path="/search" element={<HelpSearch />} />
+              <Route path="/demo-interactive" element={<InteractiveDemo />} />
 
-            {/* Service Pages */}
-            <Route path="/mobile-deposit" element={<MobileDepositService />} />
-            <Route path="/instant-transfers" element={<InstantTransfers />} />
-            <Route path="/smart-alerts" element={<SmartAlerts />} />
+              {/* Service Pages */}
+              <Route
+                path="/mobile-deposit"
+                element={<MobileDepositService />}
+              />
+              <Route path="/instant-transfers" element={<InstantTransfers />} />
+              <Route path="/smart-alerts" element={<SmartAlerts />} />
 
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
