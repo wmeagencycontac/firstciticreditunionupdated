@@ -310,7 +310,7 @@ export default function Index() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-[#00754A] rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#00754A] to-[#005A39] rounded-xl flex items-center justify-center shadow-lg">
                   <Building2 className="w-6 h-6 text-white" />
                 </div>
                 <div>
