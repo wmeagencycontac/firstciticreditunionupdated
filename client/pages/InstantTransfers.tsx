@@ -4,18 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  ArrowUpDown, 
-  Zap, 
-  Shield, 
-  Clock, 
-  ArrowLeft, 
+import {
+  ArrowUpDown,
+  Zap,
+  Shield,
+  Clock,
+  ArrowLeft,
   Building2,
   Users,
   CreditCard,
   Smartphone,
   CheckCircle,
-  AlertTriangle
+  AlertTriangle,
 } from "lucide-react";
 
 export default function InstantTransfers() {
@@ -28,7 +28,7 @@ export default function InstantTransfers() {
       description: "Transfer money instantly between your checking and savings",
       fee: "Free",
       time: "Instant",
-      icon: <ArrowUpDown className="w-6 h-6" />
+      icon: <ArrowUpDown className="w-6 h-6" />,
     },
     {
       id: "external",
@@ -36,7 +36,7 @@ export default function InstantTransfers() {
       description: "Send money to accounts at other financial institutions",
       fee: "$0.50",
       time: "1-3 Business Days",
-      icon: <Building2 className="w-6 h-6" />
+      icon: <Building2 className="w-6 h-6" />,
     },
     {
       id: "p2p",
@@ -44,31 +44,31 @@ export default function InstantTransfers() {
       description: "Send money to friends and family using email or phone",
       fee: "Free",
       time: "Instant",
-      icon: <Users className="w-6 h-6" />
-    }
+      icon: <Users className="w-6 h-6" />,
+    },
   ];
 
   const features = [
     {
       icon: <Zap className="w-6 h-6 text-[#00754A]" />,
       title: "Lightning Fast",
-      description: "Most transfers complete in seconds, not days"
+      description: "Most transfers complete in seconds, not days",
     },
     {
       icon: <Shield className="w-6 h-6 text-[#00754A]" />,
       title: "Bank-Level Security",
-      description: "Protected by 256-bit encryption and fraud monitoring"
+      description: "Protected by 256-bit encryption and fraud monitoring",
     },
     {
       icon: <Clock className="w-6 h-6 text-[#00754A]" />,
       title: "24/7 Availability",
-      description: "Send money anytime, even on weekends and holidays"
+      description: "Send money anytime, even on weekends and holidays",
     },
     {
       icon: <Smartphone className="w-6 h-6 text-[#00754A]" />,
       title: "Mobile & Web",
-      description: "Access from our mobile app or online banking platform"
-    }
+      description: "Access from our mobile app or online banking platform",
+    },
   ];
 
   return (
@@ -115,16 +115,24 @@ export default function InstantTransfers() {
             Instant Transfers
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Send money between accounts instantly with real-time notifications. Fast, secure, and available 24/7.
+            Send money between accounts instantly with real-time notifications.
+            Fast, secure, and available 24/7.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
-              <Button size="lg" className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white px-8 shadow-lg">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white px-8 shadow-lg"
+              >
                 Start Transferring Today
               </Button>
             </Link>
             <Link to="/login">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50 px-8">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50 px-8"
+              >
                 Access Your Account
               </Button>
             </Link>
@@ -138,43 +146,71 @@ export default function InstantTransfers() {
           <h2 className="text-3xl font-bold text-center mb-12 text-foreground">
             Choose Your Transfer Type
           </h2>
-          <Tabs value={selectedTransferType} onValueChange={setSelectedTransferType} className="w-full">
+          <Tabs
+            value={selectedTransferType}
+            onValueChange={setSelectedTransferType}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="internal" className="data-[state=active]:bg-[#00754A] data-[state=active]:text-white">
+              <TabsTrigger
+                value="internal"
+                className="data-[state=active]:bg-[#00754A] data-[state=active]:text-white"
+              >
                 Internal
               </TabsTrigger>
-              <TabsTrigger value="external" className="data-[state=active]:bg-[#00754A] data-[state=active]:text-white">
+              <TabsTrigger
+                value="external"
+                className="data-[state=active]:bg-[#00754A] data-[state=active]:text-white"
+              >
                 External
               </TabsTrigger>
-              <TabsTrigger value="p2p" className="data-[state=active]:bg-[#00754A] data-[state=active]:text-white">
+              <TabsTrigger
+                value="p2p"
+                className="data-[state=active]:bg-[#00754A] data-[state=active]:text-white"
+              >
                 Person to Person
               </TabsTrigger>
             </TabsList>
-            
+
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               {transferTypes.map((type) => (
-                <Card 
+                <Card
                   key={type.id}
                   className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                    selectedTransferType === type.id ? 'ring-2 ring-[#00754A] shadow-lg' : ''
+                    selectedTransferType === type.id
+                      ? "ring-2 ring-[#00754A] shadow-lg"
+                      : ""
                   }`}
                   onClick={() => setSelectedTransferType(type.id)}
                 >
                   <CardContent className="p-6">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${
-                      selectedTransferType === type.id 
-                        ? 'bg-[#00754A] text-white' 
-                        : 'bg-blue-100 text-[#00754A]'
-                    }`}>
+                    <div
+                      className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${
+                        selectedTransferType === type.id
+                          ? "bg-[#00754A] text-white"
+                          : "bg-blue-100 text-[#00754A]"
+                      }`}
+                    >
                       {type.icon}
                     </div>
                     <h3 className="font-semibold text-lg mb-2">{type.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-4">{type.description}</p>
+                    <p className="text-muted-foreground text-sm mb-4">
+                      {type.description}
+                    </p>
                     <div className="flex justify-between items-center">
-                      <Badge variant={type.fee === "Free" ? "default" : "secondary"} className={type.fee === "Free" ? "bg-green-100 text-green-800" : ""}>
+                      <Badge
+                        variant={type.fee === "Free" ? "default" : "secondary"}
+                        className={
+                          type.fee === "Free"
+                            ? "bg-green-100 text-green-800"
+                            : ""
+                        }
+                      >
                         {type.fee}
                       </Badge>
-                      <span className="text-sm text-muted-foreground">{type.time}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {type.time}
+                      </span>
                     </div>
                   </CardContent>
                 </Card>
@@ -291,13 +327,18 @@ export default function InstantTransfers() {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow duration-300">
+              <Card
+                key={index}
+                className="text-center hover:shadow-lg transition-shadow duration-300"
+              >
                 <CardContent className="p-6">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                     {feature.icon}
                   </div>
                   <h3 className="font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground text-sm">{feature.description}</p>
+                  <p className="text-muted-foreground text-sm">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -318,11 +359,15 @@ export default function InstantTransfers() {
                   Important Security Information
                 </h3>
                 <p className="text-orange-800 mb-4">
-                  Always verify recipient information before sending transfers. First City Credit Union will never ask for your login credentials or account information via email or phone calls.
+                  Always verify recipient information before sending transfers.
+                  First City Credit Union will never ask for your login
+                  credentials or account information via email or phone calls.
                 </p>
                 <ul className="space-y-1 text-orange-700 text-sm">
                   <li>• Double-check recipient details before confirming</li>
-                  <li>• Use strong, unique passwords for your online banking</li>
+                  <li>
+                    • Use strong, unique passwords for your online banking
+                  </li>
                   <li>• Enable two-factor authentication for added security</li>
                   <li>• Report suspicious activity immediately</li>
                 </ul>
@@ -344,16 +389,25 @@ export default function InstantTransfers() {
               Ready to start transferring money instantly?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Join over 150,000 members who trust First City Credit Union for fast, secure money transfers.
+              Join over 150,000 members who trust First City Credit Union for
+              fast, secure money transfers.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <Link to="/signup">
-                <Button size="lg" variant="secondary" className="bg-white text-[#00754A] hover:bg-gray-100 px-8">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-[#00754A] hover:bg-gray-100 px-8"
+                >
                   Open an Account
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-8">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/10 px-8"
+                >
                   Learn More
                 </Button>
               </Link>
@@ -373,12 +427,25 @@ export default function InstantTransfers() {
               <div className="text-lg font-bold">First City Credit Union</div>
             </div>
             <p className="text-gray-400 mb-4">
-              Member NCUA. Equal Housing Lender. Your deposits are insured up to $250,000.
+              Member NCUA. Equal Housing Lender. Your deposits are insured up to
+              $250,000.
             </p>
             <div className="flex justify-center space-x-6 text-sm text-gray-400">
-              <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-              <Link to="/security" className="hover:text-white transition-colors">Security</Link>
+              <Link
+                to="/privacy"
+                className="hover:text-white transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="hover:text-white transition-colors">
+                Terms of Service
+              </Link>
+              <Link
+                to="/security"
+                className="hover:text-white transition-colors"
+              >
+                Security
+              </Link>
             </div>
           </div>
         </div>

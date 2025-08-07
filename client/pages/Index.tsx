@@ -295,8 +295,8 @@ export default function Index() {
                           Smart Alerts
                         </h3>
                         <p className="text-muted-foreground leading-relaxed">
-                          Stay informed with customizable alerts for transactions
-                          and balances.
+                          Stay informed with customizable alerts for
+                          transactions and balances.
                         </p>
                       </div>
                     </div>

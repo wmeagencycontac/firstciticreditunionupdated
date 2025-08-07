@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { 
-  Bell, 
-  Smartphone, 
-  Mail, 
-  Shield, 
-  ArrowLeft, 
+import {
+  Bell,
+  Smartphone,
+  Mail,
+  Shield,
+  ArrowLeft,
   Building2,
   CreditCard,
   TrendingUp,
@@ -18,7 +18,7 @@ import {
   CheckCircle,
   DollarSign,
   Calendar,
-  Settings
+  Settings,
 } from "lucide-react";
 
 export default function SmartAlerts() {
@@ -27,7 +27,7 @@ export default function SmartAlerts() {
     balances: true,
     security: true,
     payments: false,
-    marketing: false
+    marketing: false,
   });
 
   const alertTypes = [
@@ -37,11 +37,27 @@ export default function SmartAlerts() {
       color: "text-blue-600",
       bgColor: "bg-blue-100",
       alerts: [
-        { name: "All transactions", description: "Get notified for every purchase and deposit", enabled: true },
-        { name: "Large transactions", description: "Alerts for transactions over $500", enabled: true },
-        { name: "ATM withdrawals", description: "Notify when you use ATMs", enabled: true },
-        { name: "Online purchases", description: "Alerts for online and card-not-present transactions", enabled: false }
-      ]
+        {
+          name: "All transactions",
+          description: "Get notified for every purchase and deposit",
+          enabled: true,
+        },
+        {
+          name: "Large transactions",
+          description: "Alerts for transactions over $500",
+          enabled: true,
+        },
+        {
+          name: "ATM withdrawals",
+          description: "Notify when you use ATMs",
+          enabled: true,
+        },
+        {
+          name: "Online purchases",
+          description: "Alerts for online and card-not-present transactions",
+          enabled: false,
+        },
+      ],
     },
     {
       category: "Balance Alerts",
@@ -49,11 +65,27 @@ export default function SmartAlerts() {
       color: "text-green-600",
       bgColor: "bg-green-100",
       alerts: [
-        { name: "Low balance", description: "Alert when balance falls below $100", enabled: true },
-        { name: "High balance", description: "Notify when balance exceeds $5,000", enabled: false },
-        { name: "Daily balance", description: "Daily account balance summary", enabled: false },
-        { name: "Overdraft protection", description: "Alerts before potential overdrafts", enabled: true }
-      ]
+        {
+          name: "Low balance",
+          description: "Alert when balance falls below $100",
+          enabled: true,
+        },
+        {
+          name: "High balance",
+          description: "Notify when balance exceeds $5,000",
+          enabled: false,
+        },
+        {
+          name: "Daily balance",
+          description: "Daily account balance summary",
+          enabled: false,
+        },
+        {
+          name: "Overdraft protection",
+          description: "Alerts before potential overdrafts",
+          enabled: true,
+        },
+      ],
     },
     {
       category: "Security Alerts",
@@ -61,11 +93,27 @@ export default function SmartAlerts() {
       color: "text-red-600",
       bgColor: "bg-red-100",
       alerts: [
-        { name: "Login alerts", description: "Notify when someone logs into your account", enabled: true },
-        { name: "Password changes", description: "Alert when account password is changed", enabled: true },
-        { name: "Failed login attempts", description: "Notify of unsuccessful login attempts", enabled: true },
-        { name: "Device registration", description: "Alert when new devices are registered", enabled: true }
-      ]
+        {
+          name: "Login alerts",
+          description: "Notify when someone logs into your account",
+          enabled: true,
+        },
+        {
+          name: "Password changes",
+          description: "Alert when account password is changed",
+          enabled: true,
+        },
+        {
+          name: "Failed login attempts",
+          description: "Notify of unsuccessful login attempts",
+          enabled: true,
+        },
+        {
+          name: "Device registration",
+          description: "Alert when new devices are registered",
+          enabled: true,
+        },
+      ],
     },
     {
       category: "Payment Reminders",
@@ -73,12 +121,28 @@ export default function SmartAlerts() {
       color: "text-purple-600",
       bgColor: "bg-purple-100",
       alerts: [
-        { name: "Bill due dates", description: "Remind you of upcoming bill payments", enabled: false },
-        { name: "Payment confirmations", description: "Confirm successful bill payments", enabled: false },
-        { name: "Auto-pay failures", description: "Alert when automatic payments fail", enabled: true },
-        { name: "Payment scheduling", description: "Remind you to schedule recurring payments", enabled: false }
-      ]
-    }
+        {
+          name: "Bill due dates",
+          description: "Remind you of upcoming bill payments",
+          enabled: false,
+        },
+        {
+          name: "Payment confirmations",
+          description: "Confirm successful bill payments",
+          enabled: false,
+        },
+        {
+          name: "Auto-pay failures",
+          description: "Alert when automatic payments fail",
+          enabled: true,
+        },
+        {
+          name: "Payment scheduling",
+          description: "Remind you to schedule recurring payments",
+          enabled: false,
+        },
+      ],
+    },
   ];
 
   const deliveryMethods = [
@@ -86,20 +150,20 @@ export default function SmartAlerts() {
       method: "Push Notifications",
       icon: <Smartphone className="w-5 h-5" />,
       description: "Instant alerts on your mobile device",
-      recommended: true
+      recommended: true,
     },
     {
       method: "Email",
       icon: <Mail className="w-5 h-5" />,
       description: "Detailed alerts sent to your email address",
-      recommended: true
+      recommended: true,
     },
     {
       method: "SMS Text",
       icon: <Bell className="w-5 h-5" />,
       description: "Quick text message alerts (standard rates apply)",
-      recommended: false
-    }
+      recommended: false,
+    },
   ];
 
   const toggleAlert = (category: string, alertIndex: number) => {
@@ -120,9 +184,7 @@ export default function SmartAlerts() {
               <div className="text-xl font-bold text-[#00754A]">
                 First City Credit Union
               </div>
-              <div className="text-xs text-muted-foreground">
-                Smart Alerts
-              </div>
+              <div className="text-xs text-muted-foreground">Smart Alerts</div>
             </div>
           </div>
           <div className="flex items-center space-x-4">
@@ -151,16 +213,25 @@ export default function SmartAlerts() {
             Smart Alerts
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Stay informed with customizable alerts for transactions, balances, and account security. Get notified instantly on your phone, email, or SMS.
+            Stay informed with customizable alerts for transactions, balances,
+            and account security. Get notified instantly on your phone, email,
+            or SMS.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
-              <Button size="lg" className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white px-8 shadow-lg">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white px-8 shadow-lg"
+              >
                 Set Up Alerts
               </Button>
             </Link>
             <Link to="/login">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50 px-8">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50 px-8"
+              >
                 Manage Your Alerts
               </Button>
             </Link>
@@ -176,7 +247,10 @@ export default function SmartAlerts() {
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {deliveryMethods.map((method, index) => (
-              <Card key={index} className={`relative hover:shadow-lg transition-shadow duration-300 ${method.recommended ? 'ring-2 ring-[#00754A]' : ''}`}>
+              <Card
+                key={index}
+                className={`relative hover:shadow-lg transition-shadow duration-300 ${method.recommended ? "ring-2 ring-[#00754A]" : ""}`}
+              >
                 {method.recommended && (
                   <Badge className="absolute -top-2 -right-2 bg-[#00754A] text-white">
                     Recommended
@@ -186,8 +260,12 @@ export default function SmartAlerts() {
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                     {method.icon}
                   </div>
-                  <h3 className="font-semibold text-lg mb-2">{method.method}</h3>
-                  <p className="text-muted-foreground text-sm">{method.description}</p>
+                  <h3 className="font-semibold text-lg mb-2">
+                    {method.method}
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {method.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -203,10 +281,15 @@ export default function SmartAlerts() {
           </h2>
           <div className="grid lg:grid-cols-2 gap-8">
             {alertTypes.map((category, categoryIndex) => (
-              <Card key={categoryIndex} className="hover:shadow-lg transition-shadow duration-300">
+              <Card
+                key={categoryIndex}
+                className="hover:shadow-lg transition-shadow duration-300"
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <div className={`w-10 h-10 ${category.bgColor} rounded-lg flex items-center justify-center`}>
+                    <div
+                      className={`w-10 h-10 ${category.bgColor} rounded-lg flex items-center justify-center`}
+                    >
                       <span className={category.color}>{category.icon}</span>
                     </div>
                     {category.category}
@@ -215,17 +298,27 @@ export default function SmartAlerts() {
                 <CardContent>
                   <div className="space-y-4">
                     {category.alerts.map((alert, alertIndex) => (
-                      <div key={alertIndex} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div
+                        key={alertIndex}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      >
                         <div className="flex-1">
-                          <Label htmlFor={`alert-${categoryIndex}-${alertIndex}`} className="font-medium cursor-pointer">
+                          <Label
+                            htmlFor={`alert-${categoryIndex}-${alertIndex}`}
+                            className="font-medium cursor-pointer"
+                          >
                             {alert.name}
                           </Label>
-                          <p className="text-sm text-muted-foreground mt-1">{alert.description}</p>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {alert.description}
+                          </p>
                         </div>
                         <Switch
                           id={`alert-${categoryIndex}-${alertIndex}`}
                           checked={alert.enabled}
-                          onCheckedChange={() => toggleAlert(category.category, alertIndex)}
+                          onCheckedChange={() =>
+                            toggleAlert(category.category, alertIndex)
+                          }
                         />
                       </div>
                     ))}
@@ -255,7 +348,8 @@ export default function SmartAlerts() {
                       Fraud Protection
                     </h3>
                     <p className="text-green-800">
-                      Get instant notifications of suspicious activity, helping you catch fraud early and protect your accounts.
+                      Get instant notifications of suspicious activity, helping
+                      you catch fraud early and protect your accounts.
                     </p>
                   </div>
                 </div>
@@ -273,7 +367,8 @@ export default function SmartAlerts() {
                       Budget Management
                     </h3>
                     <p className="text-blue-800">
-                      Stay on top of your spending with real-time transaction alerts and balance notifications.
+                      Stay on top of your spending with real-time transaction
+                      alerts and balance notifications.
                     </p>
                   </div>
                 </div>
@@ -291,7 +386,8 @@ export default function SmartAlerts() {
                       Full Control
                     </h3>
                     <p className="text-purple-800">
-                      Customize which alerts you receive and how you receive them. Turn notifications on or off anytime.
+                      Customize which alerts you receive and how you receive
+                      them. Turn notifications on or off anytime.
                     </p>
                   </div>
                 </div>
@@ -309,7 +405,8 @@ export default function SmartAlerts() {
                       Overdraft Prevention
                     </h3>
                     <p className="text-orange-800">
-                      Avoid costly overdraft fees with low balance alerts and spending notifications that help you stay within budget.
+                      Avoid costly overdraft fees with low balance alerts and
+                      spending notifications that help you stay within budget.
                     </p>
                   </div>
                 </div>
@@ -355,7 +452,8 @@ export default function SmartAlerts() {
                 </div>
                 <h3 className="font-semibold text-lg mb-2">Stay Informed</h3>
                 <p className="text-muted-foreground text-sm">
-                  Start receiving instant notifications about your account activity
+                  Start receiving instant notifications about your account
+                  activity
                 </p>
               </CardContent>
             </Card>
@@ -375,16 +473,25 @@ export default function SmartAlerts() {
               Ready to stay informed about your finances?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Set up smart alerts today and take control of your financial security and budgeting.
+              Set up smart alerts today and take control of your financial
+              security and budgeting.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <Link to="/signup">
-                <Button size="lg" variant="secondary" className="bg-white text-[#00754A] hover:bg-gray-100 px-8">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-[#00754A] hover:bg-gray-100 px-8"
+                >
                   Open an Account
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-8">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/10 px-8"
+                >
                   Contact Support
                 </Button>
               </Link>
@@ -404,12 +511,25 @@ export default function SmartAlerts() {
               <div className="text-lg font-bold">First City Credit Union</div>
             </div>
             <p className="text-gray-400 mb-4">
-              Member NCUA. Equal Housing Lender. Your deposits are insured up to $250,000.
+              Member NCUA. Equal Housing Lender. Your deposits are insured up to
+              $250,000.
             </p>
             <div className="flex justify-center space-x-6 text-sm text-gray-400">
-              <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-              <Link to="/security" className="hover:text-white transition-colors">Security</Link>
+              <Link
+                to="/privacy"
+                className="hover:text-white transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="hover:text-white transition-colors">
+                Terms of Service
+              </Link>
+              <Link
+                to="/security"
+                className="hover:text-white transition-colors"
+              >
+                Security
+              </Link>
             </div>
           </div>
         </div>
