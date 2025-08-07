@@ -33,6 +33,8 @@ import SavingsAccounts from "./pages/SavingsAccounts";
 import CreditCards from "./pages/CreditCards";
 import Loans from "./pages/Loans";
 import HelpCenter from "./pages/HelpCenter";
+import SecurityCenter from "./pages/SecurityCenter";
+import DemoExperience from "./pages/DemoExperience";
 
 const queryClient = new QueryClient();
 
@@ -92,27 +94,9 @@ export default function App() {
             <Route path="/help" element={<HelpCenter />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route
-              path="/security"
-              element={
-                <Placeholder
-                  title="Security Center"
-                  description="Learn about how we protect your accounts and personal information."
-                  suggestedPrompt="Can you create a security page explaining our security measures, fraud protection, and safety tips?"
-                />
-              }
-            />
+            <Route path="/security" element={<SecurityCenter />} />
             <Route path="/transactions" element={<Transactions />} />
-            <Route
-              path="/demo"
-              element={
-                <Placeholder
-                  title="Demo Experience"
-                  description="Experience SecureBank's features with our interactive demo."
-                  suggestedPrompt="Can you create an interactive demo showcasing key banking features and functionality?"
-                />
-              }
-            />
+            <Route path="/demo" element={<DemoExperience />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
