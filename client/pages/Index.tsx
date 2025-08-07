@@ -162,20 +162,20 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="lg:pl-8">
+          <div className="lg:pl-8 animate-slide-in">
             {/* Feature Cards */}
-            <div className="grid gap-4">
-              <Card className="border-l-4 border-l-[#00754A] hover:shadow-lg transition-shadow">
+            <div className="grid gap-6">
+              <Card className="border-0 shadow-lg shadow-green-500/10 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-500 hover:scale-[1.02] group bg-gradient-to-br from-white to-green-50/30">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Camera className="w-6 h-6 text-[#00754A]" />
+                    <div className="w-14 h-14 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-110">
+                      <Camera className="w-7 h-7 text-[#00754A]" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-xl mb-2 text-foreground group-hover:text-[#00754A] transition-colors duration-300">
                         Mobile Deposit
                       </h3>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground leading-relaxed">
                         Deposit checks instantly with your smartphone camera.
                         Available 24/7.
                       </p>
@@ -184,17 +184,17 @@ export default function Index() {
                 </CardContent>
               </Card>
 
-              <Card className="border-l-4 border-l-[#00754A] hover:shadow-lg transition-shadow">
+              <Card className="border-0 shadow-lg shadow-green-500/10 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-500 hover:scale-[1.02] group bg-gradient-to-br from-white to-green-50/30">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <ArrowUpDown className="w-6 h-6 text-[#00754A]" />
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-110">
+                      <ArrowUpDown className="w-7 h-7 text-[#00754A]" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-xl mb-2 text-foreground group-hover:text-[#00754A] transition-colors duration-300">
                         Instant Transfers
                       </h3>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground leading-relaxed">
                         Send money between accounts instantly with real-time
                         notifications.
                       </p>
@@ -203,17 +203,17 @@ export default function Index() {
                 </CardContent>
               </Card>
 
-              <Card className="border-l-4 border-l-[#00754A] hover:shadow-lg transition-shadow">
+              <Card className="border-0 shadow-lg shadow-green-500/10 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-500 hover:scale-[1.02] group bg-gradient-to-br from-white to-green-50/30">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Bell className="w-6 h-6 text-[#00754A]" />
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-110">
+                      <Bell className="w-7 h-7 text-[#00754A]" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-xl mb-2 text-foreground group-hover:text-[#00754A] transition-colors duration-300">
                         Smart Alerts
                       </h3>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground leading-relaxed">
                         Stay informed with customizable alerts for transactions
                         and balances.
                       </p>
