@@ -1,19 +1,39 @@
 services:
+  # Static site for frontend (Netlify alternative)
   - type: web
-    name: first-city-credit-union
-    runtime: node
-    plan: starter
-    region: oregon
+    name: fusion-starter-frontend
+    env: static
     buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist/spa
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # Backend API service
+  - type: web
+    name: fusion-starter-backend
+    env: node
+    plan: free
+    buildCommand: npm ci && npm run build:server
     startCommand: npm start
+    healthCheckPath: /api/ping
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 10000
-      - key: SECURE_STORAGE_PATH
-        value: /opt/render/project/src/data
-      - key: ENABLE_SUPABASE_INTEGRATION
-        value: "false"
-    healthCheckPath: /api/ping
-    autoDeploy: false
+        fromService:
+          type: web
+          name: fusion-starter-backend
+          property: port
+    autoDeploy: true
