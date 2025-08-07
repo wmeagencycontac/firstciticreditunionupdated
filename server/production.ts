@@ -1,4 +1,5 @@
 import { createServer } from './index.js';
+import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -10,27 +11,27 @@ const { app } = createServer();
 
 // Serve static files in production
 const staticPath = path.join(__dirname, '../spa');
-app.use('/', (req, res, next) => {
+console.log('📁 Static files path:', staticPath);
+
+// Serve static files
+app.use(express.static(staticPath, {
+  maxAge: '1d', // Cache static assets for 1 day
+  etag: true,
+  lastModified: true
+}));
+
+// Handle SPA routing - serve index.html for non-API routes
+app.get('*', (req, res, next) => {
   // Skip API routes
   if (req.path.startsWith('/api/')) {
     return next();
   }
-  
-  // Serve static files for non-API routes
-  const express = require('express');
-  const staticHandler = express.static(staticPath, {
-    index: 'index.html',
-    fallthrough: true
-  });
-  
-  staticHandler(req, res, (err) => {
-    if (err) return next(err);
-    
-    // If no static file found, serve index.html for SPA routing
-    if (req.method === 'GET' && !req.path.startsWith('/api/')) {
-      res.sendFile(path.join(staticPath, 'index.html'));
-    } else {
-      next();
+
+  // Serve index.html for all other routes (SPA routing)
+  res.sendFile(path.join(staticPath, 'index.html'), (err) => {
+    if (err) {
+      console.error('Error serving index.html:', err);
+      res.status(500).send('Server Error');
     }
   });
 });
