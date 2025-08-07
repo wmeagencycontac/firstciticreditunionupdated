@@ -24,6 +24,10 @@ import IntegrationTest from "./pages/IntegrationTest";
 import Placeholder from "./pages/Placeholder";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Personal from "./pages/Personal";
+import Business from "./pages/Business";
+import Investments from "./pages/Investments";
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -73,36 +77,9 @@ export default function App() {
               path="/register-enhanced"
               element={<EnhancedRegistration />}
             />
-            <Route
-              path="/personal"
-              element={
-                <Placeholder
-                  title="Personal Banking"
-                  description="Discover our comprehensive personal banking services and products."
-                  suggestedPrompt="Can you create a personal banking page showcasing checking accounts, savings accounts, and personal loans?"
-                />
-              }
-            />
-            <Route
-              path="/business"
-              element={
-                <Placeholder
-                  title="Business Banking"
-                  description="Grow your business with our specialized business banking solutions."
-                  suggestedPrompt="Can you build a business banking page with business accounts, merchant services, and commercial loans?"
-                />
-              }
-            />
-            <Route
-              path="/investments"
-              element={
-                <Placeholder
-                  title="Investment Services"
-                  description="Build your wealth with our comprehensive investment platform and advisory services."
-                  suggestedPrompt="Can you create an investments page with portfolio management, trading tools, and market insights?"
-                />
-              }
-            />
+            <Route path="/personal" element={<Personal />} />
+            <Route path="/business" element={<Business />} />
+            <Route path="/investments" element={<Investments />} />
             <Route
               path="/checking"
               element={
@@ -153,16 +130,7 @@ export default function App() {
                 />
               }
             />
-            <Route
-              path="/about"
-              element={
-                <Placeholder
-                  title="About SecureBank"
-                  description="Learn about our mission, values, and commitment to serving our customers."
-                  suggestedPrompt="Can you create an about page with company history, leadership team, and our values?"
-                />
-              }
-            />
+            <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route
               path="/security"
