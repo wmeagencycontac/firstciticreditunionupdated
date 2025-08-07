@@ -16,8 +16,8 @@ import { auth } from "@/lib/supabase";
 
 export default function Login() {
   const location = useLocation();
-  const [email, setEmail] = useState("john.doe@email.com");
-  const [password, setPassword] = useState("demo123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -225,36 +225,6 @@ export default function Login() {
                   Open an Account
                 </Link>
               </p>
-            </div>
-
-            {/* Demo Notice */}
-            <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-              <h4 className="text-sm font-medium mb-2 text-[#00754A]">
-                Demo Instructions
-              </h4>
-              <div className="text-xs text-muted-foreground space-y-1">
-                <p>• Create a new account with "Open an Account" above</p>
-                <p>• Your account starts with $0.00 balance (as requested)</p>
-                <p>
-                  • Visit{" "}
-                  <Link
-                    to="/supabase-test"
-                    className="text-[#00754A] hover:underline"
-                  >
-                    /supabase-test
-                  </Link>{" "}
-                  for Supabase testing
-                </p>
-                <p>
-                  • Test admin features at{" "}
-                  <Link
-                    to="/admin/login"
-                    className="text-[#00754A] hover:underline"
-                  >
-                    /admin/login
-                  </Link>
-                </p>
-              </div>
             </div>
           </CardContent>
         </Card>
