@@ -111,11 +111,14 @@ export default function ResetPassword() {
         {/* Background Decorations */}
         <div className="absolute top-10 right-10 w-72 h-72 bg-gradient-to-br from-green-200/30 to-emerald-300/20 rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-10 left-10 w-96 h-96 bg-gradient-to-tr from-blue-200/20 to-green-200/30 rounded-full blur-3xl -z-10"></div>
-        
+
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center space-x-3 mb-6 group">
+            <Link
+              to="/"
+              className="inline-flex items-center space-x-3 mb-6 group"
+            >
               <div className="w-12 h-12 bg-gradient-to-br from-[#00754A] to-[#005A39] rounded-xl flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:scale-105 transition-transform duration-300">
                 <Building2 className="w-7 h-7 text-white" />
               </div>
@@ -135,7 +138,9 @@ export default function ResetPassword() {
               <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <Mail className="w-8 w-8 text-[#00754A]" />
               </div>
-              <CardTitle className="text-2xl text-foreground">Check your email</CardTitle>
+              <CardTitle className="text-2xl text-foreground">
+                Check your email
+              </CardTitle>
               <CardDescription className="text-base">
                 We've sent password reset instructions to
               </CardDescription>
@@ -146,7 +151,9 @@ export default function ResetPassword() {
                 <div className="text-center">
                   <div className="inline-flex items-center space-x-2 bg-green-50 border border-green-200 px-4 py-3 rounded-lg">
                     <Mail className="w-4 h-4 text-[#00754A]" />
-                    <span className="font-medium text-foreground">{maskedEmail}</span>
+                    <span className="font-medium text-foreground">
+                      {maskedEmail}
+                    </span>
                   </div>
                 </div>
 
@@ -161,7 +168,9 @@ export default function ResetPassword() {
                       <ul className="text-xs text-muted-foreground space-y-1">
                         <li>• Link expires in 1 hour for your security</li>
                         <li>• All active sessions will be terminated</li>
-                        <li>• Email verification required for password reset</li>
+                        <li>
+                          • Email verification required for password reset
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -195,7 +204,11 @@ export default function ResetPassword() {
                     {loading ? "Sending..." : "Resend email"}
                   </Button>
 
-                  <Button asChild variant="ghost" className="w-full text-[#00754A] hover:bg-green-50">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="w-full text-[#00754A] hover:bg-green-50"
+                  >
                     <Link
                       to="/login"
                       className="flex items-center justify-center space-x-2"
@@ -212,7 +225,8 @@ export default function ResetPassword() {
           {/* Security footer */}
           <div className="mt-6 text-center">
             <p className="text-xs text-muted-foreground">
-              For your security, this process is monitored and logged • Member NCUA
+              For your security, this process is monitored and logged • Member
+              NCUA
             </p>
           </div>
         </div>
@@ -225,11 +239,14 @@ export default function ResetPassword() {
       {/* Background Decorations */}
       <div className="absolute top-10 right-10 w-72 h-72 bg-gradient-to-br from-green-200/30 to-emerald-300/20 rounded-full blur-3xl -z-10"></div>
       <div className="absolute bottom-10 left-10 w-96 h-96 bg-gradient-to-tr from-blue-200/20 to-green-200/30 rounded-full blur-3xl -z-10"></div>
-      
+
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-3 mb-6 group">
+          <Link
+            to="/"
+            className="inline-flex items-center space-x-3 mb-6 group"
+          >
             <div className="w-12 h-12 bg-gradient-to-br from-[#00754A] to-[#005A39] rounded-xl flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:scale-105 transition-transform duration-300">
               <Building2 className="w-7 h-7 text-white" />
             </div>
@@ -246,7 +263,9 @@ export default function ResetPassword() {
 
         <Card className="border-0 shadow-xl shadow-green-500/10 bg-white/80 backdrop-blur-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-foreground">Reset your password</CardTitle>
+            <CardTitle className="text-2xl text-foreground">
+              Reset your password
+            </CardTitle>
             <CardDescription className="text-base">
               Enter your email address and we'll send you instructions to reset
               your password
@@ -261,7 +280,9 @@ export default function ResetPassword() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">Email address</Label>
+                <Label htmlFor="email" className="text-sm font-medium">
+                  Email address
+                </Label>
                 <Input
                   id="email"
                   type="email"
@@ -300,7 +321,11 @@ export default function ResetPassword() {
             </div>
 
             <div className="mt-6 text-center">
-              <Button asChild variant="ghost" className="text-sm text-[#00754A] hover:bg-green-50">
+              <Button
+                asChild
+                variant="ghost"
+                className="text-sm text-[#00754A] hover:bg-green-50"
+              >
                 <Link
                   to="/login"
                   className="flex items-center justify-center space-x-2"
@@ -317,7 +342,10 @@ export default function ResetPassword() {
         <div className="mt-6 text-center">
           <p className="text-xs text-muted-foreground">
             Need help? Contact{" "}
-            <Link to="/contact" className="text-[#00754A] hover:text-[#005A39] hover:underline font-medium">
+            <Link
+              to="/contact"
+              className="text-[#00754A] hover:text-[#005A39] hover:underline font-medium"
+            >
               customer support
             </Link>
           </p>
