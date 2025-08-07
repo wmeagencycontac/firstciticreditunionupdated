@@ -43,6 +43,9 @@ import LiveChat from "./pages/LiveChat";
 import SavingsCalculator from "./pages/SavingsCalculator";
 import HelpSearch from "./pages/HelpSearch";
 import InteractiveDemo from "./pages/InteractiveDemo";
+import MobileDepositService from "./pages/MobileDepositService";
+import InstantTransfers from "./pages/InstantTransfers";
+import SmartAlerts from "./pages/SmartAlerts";
 
 const queryClient = new QueryClient();
 
@@ -117,6 +120,11 @@ export default function App() {
             <Route path="/calculator" element={<SavingsCalculator />} />
             <Route path="/search" element={<HelpSearch />} />
             <Route path="/demo-interactive" element={<InteractiveDemo />} />
+
+            {/* Service Pages */}
+            <Route path="/mobile-deposit" element={<MobileDepositService />} />
+            <Route path="/instant-transfers" element={<InstantTransfers />} />
+            <Route path="/smart-alerts" element={<SmartAlerts />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

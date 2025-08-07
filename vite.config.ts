@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     chunkSizeWarningLimit: 1000,
-    sourcemap: true,
+    sourcemap: mode !== "production",
   },
   plugins: [react(), expressPlugin()],
   resolve: {
