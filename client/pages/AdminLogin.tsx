@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,29 +13,22 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, Lock, User } from "lucide-react";
 import { toast } from "sonner";
-
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+import { auth } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function AdminLogin() {
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { profile, loading: authLoading } = useAuth();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (error) setError("");
-  };
+  useEffect(() => {
+    if (!authLoading && profile?.role === "admin") {
+      navigate("/admin/dashboard");
+    }
+  }, [profile, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,35 +36,20 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const response = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const { data, error: signInError } = await auth.signIn(email, password);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        // Check if user is admin
-        if (data.user.role !== "admin") {
-          setError("Admin access required. Please use regular login.");
-          return;
-        }
-
-        // Store token in localStorage
-        localStorage.setItem("adminToken", data.token);
-        localStorage.setItem("adminUser", JSON.stringify(data.user));
-
-        toast.success("Admin login successful!");
-        navigate("/admin/dashboard");
-      } else {
-        setError(data.error || "Login failed");
+      if (signInError) {
+        throw new Error(signInError.message);
       }
-    } catch (error) {
-      console.error("Login error:", error);
-      setError("Connection error. Please try again.");
+
+      if (!data.user) {
+        throw new Error("Authentication failed");
+      }
+
+      // The AdminRoute will handle the redirect and role check
+      toast.success("Login successful! Redirecting...");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setIsLoading(false);
     }
@@ -118,8 +96,8 @@ export default function AdminLogin() {
                     id="email"
                     name="email"
                     type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@securebank.com"
                     className="pl-10 bg-slate-700 border-slate-600 text-white placeholder-slate-400"
                     required
@@ -137,8 +115,8 @@ export default function AdminLogin() {
                     id="password"
                     name="password"
                     type="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     className="pl-10 bg-slate-700 border-slate-600 text-white placeholder-slate-400"
                     required
@@ -149,9 +127,9 @@ export default function AdminLogin() {
               <Button
                 type="submit"
                 className="w-full bg-purple-600 hover:bg-purple-700"
-                disabled={isLoading}
+                disabled={isLoading || authLoading}
               >
-                {isLoading ? "Signing in..." : "Sign In"}
+                {isLoading || authLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
