@@ -94,13 +94,13 @@ export default function Index() {
             <Link to="/login">
               <Button
                 variant="ghost"
-                className="text-[#00754A] hover:bg-green-50"
+                className="text-[#00754A] hover:bg-green-50 transition-all duration-300 hover:scale-105"
               >
                 Login
               </Button>
             </Link>
             <Link to="/signup">
-              <Button className="bg-[#00754A] hover:bg-[#005A39] text-white">
+              <Button className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all duration-300 hover:scale-105">
                 Open an Account
               </Button>
             </Link>
