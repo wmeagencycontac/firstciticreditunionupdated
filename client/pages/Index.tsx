@@ -38,12 +38,12 @@ export default function Index() {
   const [email, setEmail] = useState("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-green-50/50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-green-50/30 to-emerald-50/60">
       {/* Header */}
-      <header className="container mx-auto px-4 py-6 border-b">
+      <header className="container mx-auto px-4 py-6 border-b bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
         <nav className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-[#00754A] rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#00754A] to-[#005A39] rounded-xl flex items-center justify-center shadow-lg shadow-green-500/25">
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -58,27 +58,31 @@ export default function Index() {
           <div className="hidden lg:flex items-center space-x-8">
             <a
               href="#personal"
-              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
+              className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               Personal
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               href="#business"
-              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
+              className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               Business
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               href="#investments"
-              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
+              className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               Investments
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               href="#about"
-              className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium"
+              className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               About
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
             </a>
           </div>
           <div className="flex items-center space-x-4">
