@@ -40,7 +40,7 @@ export default function CreditCards() {
                 Login
               </Button>
             </Link>
-            <Link to="/signup">
+            <Link to="/apply?type=credit-card">
               <Button className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
                 Apply Now
               </Button>
@@ -100,9 +100,11 @@ export default function CreditCards() {
                   0% intro APR for 15 months
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Apply Now
-              </Button>
+              <Link to="/apply?type=cashback-card">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Apply Now
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -148,9 +150,11 @@ export default function CreditCards() {
                   Airport lounge access
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Apply Now
-              </Button>
+              <Link to="/apply?type=premium-card">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Apply Now
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -189,9 +193,11 @@ export default function CreditCards() {
                   Graduate to unsecured card
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Apply Now
-              </Button>
+              <Link to="/apply?type=secured-card">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Apply Now
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
