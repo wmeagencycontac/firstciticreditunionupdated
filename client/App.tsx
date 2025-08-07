@@ -38,6 +38,10 @@ import DemoExperience from "./pages/DemoExperience";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Accessibility from "./pages/Accessibility";
+import ApplicationForm from "./pages/ApplicationForm";
+import LiveChat from "./pages/LiveChat";
+import SavingsCalculator from "./pages/SavingsCalculator";
+import HelpSearch from "./pages/HelpSearch";
 
 const queryClient = new QueryClient();
 
@@ -105,6 +109,12 @@ export default function App() {
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/accessibility" element={<Accessibility />} />
+
+            {/* Interactive Features */}
+            <Route path="/apply" element={<ApplicationForm />} />
+            <Route path="/chat" element={<LiveChat />} />
+            <Route path="/calculator" element={<SavingsCalculator />} />
+            <Route path="/search" element={<HelpSearch />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
