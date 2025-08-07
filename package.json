@@ -15,12 +15,21 @@
     "build": "npm run build:client",
     "build:client": "vite build",
     "build:server": "vite build --config vite.config.server.ts",
-    "start": "node dist/server/node-build.mjs",
+    "build:full": "npm run build:client && npm run build:server",
+    "start": "node dist/server/production.mjs",
+    "start:dev": "node dist/server/node-build.mjs",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc",
+    "lint": "tsc --noEmit",
     "netlify-dev": "netlify dev",
-    "netlify-build": "npm run build:client"
+    "netlify-build": "npm run build:client",
+    "render-build": "npm ci && npm run build:full",
+    "postinstall": "npm run build:server || true"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.53.0",
