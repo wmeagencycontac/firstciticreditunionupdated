@@ -32,10 +32,13 @@ import {
   Camera,
   ArrowUpDown,
   Bell,
+  Menu,
+  X,
 } from "lucide-react";
 
 export default function Index() {
   const [email, setEmail] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-green-50/30 to-emerald-50/60">
@@ -91,21 +94,88 @@ export default function Index() {
                 Test Setup
               </Button>
             </Link>
-            <Link to="/login">
-              <Button
-                variant="ghost"
-                className="text-[#00754A] hover:bg-green-50 transition-all duration-300 hover:scale-105"
-              >
-                Login
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all duration-300 hover:scale-105">
-                Open an Account
-              </Button>
-            </Link>
+            <div className="hidden md:flex items-center space-x-4">
+              <Link to="/login">
+                <Button
+                  variant="ghost"
+                  className="text-[#00754A] hover:bg-green-50 transition-all duration-300 hover:scale-105"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all duration-300 hover:scale-105">
+                  Open an Account
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="lg:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
           </div>
         </nav>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden mt-4 pb-4 border-t border-green-200/50">
+            <div className="flex flex-col space-y-4 pt-4">
+              <a
+                href="#personal"
+                className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium px-4 py-2 rounded-lg hover:bg-green-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Personal Banking
+              </a>
+              <a
+                href="#business"
+                className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium px-4 py-2 rounded-lg hover:bg-green-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Business Banking
+              </a>
+              <a
+                href="#investments"
+                className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium px-4 py-2 rounded-lg hover:bg-green-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Investments
+              </a>
+              <a
+                href="#about"
+                className="text-muted-foreground hover:text-[#00754A] transition-colors font-medium px-4 py-2 rounded-lg hover:bg-green-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </a>
+              <div className="flex flex-col space-y-2 pt-2">
+                <Link to="/login">
+                  <Button
+                    variant="ghost"
+                    className="w-full text-[#00754A] hover:bg-green-50 justify-start"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button
+                    className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Open an Account
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
