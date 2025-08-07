@@ -7,6 +7,10 @@ import { Server as SocketIOServer } from "socket.io";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  esbuild: {
+    // Remove console logs in production
+    drop: mode === "production" ? ["console", "debugger"] : [],
+  },
   server: {
     host: "::",
     port: 8080,
@@ -17,6 +21,29 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     outDir: "dist/spa",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          router: ["react-router-dom"],
+          ui: [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-select",
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-alert-dialog",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-dropdown-menu",
+          ],
+          query: ["@tanstack/react-query"],
+          icons: ["lucide-react"],
+          motion: ["framer-motion"],
+          utils: ["clsx", "tailwind-merge", "date-fns"],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
+    sourcemap: true,
   },
   plugins: [react(), expressPlugin()],
   resolve: {
