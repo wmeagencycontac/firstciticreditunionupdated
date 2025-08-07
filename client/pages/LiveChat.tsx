@@ -7,7 +7,7 @@ import { Building2, Send, Bot, User, Clock, Minimize2, X } from "lucide-react";
 
 interface Message {
   id: string;
-  type: 'user' | 'agent' | 'system';
+  type: "user" | "agent" | "system";
   content: string;
   timestamp: Date;
   agentName?: string;
@@ -38,15 +38,16 @@ export default function LiveChat() {
           id: "1",
           type: "system",
           content: "Connected to live chat support",
-          timestamp: new Date()
+          timestamp: new Date(),
         },
         {
           id: "2",
           type: "agent",
-          content: "Hi! I'm Sarah from First City Credit Union. How can I help you today?",
+          content:
+            "Hi! I'm Sarah from First City Credit Union. How can I help you today?",
           timestamp: new Date(),
-          agentName: "Sarah"
-        }
+          agentName: "Sarah",
+        },
       ]);
     }, 1500);
 
@@ -60,30 +61,33 @@ export default function LiveChat() {
       id: Date.now().toString(),
       type: "user",
       content: newMessage,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setNewMessage("");
     setIsTyping(true);
 
     // Simulate agent response
-    setTimeout(() => {
-      setIsTyping(false);
-      const agentResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        type: "agent",
-        content: getAgentResponse(newMessage),
-        timestamp: new Date(),
-        agentName: agentName
-      };
-      setMessages(prev => [...prev, agentResponse]);
-    }, 1000 + Math.random() * 2000);
+    setTimeout(
+      () => {
+        setIsTyping(false);
+        const agentResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          type: "agent",
+          content: getAgentResponse(newMessage),
+          timestamp: new Date(),
+          agentName: agentName,
+        };
+        setMessages((prev) => [...prev, agentResponse]);
+      },
+      1000 + Math.random() * 2000,
+    );
   };
 
   const getAgentResponse = (userMessage: string): string => {
     const msg = userMessage.toLowerCase();
-    
+
     if (msg.includes("balance") || msg.includes("account")) {
       return "I can help you check your account balance. For security reasons, I'll need to verify your identity first. Can you provide me with your account number or the email associated with your account?";
     } else if (msg.includes("loan") || msg.includes("apply")) {
@@ -92,7 +96,11 @@ export default function LiveChat() {
       return "Great! We have several credit card options including our Cashback Rewards Card and Premium Travel Card. Would you like me to help you compare the benefits and apply for one?";
     } else if (msg.includes("hours") || msg.includes("time")) {
       return "Our branch hours are Monday-Friday 8AM-6PM, Saturday 9AM-3PM. Our online banking and mobile app are available 24/7. Is there something specific you need help with today?";
-    } else if (msg.includes("problem") || msg.includes("issue") || msg.includes("help")) {
+    } else if (
+      msg.includes("problem") ||
+      msg.includes("issue") ||
+      msg.includes("help")
+    ) {
       return "I'm sorry to hear you're experiencing an issue. Can you tell me more details about what's happening? I'm here to help resolve this for you.";
     } else if (msg.includes("rate") || msg.includes("interest")) {
       return "Our current rates are very competitive! Personal loan rates start at 6.99% APR, and our high-yield savings account offers 4.25% APY. Would you like specific rate information for a particular product?";
@@ -102,7 +110,7 @@ export default function LiveChat() {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
@@ -113,7 +121,7 @@ export default function LiveChat() {
     "Apply for a loan",
     "Credit card options",
     "Branch locations",
-    "Report lost card"
+    "Report lost card",
   ];
 
   return (
@@ -131,12 +139,18 @@ export default function LiveChat() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/help">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Help Center
               </Button>
             </Link>
             <Link to="/">
-              <Button variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 <X className="w-4 h-4 mr-2" />
                 Close Chat
               </Button>
@@ -157,7 +171,9 @@ export default function LiveChat() {
                       <User className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-lg font-semibold">Live Chat Support</div>
+                      <div className="text-lg font-semibold">
+                        Live Chat Support
+                      </div>
                       <div className="text-sm text-green-100 flex items-center gap-1">
                         {isConnected ? (
                           <>
@@ -174,51 +190,72 @@ export default function LiveChat() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-white hover:bg-white/20"
+                    >
                       <Minimize2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </CardTitle>
               </CardHeader>
-              
+
               <CardContent className="flex-1 flex flex-col p-0">
                 {/* Messages Area */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
                     >
                       <div
                         className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                          message.type === 'user'
-                            ? 'bg-[#00754A] text-white'
-                            : message.type === 'system'
-                            ? 'bg-gray-100 text-gray-600 text-center text-sm'
-                            : 'bg-gray-100 text-gray-800'
+                          message.type === "user"
+                            ? "bg-[#00754A] text-white"
+                            : message.type === "system"
+                              ? "bg-gray-100 text-gray-600 text-center text-sm"
+                              : "bg-gray-100 text-gray-800"
                         }`}
                       >
-                        {message.type === 'agent' && (
-                          <div className="text-xs text-gray-500 mb-1">{message.agentName}</div>
+                        {message.type === "agent" && (
+                          <div className="text-xs text-gray-500 mb-1">
+                            {message.agentName}
+                          </div>
                         )}
                         <div>{message.content}</div>
-                        <div className={`text-xs mt-1 ${
-                          message.type === 'user' ? 'text-green-200' : 'text-gray-400'
-                        }`}>
-                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        <div
+                          className={`text-xs mt-1 ${
+                            message.type === "user"
+                              ? "text-green-200"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          {message.timestamp.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </div>
                       </div>
                     </div>
                   ))}
-                  
+
                   {isTyping && (
                     <div className="flex justify-start">
                       <div className="bg-gray-100 px-4 py-2 rounded-lg">
-                        <div className="text-xs text-gray-500 mb-1">{agentName}</div>
+                        <div className="text-xs text-gray-500 mb-1">
+                          {agentName}
+                        </div>
                         <div className="flex space-x-1">
                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                          <div
+                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.1s" }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.2s" }}
+                          ></div>
                         </div>
                       </div>
                     </div>
@@ -255,7 +292,9 @@ export default function LiveChat() {
             {/* Quick Actions */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-lg text-[#00754A]">Quick Actions</CardTitle>
+                <CardTitle className="text-lg text-[#00754A]">
+                  Quick Actions
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {quickActions.map((action, index) => (
@@ -274,7 +313,9 @@ export default function LiveChat() {
             {/* Support Hours */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-lg text-[#00754A]">Support Hours</CardTitle>
+                <CardTitle className="text-lg text-[#00754A]">
+                  Support Hours
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -291,8 +332,12 @@ export default function LiveChat() {
                 </div>
                 <div className="pt-3 border-t">
                   <div className="text-center">
-                    <div className="text-lg font-semibold text-[#00754A]">(555) 123-4567</div>
-                    <div className="text-xs text-muted-foreground">Emergency Line</div>
+                    <div className="text-lg font-semibold text-[#00754A]">
+                      (555) 123-4567
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Emergency Line
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -301,26 +346,40 @@ export default function LiveChat() {
             {/* Help Topics */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-lg text-[#00754A]">Popular Help Topics</CardTitle>
+                <CardTitle className="text-lg text-[#00754A]">
+                  Popular Help Topics
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <Link to="/help" className="block">
-                  <Button variant="ghost" className="w-full justify-start text-sm hover:bg-green-50">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-sm hover:bg-green-50"
+                  >
                     Reset Password
                   </Button>
                 </Link>
                 <Link to="/help" className="block">
-                  <Button variant="ghost" className="w-full justify-start text-sm hover:bg-green-50">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-sm hover:bg-green-50"
+                  >
                     Mobile Banking
                   </Button>
                 </Link>
                 <Link to="/help" className="block">
-                  <Button variant="ghost" className="w-full justify-start text-sm hover:bg-green-50">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-sm hover:bg-green-50"
+                  >
                     Account Security
                   </Button>
                 </Link>
                 <Link to="/security" className="block">
-                  <Button variant="ghost" className="w-full justify-start text-sm hover:bg-green-50">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-sm hover:bg-green-50"
+                  >
                     Report Fraud
                   </Button>
                 </Link>

@@ -1,4 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
 import { PiggyBank, TrendingUp, Target, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -19,7 +25,10 @@ export default function SavingsAccounts() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Login
               </Button>
             </Link>
@@ -38,7 +47,8 @@ export default function SavingsAccounts() {
             Savings Accounts
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Grow your savings with competitive rates and flexible terms that work for your financial goals.
+            Grow your savings with competitive rates and flexible terms that
+            work for your financial goals.
           </p>
         </div>
 
@@ -58,8 +68,12 @@ export default function SavingsAccounts() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">2.50% APY</div>
-              <div className="text-sm text-muted-foreground mb-4">$100 minimum to open</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                2.50% APY
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                $100 minimum to open
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -102,8 +116,12 @@ export default function SavingsAccounts() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">4.25% APY</div>
-              <div className="text-sm text-muted-foreground mb-4">$1,000 minimum to open</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                4.25% APY
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                $1,000 minimum to open
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -143,8 +161,12 @@ export default function SavingsAccounts() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">3.75% APY</div>
-              <div className="text-sm text-muted-foreground mb-4">$25 minimum to open</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                3.75% APY
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                $25 minimum to open
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -172,21 +194,31 @@ export default function SavingsAccounts() {
 
         {/* Savings Calculator */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-[#00754A] mb-6 text-center">Savings Calculator</h2>
+          <h2 className="text-2xl font-bold text-[#00754A] mb-6 text-center">
+            Savings Calculator
+          </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Calculate Your Savings Growth</h3>
+              <h3 className="text-lg font-semibold mb-4">
+                Calculate Your Savings Growth
+              </h3>
               <p className="text-muted-foreground mb-4">
-                See how your money can grow with our competitive interest rates and compound interest.
+                See how your money can grow with our competitive interest rates
+                and compound interest.
               </p>
               <Link to="/calculator">
-                <Button variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+                <Button
+                  variant="outline"
+                  className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+                >
                   Use Calculator
                 </Button>
               </Link>
             </div>
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6">
-              <h4 className="font-semibold text-[#00754A] mb-2">Example Calculation</h4>
+              <h4 className="font-semibold text-[#00754A] mb-2">
+                Example Calculation
+              </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>Initial deposit:</span>
@@ -211,24 +243,29 @@ export default function SavingsAccounts() {
 
         {/* Tips Section */}
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-[#00754A] mb-6">Savings Tips</h2>
+          <h2 className="text-2xl font-bold text-[#00754A] mb-6">
+            Savings Tips
+          </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
               <h3 className="font-semibold text-[#00754A] mb-2">Start Small</h3>
               <p className="text-muted-foreground text-sm">
-                Even $25 a month can grow significantly over time with compound interest.
+                Even $25 a month can grow significantly over time with compound
+                interest.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-[#00754A] mb-2">Automate It</h3>
               <p className="text-muted-foreground text-sm">
-                Set up automatic transfers to make saving effortless and consistent.
+                Set up automatic transfers to make saving effortless and
+                consistent.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-[#00754A] mb-2">Set Goals</h3>
               <p className="text-muted-foreground text-sm">
-                Having specific savings goals makes it easier to stay motivated and on track.
+                Having specific savings goals makes it easier to stay motivated
+                and on track.
               </p>
             </div>
           </div>
@@ -236,7 +273,11 @@ export default function SavingsAccounts() {
 
         <div className="text-center">
           <Link to="/contact">
-            <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+            >
               Questions? Contact Us
             </Button>
           </Link>

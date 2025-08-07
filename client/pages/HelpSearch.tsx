@@ -3,7 +3,15 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSearchParams, Link } from "react-router-dom";
-import { Building2, Search, FileText, MessageCircle, Phone, ArrowRight, Clock } from "lucide-react";
+import {
+  Building2,
+  Search,
+  FileText,
+  MessageCircle,
+  Phone,
+  ArrowRight,
+  Clock,
+} from "lucide-react";
 
 interface HelpArticle {
   id: string;
@@ -18,7 +26,7 @@ interface HelpArticle {
 
 export default function HelpSearch() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
+  const query = searchParams.get("q") || "";
   const [searchTerm, setSearchTerm] = useState(query);
   const [results, setResults] = useState<HelpArticle[]>([]);
   const [loading, setLoading] = useState(false);
@@ -28,83 +36,91 @@ export default function HelpSearch() {
     {
       id: "1",
       title: "How to reset your online banking password",
-      excerpt: "Step-by-step guide to reset your password using email verification or security questions. Includes troubleshooting tips for common issues.",
+      excerpt:
+        "Step-by-step guide to reset your password using email verification or security questions. Includes troubleshooting tips for common issues.",
       category: "Account Access",
       views: 2450,
       helpful: 89,
       lastUpdated: "2024-01-15",
-      tags: ["password", "login", "security", "reset"]
+      tags: ["password", "login", "security", "reset"],
     },
     {
       id: "2",
       title: "Setting up mobile banking on your smartphone",
-      excerpt: "Learn how to download and set up our mobile banking app on iOS and Android devices. Includes security setup and troubleshooting.",
+      excerpt:
+        "Learn how to download and set up our mobile banking app on iOS and Android devices. Includes security setup and troubleshooting.",
       category: "Mobile Banking",
       views: 1823,
       helpful: 92,
       lastUpdated: "2024-01-10",
-      tags: ["mobile", "app", "setup", "android", "ios"]
+      tags: ["mobile", "app", "setup", "android", "ios"],
     },
     {
       id: "3",
       title: "Understanding your account statements",
-      excerpt: "Detailed explanation of all sections in your monthly account statement, including transaction codes and fee descriptions.",
+      excerpt:
+        "Detailed explanation of all sections in your monthly account statement, including transaction codes and fee descriptions.",
       category: "Account Management",
       views: 1567,
       helpful: 78,
       lastUpdated: "2024-01-08",
-      tags: ["statements", "transactions", "fees", "codes"]
+      tags: ["statements", "transactions", "fees", "codes"],
     },
     {
       id: "4",
       title: "How to transfer money between accounts",
-      excerpt: "Complete guide for transferring funds between your checking and savings accounts using online banking or mobile app.",
+      excerpt:
+        "Complete guide for transferring funds between your checking and savings accounts using online banking or mobile app.",
       category: "Transfers",
       views: 3012,
       helpful: 95,
       lastUpdated: "2024-01-12",
-      tags: ["transfers", "accounts", "money", "online banking"]
+      tags: ["transfers", "accounts", "money", "online banking"],
     },
     {
       id: "5",
       title: "Reporting a lost or stolen debit card",
-      excerpt: "Immediate steps to take when your debit card is lost or stolen, including how to freeze your card and request a replacement.",
+      excerpt:
+        "Immediate steps to take when your debit card is lost or stolen, including how to freeze your card and request a replacement.",
       category: "Card Services",
       views: 876,
       helpful: 88,
       lastUpdated: "2024-01-14",
-      tags: ["debit card", "lost", "stolen", "replacement", "freeze"]
+      tags: ["debit card", "lost", "stolen", "replacement", "freeze"],
     },
     {
       id: "6",
       title: "Setting up direct deposit",
-      excerpt: "How to set up direct deposit for your paycheck or benefits, including required forms and processing times.",
+      excerpt:
+        "How to set up direct deposit for your paycheck or benefits, including required forms and processing times.",
       category: "Direct Deposit",
       views: 2134,
       helpful: 85,
       lastUpdated: "2024-01-09",
-      tags: ["direct deposit", "paycheck", "setup", "forms"]
+      tags: ["direct deposit", "paycheck", "setup", "forms"],
     },
     {
       id: "7",
       title: "Understanding overdraft protection",
-      excerpt: "Learn about overdraft protection options, fees, and how to opt in or out of overdraft coverage for your accounts.",
+      excerpt:
+        "Learn about overdraft protection options, fees, and how to opt in or out of overdraft coverage for your accounts.",
       category: "Account Protection",
       views: 1345,
       helpful: 76,
       lastUpdated: "2024-01-11",
-      tags: ["overdraft", "protection", "fees", "coverage"]
+      tags: ["overdraft", "protection", "fees", "coverage"],
     },
     {
       id: "8",
       title: "How to dispute a transaction",
-      excerpt: "Process for disputing unauthorized transactions or billing errors, including required documentation and timelines.",
+      excerpt:
+        "Process for disputing unauthorized transactions or billing errors, including required documentation and timelines.",
       category: "Disputes",
       views: 1098,
       helpful: 82,
       lastUpdated: "2024-01-13",
-      tags: ["dispute", "unauthorized", "billing", "error"]
-    }
+      tags: ["dispute", "unauthorized", "billing", "error"],
+    },
   ];
 
   const searchArticles = (term: string) => {
@@ -115,16 +131,19 @@ export default function HelpSearch() {
     }
 
     setLoading(true);
-    
+
     // Simulate API search delay
     setTimeout(() => {
-      const filtered = mockArticles.filter(article => 
-        article.title.toLowerCase().includes(term.toLowerCase()) ||
-        article.excerpt.toLowerCase().includes(term.toLowerCase()) ||
-        article.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase())) ||
-        article.category.toLowerCase().includes(term.toLowerCase())
+      const filtered = mockArticles.filter(
+        (article) =>
+          article.title.toLowerCase().includes(term.toLowerCase()) ||
+          article.excerpt.toLowerCase().includes(term.toLowerCase()) ||
+          article.tags.some((tag) =>
+            tag.toLowerCase().includes(term.toLowerCase()),
+          ) ||
+          article.category.toLowerCase().includes(term.toLowerCase()),
       );
-      
+
       setResults(filtered);
       setSearchCount(filtered.length);
       setLoading(false);
@@ -137,7 +156,7 @@ export default function HelpSearch() {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -156,7 +175,7 @@ export default function HelpSearch() {
     "debit card",
     "online banking",
     "transfer money",
-    "statements"
+    "statements",
   ];
 
   const categories = [
@@ -165,7 +184,7 @@ export default function HelpSearch() {
     { name: "Transfers", count: 6 },
     { name: "Card Services", count: 10 },
     { name: "Account Management", count: 15 },
-    { name: "Security", count: 9 }
+    { name: "Security", count: 9 },
   ];
 
   return (
@@ -183,7 +202,10 @@ export default function HelpSearch() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/help">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Help Center
               </Button>
             </Link>
@@ -198,7 +220,9 @@ export default function HelpSearch() {
 
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#00754A] mb-4">Search Help Articles</h1>
+          <h1 className="text-3xl font-bold text-[#00754A] mb-4">
+            Search Help Articles
+          </h1>
           <p className="text-muted-foreground">
             Find answers to your questions in our comprehensive help center
           </p>
@@ -215,7 +239,7 @@ export default function HelpSearch() {
               placeholder="Search for help articles, FAQs, or topics..."
               className="pl-12 h-14 text-lg bg-white border-2 border-green-200 focus:border-[#00754A] rounded-xl"
             />
-            <Button 
+            <Button
               onClick={handleSearch}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white"
             >
@@ -230,7 +254,9 @@ export default function HelpSearch() {
             {/* Popular Searches */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-lg text-[#00754A]">Popular Searches</CardTitle>
+                <CardTitle className="text-lg text-[#00754A]">
+                  Popular Searches
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {popularSearches.map((search, index) => (
@@ -253,11 +279,16 @@ export default function HelpSearch() {
             {/* Categories */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-lg text-[#00754A]">Categories</CardTitle>
+                <CardTitle className="text-lg text-[#00754A]">
+                  Categories
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {categories.map((category, index) => (
-                  <div key={index} className="flex justify-between items-center py-1">
+                  <div
+                    key={index}
+                    className="flex justify-between items-center py-1"
+                  >
                     <Button
                       variant="ghost"
                       className="justify-start text-sm hover:bg-green-50 hover:text-[#00754A] p-0"
@@ -269,7 +300,9 @@ export default function HelpSearch() {
                     >
                       {category.name}
                     </Button>
-                    <span className="text-xs text-muted-foreground">({category.count})</span>
+                    <span className="text-xs text-muted-foreground">
+                      ({category.count})
+                    </span>
                   </div>
                 ))}
               </CardContent>
@@ -278,7 +311,9 @@ export default function HelpSearch() {
             {/* Contact Support */}
             <Card className="shadow-lg bg-gradient-to-br from-green-50 to-emerald-50">
               <CardHeader>
-                <CardTitle className="text-lg text-[#00754A]">Need More Help?</CardTitle>
+                <CardTitle className="text-lg text-[#00754A]">
+                  Need More Help?
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Link to="/chat">
@@ -288,8 +323,12 @@ export default function HelpSearch() {
                   </Button>
                 </Link>
                 <div className="text-center">
-                  <div className="text-sm text-muted-foreground">or call us at</div>
-                  <div className="text-lg font-semibold text-[#00754A]">(555) 123-4567</div>
+                  <div className="text-sm text-muted-foreground">
+                    or call us at
+                  </div>
+                  <div className="text-lg font-semibold text-[#00754A]">
+                    (555) 123-4567
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -310,38 +349,45 @@ export default function HelpSearch() {
                     Search Results for "{query}"
                   </h2>
                   <p className="text-muted-foreground">
-                    Found {searchCount} {searchCount === 1 ? 'article' : 'articles'}
+                    Found {searchCount}{" "}
+                    {searchCount === 1 ? "article" : "articles"}
                   </p>
                 </div>
 
                 {/* Results */}
                 <div className="space-y-4">
                   {results.map((article) => (
-                    <Card key={article.id} className="shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+                    <Card
+                      key={article.id}
+                      className="shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                       <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-center gap-2">
                             <FileText className="w-4 h-4 text-[#00754A]" />
-                            <span className="text-sm text-[#00754A] font-medium">{article.category}</span>
+                            <span className="text-sm text-[#00754A] font-medium">
+                              {article.category}
+                            </span>
                           </div>
                           <div className="text-xs text-muted-foreground flex items-center gap-1">
                             <Clock className="w-3 h-3" />
-                            Updated {new Date(article.lastUpdated).toLocaleDateString()}
+                            Updated{" "}
+                            {new Date(article.lastUpdated).toLocaleDateString()}
                           </div>
                         </div>
-                        
+
                         <h3 className="text-xl font-semibold text-[#00754A] mb-2 hover:text-[#005A39] transition-colors">
                           {article.title}
                         </h3>
-                        
+
                         <p className="text-muted-foreground mb-4 leading-relaxed">
                           {article.excerpt}
                         </p>
-                        
+
                         <div className="flex justify-between items-center">
                           <div className="flex gap-2">
                             {article.tags.slice(0, 3).map((tag, index) => (
-                              <span 
+                              <span
                                 key={index}
                                 className="px-2 py-1 bg-green-100 text-[#00754A] text-xs rounded-full"
                               >
@@ -349,7 +395,7 @@ export default function HelpSearch() {
                               </span>
                             ))}
                           </div>
-                          
+
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span>{article.views} views</span>
                             <span>{article.helpful}% helpful</span>
@@ -364,9 +410,12 @@ export default function HelpSearch() {
             ) : query && results.length === 0 ? (
               <div className="text-center py-12">
                 <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-[#00754A] mb-2">No articles found</h2>
+                <h2 className="text-2xl font-bold text-[#00754A] mb-2">
+                  No articles found
+                </h2>
                 <p className="text-muted-foreground mb-6">
-                  We couldn't find any articles matching "{query}". Try different keywords or browse our categories.
+                  We couldn't find any articles matching "{query}". Try
+                  different keywords or browse our categories.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link to="/chat">
@@ -376,7 +425,10 @@ export default function HelpSearch() {
                     </Button>
                   </Link>
                   <Link to="/contact">
-                    <Button variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+                    <Button
+                      variant="outline"
+                      className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+                    >
                       <Phone className="w-4 h-4 mr-2" />
                       Contact Support
                     </Button>
@@ -386,7 +438,9 @@ export default function HelpSearch() {
             ) : (
               <div className="text-center py-12">
                 <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-[#00754A] mb-2">Search Our Help Center</h2>
+                <h2 className="text-2xl font-bold text-[#00754A] mb-2">
+                  Search Our Help Center
+                </h2>
                 <p className="text-muted-foreground mb-6">
                   Enter a search term above to find helpful articles and guides.
                 </p>

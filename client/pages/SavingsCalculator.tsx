@@ -5,7 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Link } from "react-router-dom";
-import { Building2, Calculator, TrendingUp, DollarSign, Target, PiggyBank } from "lucide-react";
+import {
+  Building2,
+  Calculator,
+  TrendingUp,
+  DollarSign,
+  Target,
+  PiggyBank,
+} from "lucide-react";
 
 interface CalculationResult {
   finalAmount: number;
@@ -37,27 +44,28 @@ export default function SavingsCalculator() {
       // Add monthly contribution
       balance += monthlyContribution;
       totalContributions += monthlyContribution;
-      
+
       // Calculate interest
       const monthlyInterest = balance * monthlyRate;
       balance += monthlyInterest;
-      
+
       breakdown.push({
         month,
         balance: Math.round(balance * 100) / 100,
         interest: Math.round(monthlyInterest * 100) / 100,
-        totalContributions: totalContributions
+        totalContributions: totalContributions,
       });
     }
 
     const finalAmount = Math.round(balance * 100) / 100;
-    const totalInterest = Math.round((finalAmount - totalContributions) * 100) / 100;
+    const totalInterest =
+      Math.round((finalAmount - totalContributions) * 100) / 100;
 
     setResult({
       finalAmount,
       totalContributions,
       totalInterest,
-      monthlyBreakdown: breakdown
+      monthlyBreakdown: breakdown,
     });
   };
 
@@ -80,7 +88,10 @@ export default function SavingsCalculator() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/savings">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Savings Accounts
               </Button>
             </Link>
@@ -102,7 +113,8 @@ export default function SavingsCalculator() {
             Savings Calculator
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            See how your savings can grow with compound interest and regular contributions.
+            See how your savings can grow with compound interest and regular
+            contributions.
           </p>
         </div>
 
@@ -152,7 +164,9 @@ export default function SavingsCalculator() {
                       id="monthly"
                       type="number"
                       value={monthlyContribution}
-                      onChange={(e) => setMonthlyContribution(Number(e.target.value))}
+                      onChange={(e) =>
+                        setMonthlyContribution(Number(e.target.value))
+                      }
                       className="text-lg"
                     />
                   </div>
@@ -212,7 +226,7 @@ export default function SavingsCalculator() {
                     />
                   </div>
                   <div className="text-lg font-semibold text-[#00754A]">
-                    {years} {years === 1 ? 'year' : 'years'}
+                    {years} {years === 1 ? "year" : "years"}
                   </div>
                 </div>
                 <Slider
@@ -292,7 +306,9 @@ export default function SavingsCalculator() {
                   <div className="text-2xl font-bold text-[#00754A]">
                     ${result?.finalAmount.toLocaleString() || "0"}
                   </div>
-                  <div className="text-sm text-muted-foreground">Final Balance</div>
+                  <div className="text-sm text-muted-foreground">
+                    Final Balance
+                  </div>
                 </CardContent>
               </Card>
 
@@ -302,7 +318,9 @@ export default function SavingsCalculator() {
                   <div className="text-2xl font-bold text-blue-600">
                     ${result?.totalContributions.toLocaleString() || "0"}
                   </div>
-                  <div className="text-sm text-muted-foreground">Total Contributions</div>
+                  <div className="text-sm text-muted-foreground">
+                    Total Contributions
+                  </div>
                 </CardContent>
               </Card>
 
@@ -312,7 +330,9 @@ export default function SavingsCalculator() {
                   <div className="text-2xl font-bold text-purple-600">
                     ${result?.totalInterest.toLocaleString() || "0"}
                   </div>
-                  <div className="text-sm text-muted-foreground">Interest Earned</div>
+                  <div className="text-sm text-muted-foreground">
+                    Interest Earned
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -320,18 +340,29 @@ export default function SavingsCalculator() {
             {/* Chart Visualization */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-xl text-[#00754A]">Growth Visualization</CardTitle>
+                <CardTitle className="text-xl text-[#00754A]">
+                  Growth Visualization
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-64 bg-gradient-to-t from-green-50 to-white rounded-lg p-4 flex items-end justify-between">
                   {result?.monthlyBreakdown
-                    .filter((_, index) => index % Math.ceil(result.monthlyBreakdown.length / 12) === 0)
+                    .filter(
+                      (_, index) =>
+                        index %
+                          Math.ceil(result.monthlyBreakdown.length / 12) ===
+                        0,
+                    )
                     .map((data, index) => {
-                      const height = (data.balance / (result.finalAmount || 1)) * 100;
+                      const height =
+                        (data.balance / (result.finalAmount || 1)) * 100;
                       return (
-                        <div key={index} className="flex flex-col items-center group">
+                        <div
+                          key={index}
+                          className="flex flex-col items-center group"
+                        >
                           <div className="relative">
-                            <div 
+                            <div
                               className="w-8 bg-gradient-to-t from-[#00754A] to-[#005A39] rounded-t-md transition-all duration-300 group-hover:opacity-80"
                               style={{ height: `${height * 2}px` }}
                             />
@@ -352,17 +383,22 @@ export default function SavingsCalculator() {
             {/* Breakdown */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-xl text-[#00754A]">Summary Breakdown</CardTitle>
+                <CardTitle className="text-xl text-[#00754A]">
+                  Summary Breakdown
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center py-2 border-b">
                   <span>Initial Deposit:</span>
-                  <span className="font-semibold">${initialAmount.toLocaleString()}</span>
+                  <span className="font-semibold">
+                    ${initialAmount.toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b">
                   <span>Monthly Contributions:</span>
                   <span className="font-semibold">
-                    ${monthlyContribution.toLocaleString()} × {years * 12} months
+                    ${monthlyContribution.toLocaleString()} × {years * 12}{" "}
+                    months
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b">
@@ -385,23 +421,37 @@ export default function SavingsCalculator() {
         {/* Action Buttons */}
         <div className="text-center mt-16">
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-[#00754A] mb-4">Ready to Start Saving?</h2>
+            <h2 className="text-2xl font-bold text-[#00754A] mb-4">
+              Ready to Start Saving?
+            </h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Open a high-yield savings account today and start earning {annualRate}% APY on your deposits.
+              Open a high-yield savings account today and start earning{" "}
+              {annualRate}% APY on your deposits.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/savings">
-                <Button size="lg" className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white"
+                >
                   View Savings Accounts
                 </Button>
               </Link>
               <Link to="/signup">
-                <Button size="lg" variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+                >
                   Open Account Today
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button size="lg" variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+                >
                   Speak with Advisor
                 </Button>
               </Link>
