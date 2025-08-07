@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { PieChart, BarChart3, TrendingUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function Investments() {
   return (
@@ -27,9 +28,11 @@ export default function Investments() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Asset allocation tools</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Personalized insights</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Learn More
-            </Button>
+            <Link to="/investments">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Learn More
+              </Button>
+            </Link>
           </CardContent>
         </Card>
         <Card className="group border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] bg-gradient-to-br from-white to-orange-50/30 overflow-hidden relative">
@@ -47,9 +50,11 @@ export default function Investments() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Low commissions</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Mobile trading app</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Learn More
-            </Button>
+            <Link to="/contact">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Learn More
+              </Button>
+            </Link>
           </CardContent>
         </Card>
         <Card className="group border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] bg-gradient-to-br from-white to-violet-50/30 overflow-hidden relative">
@@ -67,9 +72,11 @@ export default function Investments() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Investment research</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Economic calendar</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Learn More
-            </Button>
+            <Link to="/contact">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Learn More
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
