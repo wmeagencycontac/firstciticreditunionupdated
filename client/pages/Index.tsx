@@ -59,34 +59,34 @@ export default function Index() {
             </div>
           </div>
           <div className="hidden lg:flex items-center space-x-8">
-            <a
-              href="#personal"
+            <Link
+              to="/personal"
               className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               Personal
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a
-              href="#business"
+            </Link>
+            <Link
+              to="/business"
               className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               Business
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a
-              href="#investments"
+            </Link>
+            <Link
+              to="/investments"
               className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               Investments
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a
-              href="#about"
+            </Link>
+            <Link
+              to="/about"
               className="text-muted-foreground hover:text-[#00754A] transition-all duration-300 font-medium relative group"
             >
               About
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00754A] to-[#005A39] transition-all duration-300 group-hover:w-full"></span>
-            </a>
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             <Link to="/test-setup">
