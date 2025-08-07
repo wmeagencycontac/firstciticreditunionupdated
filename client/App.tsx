@@ -43,6 +43,9 @@ import LiveChat from "./pages/LiveChat";
 import SavingsCalculator from "./pages/SavingsCalculator";
 import HelpSearch from "./pages/HelpSearch";
 import InteractiveDemo from "./pages/InteractiveDemo";
+import MobileDepositService from "./pages/MobileDepositService";
+import InstantTransfers from "./pages/InstantTransfers";
+import SmartAlerts from "./pages/SmartAlerts";
 
 const queryClient = new QueryClient();
 
