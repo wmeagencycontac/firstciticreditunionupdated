@@ -40,7 +40,7 @@ export default function Loans() {
                 Login
               </Button>
             </Link>
-            <Link to="/signup">
+            <Link to="/apply?type=personal-loan">
               <Button className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
                 Apply Now
               </Button>
@@ -100,9 +100,11 @@ export default function Loans() {
                   Fast approval process
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Apply Now
-              </Button>
+              <Link to="/apply?type=personal-loan">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Apply Now
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -149,9 +151,11 @@ export default function Loans() {
                   Refinancing options
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Apply Now
-              </Button>
+              <Link to="/apply?type=auto-loan">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Apply Now
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -195,9 +199,11 @@ export default function Loans() {
                   Refinancing available
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Apply Now
-              </Button>
+              <Link to="/apply?type=home-loan">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Apply Now
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
