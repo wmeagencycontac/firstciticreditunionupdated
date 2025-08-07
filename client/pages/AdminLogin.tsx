@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, Lock, User } from "lucide-react";
 import { toast } from "sonner";
 import { auth } from "@/lib/supabase";
-import { useAuth } from "@/hooks/useAuth";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -22,13 +21,6 @@ export default function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { profile, loading: authLoading } = useAuth();
-
-  useEffect(() => {
-    if (!authLoading && profile?.role === "admin") {
-      navigate("/admin/dashboard");
-    }
-  }, [profile, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,8 +38,8 @@ export default function AdminLogin() {
         throw new Error("Authentication failed");
       }
 
-      // The AdminRoute will handle the redirect and role check
       toast.success("Login successful! Redirecting...");
+      navigate("/admin/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -127,9 +119,9 @@ export default function AdminLogin() {
               <Button
                 type="submit"
                 className="w-full bg-purple-600 hover:bg-purple-700"
-                disabled={isLoading || authLoading}
+                disabled={isLoading}
               >
-                {isLoading || authLoading ? "Signing in..." : "Sign In"}
+                {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
