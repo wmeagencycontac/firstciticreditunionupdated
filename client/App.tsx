@@ -121,6 +121,11 @@ export default function App() {
             <Route path="/search" element={<HelpSearch />} />
             <Route path="/demo-interactive" element={<InteractiveDemo />} />
 
+            {/* Service Pages */}
+            <Route path="/mobile-deposit" element={<MobileDepositService />} />
+            <Route path="/instant-transfers" element={<InstantTransfers />} />
+            <Route path="/smart-alerts" element={<SmartAlerts />} />
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
