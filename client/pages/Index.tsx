@@ -265,8 +265,9 @@ export default function Index() {
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">
-        <Card className="bg-[#00754A] text-white border-0 overflow-hidden relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#00754A] to-[#005A39] opacity-90"></div>
+        <Card className="bg-gradient-to-br from-[#00754A] via-[#005A39] to-[#004830] text-white border-0 overflow-hidden relative shadow-2xl shadow-green-500/25">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#00754A]/90 to-[#005A39]/90"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full -translate-y-48 translate-x-48"></div>
           <CardContent className="text-center py-16 relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ready to join First City Credit Union?
@@ -289,7 +290,7 @@ export default function Index() {
                   <Button
                     variant="secondary"
                     size="default"
-                    className="bg-white text-[#00754A] hover:bg-gray-100"
+                    className="bg-white text-[#00754A] hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
                     Get Started
                   </Button>
