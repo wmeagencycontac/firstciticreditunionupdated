@@ -28,6 +28,8 @@ import Personal from "./pages/Personal";
 import Business from "./pages/Business";
 import Investments from "./pages/Investments";
 import About from "./pages/About";
+import CheckingAccounts from "./pages/CheckingAccounts";
+import SavingsAccounts from "./pages/SavingsAccounts";
 
 const queryClient = new QueryClient();
 
@@ -80,26 +82,8 @@ export default function App() {
             <Route path="/personal" element={<Personal />} />
             <Route path="/business" element={<Business />} />
             <Route path="/investments" element={<Investments />} />
-            <Route
-              path="/checking"
-              element={
-                <Placeholder
-                  title="Checking Accounts"
-                  description="Choose from our range of checking accounts designed for your lifestyle."
-                  suggestedPrompt="Can you build a checking accounts page comparing different account types and their features?"
-                />
-              }
-            />
-            <Route
-              path="/savings"
-              element={
-                <Placeholder
-                  title="Savings Accounts"
-                  description="Grow your savings with competitive rates and flexible terms."
-                  suggestedPrompt="Can you create a savings accounts page with different savings options and interest rate calculators?"
-                />
-              }
-            />
+            <Route path="/checking" element={<CheckingAccounts />} />
+            <Route path="/savings" element={<SavingsAccounts />} />
             <Route
               path="/credit-cards"
               element={
