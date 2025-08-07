@@ -35,6 +35,9 @@ import Loans from "./pages/Loans";
 import HelpCenter from "./pages/HelpCenter";
 import SecurityCenter from "./pages/SecurityCenter";
 import DemoExperience from "./pages/DemoExperience";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import Accessibility from "./pages/Accessibility";
 
 const queryClient = new QueryClient();
 
@@ -97,6 +100,11 @@ export default function App() {
             <Route path="/security" element={<SecurityCenter />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/demo" element={<DemoExperience />} />
+
+            {/* Legal Pages */}
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/accessibility" element={<Accessibility />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
