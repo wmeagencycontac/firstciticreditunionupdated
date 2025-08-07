@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Building, ShoppingCart, TrendingUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function Business() {
   return (
@@ -27,9 +28,11 @@ export default function Business() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Easy expense tracking</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Online bill pay</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Learn More
-            </Button>
+            <Link to="/business">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Learn More
+              </Button>
+            </Link>
           </CardContent>
         </Card>
         <Card className="group border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] bg-gradient-to-br from-white to-emerald-50/30 overflow-hidden relative">
@@ -47,9 +50,11 @@ export default function Business() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Fast settlements</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Competitive processing rates</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Learn More
-            </Button>
+            <Link to="/contact">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Learn More
+              </Button>
+            </Link>
           </CardContent>
         </Card>
         <Card className="group border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] bg-gradient-to-br from-white to-indigo-50/30 overflow-hidden relative">
@@ -67,9 +72,11 @@ export default function Business() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Equipment loans</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Commercial mortgages</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Learn More
-            </Button>
+            <Link to="/loans">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Learn More
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
