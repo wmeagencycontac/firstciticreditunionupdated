@@ -16,8 +16,8 @@ import { auth } from "@/lib/supabase";
 
 export default function Login() {
   const location = useLocation();
-  const [email, setEmail] = useState("john.doe@email.com");
-  const [password, setPassword] = useState("demo123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
