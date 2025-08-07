@@ -42,6 +42,7 @@ import ApplicationForm from "./pages/ApplicationForm";
 import LiveChat from "./pages/LiveChat";
 import SavingsCalculator from "./pages/SavingsCalculator";
 import HelpSearch from "./pages/HelpSearch";
+import InteractiveDemo from "./pages/InteractiveDemo";
 
 const queryClient = new QueryClient();
 
@@ -115,6 +116,7 @@ export default function App() {
             <Route path="/chat" element={<LiveChat />} />
             <Route path="/calculator" element={<SavingsCalculator />} />
             <Route path="/search" element={<HelpSearch />} />
+            <Route path="/demo-interactive" element={<InteractiveDemo />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
