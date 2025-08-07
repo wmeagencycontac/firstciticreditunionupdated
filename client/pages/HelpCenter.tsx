@@ -17,8 +17,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function HelpCenter() {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-cyan-50/20 to-blue-50/30">
       {/* Header */}
@@ -65,6 +67,8 @@ export default function HelpCenter() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for help articles, FAQs, or topics..."
               className="pl-12 h-14 text-lg bg-white border-2 border-green-200 focus:border-[#00754A] rounded-xl"
             />
