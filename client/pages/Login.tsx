@@ -226,7 +226,6 @@ export default function Login() {
                 </Link>
               </p>
             </div>
-
           </CardContent>
         </Card>
 
