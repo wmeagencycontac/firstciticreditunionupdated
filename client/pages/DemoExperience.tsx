@@ -94,10 +94,12 @@ export default function DemoExperience() {
                   Pay bills and manage payees
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                <Play className="w-4 h-4 mr-2" />
-                Start Demo
-              </Button>
+              <Link to="/demo-interactive?type=mobile">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  <Play className="w-4 h-4 mr-2" />
+                  Start Demo
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -136,10 +138,12 @@ export default function DemoExperience() {
                   Advanced security settings
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                <Play className="w-4 h-4 mr-2" />
-                Start Demo
-              </Button>
+              <Link to="/demo-interactive?type=online">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  <Play className="w-4 h-4 mr-2" />
+                  Start Demo
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -175,10 +179,12 @@ export default function DemoExperience() {
                   Goal-based savings tracking
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                <Play className="w-4 h-4 mr-2" />
-                Start Demo
-              </Button>
+              <Link to="/demo-interactive?type=investment">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  <Play className="w-4 h-4 mr-2" />
+                  Start Demo
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
