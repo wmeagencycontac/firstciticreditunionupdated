@@ -9,7 +9,7 @@ import { Server as SocketIOServer } from "socket.io";
 export default defineConfig(({ mode }) => ({
   esbuild: {
     // Remove console logs in production
-    drop: mode === 'production' ? ['console', 'debugger'] : [],
+    drop: mode === "production" ? ["console", "debugger"] : [],
   },
   server: {
     host: "::",
@@ -24,21 +24,21 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
+          vendor: ["react", "react-dom"],
+          router: ["react-router-dom"],
           ui: [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-select',
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-dropdown-menu'
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-select",
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-alert-dialog",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-dropdown-menu",
           ],
-          query: ['@tanstack/react-query'],
-          icons: ['lucide-react'],
-          motion: ['framer-motion'],
-          utils: ['clsx', 'tailwind-merge', 'date-fns'],
+          query: ["@tanstack/react-query"],
+          icons: ["lucide-react"],
+          motion: ["framer-motion"],
+          utils: ["clsx", "tailwind-merge", "date-fns"],
         },
       },
     },

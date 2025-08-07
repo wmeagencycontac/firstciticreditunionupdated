@@ -5,6 +5,7 @@ This guide ensures smooth deployments on Render Web Service and Netlify.
 ## 🚀 Quick Deploy
 
 ### Netlify (Frontend Only - Recommended for SPA)
+
 1. Connect your repository to Netlify
 2. Use these build settings:
    - **Build command**: `npm ci && npm run build`
@@ -12,6 +13,7 @@ This guide ensures smooth deployments on Render Web Service and Netlify.
    - **Functions directory**: `netlify/functions`
 
 ### Render (Full-Stack - Recommended for Backend + Frontend)
+
 1. Create a new Web Service on Render
 2. Use these settings:
    - **Build command**: `npm ci && npm run build:full`
@@ -31,26 +33,31 @@ This guide ensures smooth deployments on Render Web Service and Netlify.
 ## 🔧 Configuration Files
 
 ### For Netlify:
+
 - `netlify.toml` - Netlify configuration
 - `netlify/functions/` - Serverless functions
 
 ### For Render:
+
 - `render.yaml` - Render service configuration
 - `Dockerfile` - Container deployment (optional)
 
 ### General:
+
 - `.nvmrc` - Node.js version (18)
 - `package.json` - Scripts and dependencies
 
 ## 🌐 Environment Variables
 
 ### Required for Production:
+
 ```bash
 NODE_ENV=production
 PORT=8080
 ```
 
 ### Optional (for specific features):
+
 ```bash
 # Database
 DATABASE_URL=your_database_url
@@ -67,6 +74,7 @@ EMAIL_PASS=your_email_password
 ## 🔍 Build Optimization
 
 The build is optimized with:
+
 - **Code splitting**: Separate chunks for vendor, router, UI, and utils
 - **Tree shaking**: Remove unused code
 - **Minification**: Optimized for production
@@ -76,17 +84,20 @@ The build is optimized with:
 ## 🐛 Troubleshooting
 
 ### Build Issues:
+
 1. **Node version**: Ensure using Node.js 18+ (check `.nvmrc`)
 2. **Dependencies**: Run `npm ci` for clean install
 3. **Memory**: Increase memory if needed: `NODE_OPTIONS="--max-old-space-size=4096"`
 
 ### Deployment Issues:
+
 1. **Port binding**: App listens on `process.env.PORT || 8080`
 2. **Static files**: Frontend served from `/dist/spa`
 3. **API routes**: Backend routes prefixed with `/api/`
 4. **SPA routing**: All non-API routes serve `index.html`
 
 ### Performance:
+
 1. **Bundle size**: Large chunks are split automatically
 2. **Caching**: Static assets cached for 1 day
 3. **Compression**: Gzip enabled for all assets
@@ -94,6 +105,7 @@ The build is optimized with:
 ## 🔒 Security Headers
 
 Configured in `netlify.toml` and server:
+
 - `X-Frame-Options: DENY`
 - `X-Content-Type-Options: nosniff`
 - `Referrer-Policy: strict-origin-when-cross-origin`
@@ -108,6 +120,7 @@ Configured in `netlify.toml` and server:
 ## 🚢 Deploy Commands
 
 ### Netlify:
+
 ```bash
 # Manual deploy
 netlify deploy --prod
@@ -117,12 +130,14 @@ netlify deploy
 ```
 
 ### Render:
+
 ```bash
 # Triggers automatic deploy on git push
 git push origin main
 ```
 
 ### Docker:
+
 ```bash
 # Build image
 docker build -t fusion-starter .
@@ -146,5 +161,6 @@ docker run -p 8080:8080 fusion-starter
 ---
 
 For additional help, check the platform-specific documentation:
+
 - [Netlify Docs](https://docs.netlify.com/)
 - [Render Docs](https://render.com/docs)
