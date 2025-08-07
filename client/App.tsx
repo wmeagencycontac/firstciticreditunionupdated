@@ -30,6 +30,9 @@ import Investments from "./pages/Investments";
 import About from "./pages/About";
 import CheckingAccounts from "./pages/CheckingAccounts";
 import SavingsAccounts from "./pages/SavingsAccounts";
+import CreditCards from "./pages/CreditCards";
+import Loans from "./pages/Loans";
+import HelpCenter from "./pages/HelpCenter";
 
 const queryClient = new QueryClient();
 
@@ -84,36 +87,9 @@ export default function App() {
             <Route path="/investments" element={<Investments />} />
             <Route path="/checking" element={<CheckingAccounts />} />
             <Route path="/savings" element={<SavingsAccounts />} />
-            <Route
-              path="/credit-cards"
-              element={
-                <Placeholder
-                  title="Credit Cards"
-                  description="Find the perfect credit card for your spending and reward preferences."
-                  suggestedPrompt="Can you build a credit cards page showcasing different card types, rewards programs, and application process?"
-                />
-              }
-            />
-            <Route
-              path="/loans"
-              element={
-                <Placeholder
-                  title="Loans"
-                  description="Finance your goals with our competitive loan products and rates."
-                  suggestedPrompt="Can you create a loans page with personal loans, auto loans, and mortgage options?"
-                />
-              }
-            />
-            <Route
-              path="/help"
-              element={
-                <Placeholder
-                  title="Help Center"
-                  description="Find answers to your questions and get the support you need."
-                  suggestedPrompt="Can you build a help center with FAQs, support categories, and contact options?"
-                />
-              }
-            />
+            <Route path="/credit-cards" element={<CreditCards />} />
+            <Route path="/loans" element={<Loans />} />
+            <Route path="/help" element={<HelpCenter />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route
