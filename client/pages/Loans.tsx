@@ -1,5 +1,19 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { DollarSign, Home, Car, GraduationCap, ArrowRight, Check, Building2 } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  DollarSign,
+  Home,
+  Car,
+  GraduationCap,
+  ArrowRight,
+  Check,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -19,7 +33,10 @@ export default function Loans() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Login
               </Button>
             </Link>
@@ -38,7 +55,8 @@ export default function Loans() {
             Loans
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Finance your goals with our competitive loan products and rates designed to help you succeed.
+            Finance your goals with our competitive loan products and rates
+            designed to help you succeed.
           </p>
         </div>
 
@@ -58,8 +76,12 @@ export default function Loans() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">6.99% APR</div>
-              <div className="text-sm text-muted-foreground mb-4">Starting rate with excellent credit</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                6.99% APR
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                Starting rate with excellent credit
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -98,12 +120,17 @@ export default function Loans() {
                 Auto Loans
               </CardTitle>
               <CardDescription className="text-base leading-relaxed">
-                Finance your new or used vehicle with our competitive auto loans.
+                Finance your new or used vehicle with our competitive auto
+                loans.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">4.49% APR</div>
-              <div className="text-sm text-muted-foreground mb-4">New vehicles with excellent credit</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                4.49% APR
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                New vehicles with excellent credit
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -139,12 +166,17 @@ export default function Loans() {
                 Home Loans
               </CardTitle>
               <CardDescription className="text-base leading-relaxed">
-                Make homeownership a reality with our mortgage and home equity options.
+                Make homeownership a reality with our mortgage and home equity
+                options.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">5.75% APR</div>
-              <div className="text-sm text-muted-foreground mb-4">30-year fixed mortgage</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                5.75% APR
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                30-year fixed mortgage
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -181,7 +213,8 @@ export default function Loans() {
                 Student Loans
               </CardTitle>
               <CardDescription>
-                Invest in your education with our competitive student loan options.
+                Invest in your education with our competitive student loan
+                options.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -195,7 +228,10 @@ export default function Loans() {
                   Flexible repayment options
                 </li>
               </ul>
-              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Learn More
               </Button>
             </CardContent>
@@ -224,7 +260,10 @@ export default function Loans() {
                   Working capital loans
                 </li>
               </ul>
-              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Learn More
               </Button>
             </CardContent>
@@ -233,7 +272,11 @@ export default function Loans() {
 
         <div className="text-center">
           <Link to="/contact">
-            <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+            >
               Questions? Contact Us
             </Button>
           </Link>

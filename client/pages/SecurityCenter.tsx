@@ -1,5 +1,19 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { Shield, Lock, Eye, AlertTriangle, Smartphone, Check, Building2 } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Shield,
+  Lock,
+  Eye,
+  AlertTriangle,
+  Smartphone,
+  Check,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -19,7 +33,10 @@ export default function SecurityCenter() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Login
               </Button>
             </Link>
@@ -38,7 +55,8 @@ export default function SecurityCenter() {
             Security Center
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Learn about how we protect your accounts and personal information with industry-leading security measures.
+            Learn about how we protect your accounts and personal information
+            with industry-leading security measures.
           </p>
         </div>
 
@@ -72,7 +90,10 @@ export default function SecurityCenter() {
                   Protected against cyber threats
                 </li>
               </ul>
-              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Learn More
               </Button>
             </CardContent>
@@ -109,7 +130,10 @@ export default function SecurityCenter() {
                   Zero liability protection
                 </li>
               </ul>
-              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Learn More
               </Button>
             </CardContent>
@@ -143,7 +167,10 @@ export default function SecurityCenter() {
                   Security questions
                 </li>
               </ul>
-              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Learn More
               </Button>
             </CardContent>
@@ -152,7 +179,9 @@ export default function SecurityCenter() {
 
         {/* Security Tips */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-          <h2 className="text-2xl font-bold text-[#00754A] mb-6">Security Tips for You</h2>
+          <h2 className="text-2xl font-bold text-[#00754A] mb-6">
+            Security Tips for You
+          </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -213,7 +242,9 @@ export default function SecurityCenter() {
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-red-700 mb-3">Phishing Attempts</h3>
+              <h3 className="font-semibold text-red-700 mb-3">
+                Phishing Attempts
+              </h3>
               <ul className="space-y-2 text-red-600 text-sm">
                 <li>• Unexpected emails asking for account information</li>
                 <li>• Suspicious links or attachments</li>
@@ -222,7 +253,9 @@ export default function SecurityCenter() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-red-700 mb-3">Suspicious Activity</h3>
+              <h3 className="font-semibold text-red-700 mb-3">
+                Suspicious Activity
+              </h3>
               <ul className="space-y-2 text-red-600 text-sm">
                 <li>• Unauthorized transactions</li>
                 <li>• Unknown devices accessing your account</li>
@@ -243,7 +276,11 @@ export default function SecurityCenter() {
             Have security concerns or questions?
           </p>
           <Link to="/help">
-            <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+            >
               Contact Security Team
             </Button>
           </Link>

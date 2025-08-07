@@ -1,5 +1,19 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { HelpCircle, Phone, Mail, MessageCircle, Search, FileText, Building2 } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  HelpCircle,
+  Phone,
+  Mail,
+  MessageCircle,
+  Search,
+  FileText,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -20,7 +34,10 @@ export default function HelpCenter() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Login
               </Button>
             </Link>
@@ -73,10 +90,14 @@ export default function HelpCenter() {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-              <div className="text-2xl font-bold text-[#00754A] mb-2">(555) 123-4567</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-2">
+                (555) 123-4567
+              </div>
               <div className="text-sm text-muted-foreground mb-4">
-                Mon-Fri: 8AM-8PM<br />
-                Sat: 9AM-5PM<br />
+                Mon-Fri: 8AM-8PM
+                <br />
+                Sat: 9AM-5PM
+                <br />
                 Sun: Closed
               </div>
               <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
@@ -99,9 +120,12 @@ export default function HelpCenter() {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-              <div className="text-lg font-semibold text-[#00754A] mb-2">Available Now</div>
+              <div className="text-lg font-semibold text-[#00754A] mb-2">
+                Available Now
+              </div>
               <div className="text-sm text-muted-foreground mb-4">
-                Average response time:<br />
+                Average response time:
+                <br />
                 Less than 2 minutes
               </div>
               <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
@@ -124,9 +148,12 @@ export default function HelpCenter() {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-              <div className="text-lg font-semibold text-[#00754A] mb-2">support@fccu.com</div>
+              <div className="text-lg font-semibold text-[#00754A] mb-2">
+                support@fccu.com
+              </div>
               <div className="text-sm text-muted-foreground mb-4">
-                Response time:<br />
+                Response time:
+                <br />
                 Within 24 hours
               </div>
               <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
@@ -138,7 +165,9 @@ export default function HelpCenter() {
 
         {/* Popular Help Topics */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-[#00754A] mb-8 text-center">Popular Help Topics</h2>
+          <h2 className="text-3xl font-bold text-[#00754A] mb-8 text-center">
+            Popular Help Topics
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { title: "Online Banking Login", icon: "🔐" },
@@ -149,9 +178,12 @@ export default function HelpCenter() {
               { title: "Direct Deposit Setup", icon: "🏦" },
               { title: "Lost or Stolen Cards", icon: "🚨" },
               { title: "Account Security", icon: "🛡️" },
-              { title: "Loan Applications", icon: "📄" }
+              { title: "Loan Applications", icon: "📄" },
             ].map((topic, index) => (
-              <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-white cursor-pointer">
+              <Card
+                key={index}
+                className="border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-white cursor-pointer"
+              >
                 <CardContent className="p-6 text-center">
                   <div className="text-3xl mb-3">{topic.icon}</div>
                   <h3 className="font-semibold text-[#00754A] hover:text-[#005A39] transition-colors">
@@ -165,25 +197,32 @@ export default function HelpCenter() {
 
         {/* FAQ Section */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-[#00754A] mb-6 text-center">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-bold text-[#00754A] mb-6 text-center">
+            Frequently Asked Questions
+          </h2>
           <div className="space-y-6">
             {[
               {
                 question: "How do I reset my online banking password?",
-                answer: "You can reset your password by clicking 'Forgot Password' on the login page, or by calling our support team."
+                answer:
+                  "You can reset your password by clicking 'Forgot Password' on the login page, or by calling our support team.",
               },
               {
                 question: "What are your current interest rates?",
-                answer: "Interest rates vary by account type and credit profile. Visit our rates page or contact us for current rates."
+                answer:
+                  "Interest rates vary by account type and credit profile. Visit our rates page or contact us for current rates.",
               },
               {
                 question: "How do I report a lost or stolen debit card?",
-                answer: "Call us immediately at (555) 123-4567 or use the 'Card Controls' feature in our mobile app to temporarily lock your card."
+                answer:
+                  "Call us immediately at (555) 123-4567 or use the 'Card Controls' feature in our mobile app to temporarily lock your card.",
               },
               {
-                question: "What's the difference between checking and savings accounts?",
-                answer: "Checking accounts are designed for frequent transactions, while savings accounts help you earn interest on deposited funds."
-              }
+                question:
+                  "What's the difference between checking and savings accounts?",
+                answer:
+                  "Checking accounts are designed for frequent transactions, while savings accounts help you earn interest on deposited funds.",
+              },
             ].map((faq, index) => (
               <Card key={index} className="border border-green-200">
                 <CardHeader>
@@ -201,9 +240,15 @@ export default function HelpCenter() {
         </div>
 
         <div className="text-center">
-          <p className="text-muted-foreground mb-4">Can't find what you're looking for?</p>
+          <p className="text-muted-foreground mb-4">
+            Can't find what you're looking for?
+          </p>
           <Link to="/contact">
-            <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+            >
               Contact Our Support Team
             </Button>
           </Link>

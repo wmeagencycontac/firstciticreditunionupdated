@@ -19,7 +19,10 @@ export default function Accessibility() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/help">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Help
               </Button>
             </Link>
@@ -41,21 +44,30 @@ export default function Accessibility() {
             Accessibility
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            We are committed to ensuring that our services are accessible to everyone, regardless of ability or disability.
+            We are committed to ensuring that our services are accessible to
+            everyone, regardless of ability or disability.
           </p>
         </div>
 
         <div className="space-y-8">
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Our Commitment</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Our Commitment
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                First City Credit Union is committed to providing equal access to our financial services and digital platforms for all users. We strive to meet or exceed accessibility standards and continuously work to improve the user experience for people with disabilities.
+                First City Credit Union is committed to providing equal access
+                to our financial services and digital platforms for all users.
+                We strive to meet or exceed accessibility standards and
+                continuously work to improve the user experience for people with
+                disabilities.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Our accessibility efforts are guided by the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards and Section 508 of the Rehabilitation Act.
+                Our accessibility efforts are guided by the Web Content
+                Accessibility Guidelines (WCAG) 2.1 Level AA standards and
+                Section 508 of the Rehabilitation Act.
               </p>
             </CardContent>
           </Card>
@@ -66,7 +78,9 @@ export default function Accessibility() {
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mb-4">
                   <Eye className="w-6 h-6 text-[#00754A]" />
                 </div>
-                <CardTitle className="text-xl text-[#00754A]">Visual Accessibility</CardTitle>
+                <CardTitle className="text-xl text-[#00754A]">
+                  Visual Accessibility
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -85,7 +99,9 @@ export default function Accessibility() {
                 <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mb-4">
                   <Ear className="w-6 h-6 text-[#00754A]" />
                 </div>
-                <CardTitle className="text-xl text-[#00754A]">Auditory Accessibility</CardTitle>
+                <CardTitle className="text-xl text-[#00754A]">
+                  Auditory Accessibility
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -104,7 +120,9 @@ export default function Accessibility() {
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center mb-4">
                   <Hand className="w-6 h-6 text-[#00754A]" />
                 </div>
-                <CardTitle className="text-xl text-[#00754A]">Motor Accessibility</CardTitle>
+                <CardTitle className="text-xl text-[#00754A]">
+                  Motor Accessibility
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -123,7 +141,9 @@ export default function Accessibility() {
                 <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center mb-4">
                   <Heart className="w-6 h-6 text-[#00754A]" />
                 </div>
-                <CardTitle className="text-xl text-[#00754A]">Cognitive Accessibility</CardTitle>
+                <CardTitle className="text-xl text-[#00754A]">
+                  Cognitive Accessibility
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -140,15 +160,20 @@ export default function Accessibility() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Assistive Technology Support</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Assistive Technology Support
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Our digital platforms are designed to work with common assistive technologies:
+                Our digital platforms are designed to work with common assistive
+                technologies:
               </p>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold text-[#00754A] mb-2">Screen Readers</h4>
+                  <h4 className="font-semibold text-[#00754A] mb-2">
+                    Screen Readers
+                  </h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
                     <li>JAWS (Job Access With Speech)</li>
                     <li>NVDA (NonVisual Desktop Access)</li>
@@ -157,7 +182,9 @@ export default function Accessibility() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#00754A] mb-2">Other Technologies</h4>
+                  <h4 className="font-semibold text-[#00754A] mb-2">
+                    Other Technologies
+                  </h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
                     <li>Voice recognition software</li>
                     <li>Switch navigation devices</li>
@@ -171,11 +198,14 @@ export default function Accessibility() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Branch Accessibility</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Branch Accessibility
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Our physical locations are designed to be accessible to all customers:
+                Our physical locations are designed to be accessible to all
+                customers:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>ADA-compliant entrances and facilities</li>
@@ -191,39 +221,60 @@ export default function Accessibility() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Feedback and Support</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Feedback and Support
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We welcome feedback about the accessibility of our services and are committed to continuous improvement.
+                We welcome feedback about the accessibility of our services and
+                are committed to continuous improvement.
               </p>
-              
+
               <div className="bg-green-50 rounded-lg p-6">
-                <h4 className="font-semibold text-[#00754A] mb-3">Contact Our Accessibility Team</h4>
+                <h4 className="font-semibold text-[#00754A] mb-3">
+                  Contact Our Accessibility Team
+                </h4>
                 <div className="space-y-2 text-muted-foreground">
-                  <p><strong>Phone:</strong> (555) 123-4567</p>
-                  <p><strong>TTY:</strong> (555) 123-4568</p>
-                  <p><strong>Email:</strong> accessibility@fccu.com</p>
-                  <p><strong>Mail:</strong> Accessibility Services<br />
-                     First City Credit Union<br />
-                     123 Banking Street<br />
-                     City, State 12345</p>
+                  <p>
+                    <strong>Phone:</strong> (555) 123-4567
+                  </p>
+                  <p>
+                    <strong>TTY:</strong> (555) 123-4568
+                  </p>
+                  <p>
+                    <strong>Email:</strong> accessibility@fccu.com
+                  </p>
+                  <p>
+                    <strong>Mail:</strong> Accessibility Services
+                    <br />
+                    First City Credit Union
+                    <br />
+                    123 Banking Street
+                    <br />
+                    City, State 12345
+                  </p>
                 </div>
               </div>
-              
+
               <p className="text-muted-foreground leading-relaxed mt-4">
-                When contacting us about accessibility, please include details about the specific challenge you encountered and any assistive technology you were using.
+                When contacting us about accessibility, please include details
+                about the specific challenge you encountered and any assistive
+                technology you were using.
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Ongoing Improvements</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Ongoing Improvements
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We are committed to continuously improving accessibility through:
+                We are committed to continuously improving accessibility
+                through:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Regular accessibility audits and testing</li>
@@ -240,12 +291,19 @@ export default function Accessibility() {
         <div className="text-center mt-16">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/help">
-              <Button size="lg" className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white"
+              >
                 Get Help & Support
               </Button>
             </Link>
             <Link to="/contact">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Contact Us
               </Button>
             </Link>

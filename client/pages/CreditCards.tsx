@@ -1,5 +1,19 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { CreditCard, Gift, Shield, Star, ArrowRight, Check, Building2 } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  CreditCard,
+  Gift,
+  Shield,
+  Star,
+  ArrowRight,
+  Check,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -19,7 +33,10 @@ export default function CreditCards() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Login
               </Button>
             </Link>
@@ -38,7 +55,8 @@ export default function CreditCards() {
             Credit Cards
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Find the perfect credit card for your spending and reward preferences with competitive rates and benefits.
+            Find the perfect credit card for your spending and reward
+            preferences with competitive rates and benefits.
           </p>
         </div>
 
@@ -58,8 +76,12 @@ export default function CreditCards() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">3% Cashback</div>
-              <div className="text-sm text-muted-foreground mb-4">On gas, groceries & dining</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                3% Cashback
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                On gas, groceries & dining
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -102,8 +124,12 @@ export default function CreditCards() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">5X Points</div>
-              <div className="text-sm text-muted-foreground mb-4">On travel & dining</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                5X Points
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                On travel & dining
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -143,8 +169,12 @@ export default function CreditCards() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-1">Build Credit</div>
-              <div className="text-sm text-muted-foreground mb-4">$200 minimum deposit</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-1">
+                Build Credit
+              </div>
+              <div className="text-sm text-muted-foreground mb-4">
+                $200 minimum deposit
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -168,7 +198,11 @@ export default function CreditCards() {
 
         <div className="text-center">
           <Link to="/contact">
-            <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+            >
               Questions? Contact Us
             </Button>
           </Link>

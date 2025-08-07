@@ -19,7 +19,10 @@ export default function TermsOfService() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/help">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Help
               </Button>
             </Link>
@@ -41,7 +44,8 @@ export default function TermsOfService() {
             Terms of Service
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Please read these terms carefully before using our services. By using our services, you agree to these terms.
+            Please read these terms carefully before using our services. By
+            using our services, you agree to these terms.
           </p>
           <p className="text-sm text-muted-foreground mt-4">
             Effective Date: January 1, 2024
@@ -51,29 +55,43 @@ export default function TermsOfService() {
         <div className="space-y-8">
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Acceptance of Terms</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Acceptance of Terms
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed">
-                By accessing or using First City Credit Union's services, including our website, mobile applications, and banking services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services.
+                By accessing or using First City Credit Union's services,
+                including our website, mobile applications, and banking
+                services, you agree to be bound by these Terms of Service and
+                all applicable laws and regulations. If you do not agree with
+                any of these terms, you are prohibited from using our services.
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Account Terms</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Account Terms
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <h4 className="font-semibold text-[#00754A] mb-3">Account Opening and Eligibility</h4>
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Account Opening and Eligibility
+              </h4>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
                 <li>You must be at least 18 years old to open an account</li>
                 <li>You must provide accurate and complete information</li>
                 <li>You are responsible for maintaining account security</li>
-                <li>We reserve the right to verify your identity and eligibility</li>
+                <li>
+                  We reserve the right to verify your identity and eligibility
+                </li>
               </ul>
-              
-              <h4 className="font-semibold text-[#00754A] mb-3">Account Responsibilities</h4>
+
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Account Responsibilities
+              </h4>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Keep your login credentials confidential</li>
                 <li>Notify us immediately of any unauthorized access</li>
@@ -85,29 +103,42 @@ export default function TermsOfService() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Electronic Services</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Electronic Services
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Our electronic banking services include online banking, mobile banking, and electronic communications.
+                Our electronic banking services include online banking, mobile
+                banking, and electronic communications.
               </p>
-              <h4 className="font-semibold text-[#00754A] mb-3">Service Availability</h4>
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Service Availability
+              </h4>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
-                <li>Services are generally available 24/7, subject to maintenance</li>
+                <li>
+                  Services are generally available 24/7, subject to maintenance
+                </li>
                 <li>We may suspend services for updates or security reasons</li>
                 <li>Internet connectivity required for access</li>
               </ul>
-              
-              <h4 className="font-semibold text-[#00754A] mb-3">Electronic Communications</h4>
+
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Electronic Communications
+              </h4>
               <p className="text-muted-foreground leading-relaxed">
-                By using our services, you consent to receive electronic communications from us, including statements, notices, and other disclosures.
+                By using our services, you consent to receive electronic
+                communications from us, including statements, notices, and other
+                disclosures.
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Fees and Charges</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Fees and Charges
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -121,20 +152,26 @@ export default function TermsOfService() {
                 <li>Foreign transaction fees for international purchases</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
-                Current fee schedules are available on our website and upon request.
+                Current fee schedules are available on our website and upon
+                request.
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Security and Fraud Prevention</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Security and Fraud Prevention
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We implement security measures to protect your account, but you also have responsibilities:
+                We implement security measures to protect your account, but you
+                also have responsibilities:
               </p>
-              <h4 className="font-semibold text-[#00754A] mb-3">Your Security Responsibilities</h4>
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Your Security Responsibilities
+              </h4>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
                 <li>Use strong, unique passwords</li>
                 <li>Log out completely after each session</li>
@@ -142,8 +179,10 @@ export default function TermsOfService() {
                 <li>Report suspicious activity immediately</li>
                 <li>Keep your contact information current</li>
               </ul>
-              
-              <h4 className="font-semibold text-[#00754A] mb-3">Our Security Measures</h4>
+
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Our Security Measures
+              </h4>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Multi-factor authentication</li>
                 <li>Encryption of sensitive data</li>
@@ -155,48 +194,75 @@ export default function TermsOfService() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Limitation of Liability</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Limitation of Liability
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Our liability is limited as follows:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                <li>We are not liable for indirect, incidental, or consequential damages</li>
-                <li>Our liability for any claim is limited to the amount of the transaction in question</li>
-                <li>We are not responsible for third-party actions or services</li>
-                <li>We are not liable for losses due to your failure to follow security procedures</li>
+                <li>
+                  We are not liable for indirect, incidental, or consequential
+                  damages
+                </li>
+                <li>
+                  Our liability for any claim is limited to the amount of the
+                  transaction in question
+                </li>
+                <li>
+                  We are not responsible for third-party actions or services
+                </li>
+                <li>
+                  We are not liable for losses due to your failure to follow
+                  security procedures
+                </li>
               </ul>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Modifications and Termination</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Modifications and Termination
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <h4 className="font-semibold text-[#00754A] mb-3">Changes to Terms</h4>
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Changes to Terms
+              </h4>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We may modify these terms at any time. We will provide notice of material changes as required by law.
+                We may modify these terms at any time. We will provide notice of
+                material changes as required by law.
               </p>
-              
-              <h4 className="font-semibold text-[#00754A] mb-3">Account Termination</h4>
+
+              <h4 className="font-semibold text-[#00754A] mb-3">
+                Account Termination
+              </h4>
               <p className="text-muted-foreground leading-relaxed">
-                Either party may terminate the relationship at any time, subject to applicable laws and regulations. Upon termination, you remain liable for all outstanding obligations.
+                Either party may terminate the relationship at any time, subject
+                to applicable laws and regulations. Upon termination, you remain
+                liable for all outstanding obligations.
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Contact Information</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Contact Information
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                If you have questions about these Terms of Service, please contact us:
+                If you have questions about these Terms of Service, please
+                contact us:
               </p>
               <div className="bg-blue-50 rounded-lg p-4">
-                <p className="font-semibold text-[#00754A] mb-2">Customer Service</p>
+                <p className="font-semibold text-[#00754A] mb-2">
+                  Customer Service
+                </p>
                 <p className="text-muted-foreground">First City Credit Union</p>
                 <p className="text-muted-foreground">123 Banking Street</p>
                 <p className="text-muted-foreground">City, State 12345</p>
@@ -210,12 +276,20 @@ export default function TermsOfService() {
         <div className="text-center mt-16">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/privacy">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Privacy Policy
               </Button>
             </Link>
             <Link to="/accessibility">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Accessibility
               </Button>
             </Link>

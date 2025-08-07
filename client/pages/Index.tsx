@@ -117,7 +117,11 @@ export default function Index() {
               className="lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </Button>
           </div>
         </nav>
@@ -188,7 +192,9 @@ export default function Index() {
           <div className="animate-fade-in">
             <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
               Your Future. <br />
-              <span className="bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent">Your Credit Union.</span>
+              <span className="bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent">
+                Your Credit Union.
+              </span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
               Experience banking that puts you first. From mobile deposit to
@@ -298,20 +304,36 @@ export default function Index() {
         {/* Quick Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-20 pt-16 border-t border-green-200/50">
           <div className="text-center group hover:scale-105 transition-transform duration-300">
-            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">150K+</div>
-            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">Members</div>
+            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">
+              150K+
+            </div>
+            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">
+              Members
+            </div>
           </div>
           <div className="text-center group hover:scale-105 transition-transform duration-300">
-            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">$2.5B+</div>
-            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">Assets</div>
+            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">
+              $2.5B+
+            </div>
+            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">
+              Assets
+            </div>
           </div>
           <div className="text-center group hover:scale-105 transition-transform duration-300">
-            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">99.9%</div>
-            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">Uptime</div>
+            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">
+              99.9%
+            </div>
+            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">
+              Uptime
+            </div>
           </div>
           <div className="text-center group hover:scale-105 transition-transform duration-300">
-            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">24/7</div>
-            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">Support</div>
+            <div className="text-4xl font-bold bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent mb-2">
+              24/7
+            </div>
+            <div className="text-sm text-muted-foreground font-medium group-hover:text-[#00754A] transition-colors duration-300">
+              Support
+            </div>
           </div>
         </div>
       </section>

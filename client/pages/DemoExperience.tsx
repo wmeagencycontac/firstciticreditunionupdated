@@ -1,5 +1,19 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { Play, Smartphone, CreditCard, TrendingUp, ArrowRight, Users, Building2 } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Play,
+  Smartphone,
+  CreditCard,
+  TrendingUp,
+  ArrowRight,
+  Users,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -19,7 +33,10 @@ export default function DemoExperience() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Login
               </Button>
             </Link>
@@ -38,7 +55,8 @@ export default function DemoExperience() {
             Demo Experience
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Experience First City Credit Union's features with our interactive demo and see how we can help manage your finances.
+            Experience First City Credit Union's features with our interactive
+            demo and see how we can help manage your finances.
           </p>
         </div>
 
@@ -167,23 +185,64 @@ export default function DemoExperience() {
 
         {/* Interactive Features */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-          <h2 className="text-2xl font-bold text-[#00754A] mb-6 text-center">Interactive Features You Can Try</h2>
+          <h2 className="text-2xl font-bold text-[#00754A] mb-6 text-center">
+            Interactive Features You Can Try
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: "💳", title: "Virtual Debit Card", description: "See how card controls work" },
-              { icon: "📱", title: "Mobile Check Deposit", description: "Experience deposit capture" },
-              { icon: "💸", title: "Money Transfers", description: "Send money to friends" },
-              { icon: "📊", title: "Spending Analytics", description: "Track your expenses" },
-              { icon: "🏦", title: "ATM Locator", description: "Find nearby ATMs" },
-              { icon: "🔔", title: "Custom Alerts", description: "Set up notifications" },
-              { icon: "💡", title: "Financial Insights", description: "Get personalized tips" },
-              { icon: "🎯", title: "Savings Goals", description: "Set and track goals" }
+              {
+                icon: "💳",
+                title: "Virtual Debit Card",
+                description: "See how card controls work",
+              },
+              {
+                icon: "📱",
+                title: "Mobile Check Deposit",
+                description: "Experience deposit capture",
+              },
+              {
+                icon: "💸",
+                title: "Money Transfers",
+                description: "Send money to friends",
+              },
+              {
+                icon: "📊",
+                title: "Spending Analytics",
+                description: "Track your expenses",
+              },
+              {
+                icon: "🏦",
+                title: "ATM Locator",
+                description: "Find nearby ATMs",
+              },
+              {
+                icon: "🔔",
+                title: "Custom Alerts",
+                description: "Set up notifications",
+              },
+              {
+                icon: "💡",
+                title: "Financial Insights",
+                description: "Get personalized tips",
+              },
+              {
+                icon: "🎯",
+                title: "Savings Goals",
+                description: "Set and track goals",
+              },
             ].map((feature, index) => (
-              <Card key={index} className="text-center border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-white to-green-50/20 cursor-pointer">
+              <Card
+                key={index}
+                className="text-center border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-white to-green-50/20 cursor-pointer"
+              >
                 <CardContent className="p-6">
                   <div className="text-3xl mb-3">{feature.icon}</div>
-                  <h3 className="font-semibold text-[#00754A] mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <h3 className="font-semibold text-[#00754A] mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -201,7 +260,8 @@ export default function DemoExperience() {
                 Personal Banking Scenario
               </CardTitle>
               <CardDescription>
-                Experience managing personal finances as John, a young professional.
+                Experience managing personal finances as John, a young
+                professional.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -245,18 +305,28 @@ export default function DemoExperience() {
 
         {/* Call to Action */}
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-[#00754A] mb-4">Ready to Get Started?</h2>
+          <h2 className="text-2xl font-bold text-[#00754A] mb-4">
+            Ready to Get Started?
+          </h2>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            After exploring our demo, join thousands of satisfied members who trust First City Credit Union with their financial future.
+            After exploring our demo, join thousands of satisfied members who
+            trust First City Credit Union with their financial future.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
-              <Button size="lg" className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white"
+              >
                 Open an Account
               </Button>
             </Link>
             <Link to="/contact">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Talk to an Expert
               </Button>
             </Link>

@@ -19,7 +19,10 @@ export default function PrivacyPolicy() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/help">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Help
               </Button>
             </Link>
@@ -41,7 +44,8 @@ export default function PrivacyPolicy() {
             Privacy Policy
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Your privacy is important to us. Learn how we collect, use, and protect your personal information.
+            Your privacy is important to us. Learn how we collect, use, and
+            protect your personal information.
           </p>
           <p className="text-sm text-muted-foreground mt-4">
             Last updated: January 2024
@@ -51,20 +55,28 @@ export default function PrivacyPolicy() {
         <div className="space-y-8">
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Information We Collect</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Information We Collect
+              </CardTitle>
             </CardHeader>
             <CardContent className="prose prose-gray max-w-none">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We collect information you provide directly to us, information we collect automatically when you use our services, and information from third parties.
+                We collect information you provide directly to us, information
+                we collect automatically when you use our services, and
+                information from third parties.
               </p>
-              <h4 className="font-semibold text-[#00754A] mb-2">Personal Information:</h4>
+              <h4 className="font-semibold text-[#00754A] mb-2">
+                Personal Information:
+              </h4>
               <ul className="list-disc list-inside text-muted-foreground space-y-1 mb-4">
                 <li>Name, address, phone number, and email address</li>
                 <li>Social Security number and date of birth</li>
                 <li>Employment and income information</li>
                 <li>Account numbers and transaction history</li>
               </ul>
-              <h4 className="font-semibold text-[#00754A] mb-2">Automatically Collected Information:</h4>
+              <h4 className="font-semibold text-[#00754A] mb-2">
+                Automatically Collected Information:
+              </h4>
               <ul className="list-disc list-inside text-muted-foreground space-y-1">
                 <li>Device information and IP address</li>
                 <li>Usage data and login information</li>
@@ -75,11 +87,14 @@ export default function PrivacyPolicy() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">How We Use Your Information</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                How We Use Your Information
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We use your information to provide and improve our services, communicate with you, and comply with legal requirements.
+                We use your information to provide and improve our services,
+                communicate with you, and comply with legal requirements.
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Process transactions and maintain your accounts</li>
@@ -94,11 +109,14 @@ export default function PrivacyPolicy() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Information Sharing</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Information Sharing
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We do not sell your personal information. We may share your information in limited circumstances:
+                We do not sell your personal information. We may share your
+                information in limited circumstances:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>With your consent or at your direction</li>
@@ -112,11 +130,14 @@ export default function PrivacyPolicy() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Data Security</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Data Security
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                We implement appropriate technical and organizational measures to protect your personal information:
+                We implement appropriate technical and organizational measures
+                to protect your personal information:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>256-bit SSL encryption for data transmission</li>
@@ -130,7 +151,9 @@ export default function PrivacyPolicy() {
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Your Rights</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Your Rights
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -144,21 +167,27 @@ export default function PrivacyPolicy() {
                 <li>Request a copy of your information</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
-                To exercise these rights, please contact us using the information provided below.
+                To exercise these rights, please contact us using the
+                information provided below.
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#00754A]">Contact Information</CardTitle>
+              <CardTitle className="text-2xl text-[#00754A]">
+                Contact Information
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                If you have questions about this Privacy Policy or our privacy practices, please contact us:
+                If you have questions about this Privacy Policy or our privacy
+                practices, please contact us:
               </p>
               <div className="bg-green-50 rounded-lg p-4">
-                <p className="font-semibold text-[#00754A] mb-2">Privacy Officer</p>
+                <p className="font-semibold text-[#00754A] mb-2">
+                  Privacy Officer
+                </p>
                 <p className="text-muted-foreground">First City Credit Union</p>
                 <p className="text-muted-foreground">123 Banking Street</p>
                 <p className="text-muted-foreground">City, State 12345</p>
@@ -172,12 +201,20 @@ export default function PrivacyPolicy() {
         <div className="text-center mt-16">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/terms">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Terms of Service
               </Button>
             </Link>
             <Link to="/security">
-              <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+              >
                 Security Center
               </Button>
             </Link>
