@@ -368,7 +368,7 @@ export class BankingDatabase {
 
                 // Get updated balance
                 const updatedBalance = await new Promise<number>((resolveBalance, rejectBalance) => {
-                  db.db.get(
+                  this.db.get(
                     `SELECT balance FROM accounts WHERE id = ?`,
                     [accountId],
                     (err, row: any) => {
