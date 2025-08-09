@@ -326,81 +326,80 @@ export class BankingDatabase {
     description: string;
     merchantName?: string;
   }): Promise<number> {
-    return new Promise(async (resolve, reject) => {
-      const { accountId, type, amount, description, merchantName } = transactionData;
+    const { accountId, type, amount, description, merchantName } = transactionData;
+    const db = this.db;
 
-      try {
-        // Insert transaction
-        this.db.run(
-          `INSERT INTO transactions (account_id, type, amount, description)
-           VALUES (?, ?, ?, ?)`,
-          [accountId, type, amount, description],
-          async function (err) {
-            if (err) {
-              reject(err);
-              return;
-            }
+    return new Promise((resolve, reject) => {
+      // Insert transaction
+      db.run(
+        `INSERT INTO transactions (account_id, type, amount, description)
+         VALUES (?, ?, ?, ?)`,
+        [accountId, type, amount, description],
+        async function (err) {
+          if (err) {
+            reject(err);
+            return;
+          }
 
-            try {
-              // Get account and user information for email notification
-              const accountInfo = await new Promise<any>((resolveAccount, rejectAccount) => {
-                this.db.get(
-                  `SELECT a.*, u.email, u.name, a.account_number
-                   FROM accounts a
-                   JOIN users u ON a.user_id = u.id
-                   WHERE a.id = ?`,
+          const transactionId = this.lastID;
+
+          try {
+            // Get account and user information for email notification
+            const accountInfo = await new Promise<any>((resolveAccount, rejectAccount) => {
+              db.get(
+                `SELECT a.*, u.email, u.name, a.account_number
+                 FROM accounts a
+                 JOIN users u ON a.user_id = u.id
+                 WHERE a.id = ?`,
+                [accountId],
+                (err, row) => {
+                  if (err) rejectAccount(err);
+                  else resolveAccount(row);
+                }
+              );
+            });
+
+            if (accountInfo && accountInfo.email) {
+              // Determine transaction type for email
+              let emailType: 'deposit' | 'withdrawal' | 'transfer_in' | 'transfer_out';
+              if (type === 'credit') {
+                emailType = description.toLowerCase().includes('transfer') ? 'transfer_in' : 'deposit';
+              } else {
+                emailType = description.toLowerCase().includes('transfer') ? 'transfer_out' : 'withdrawal';
+              }
+
+              // Get updated balance
+              const updatedBalance = await new Promise<number>((resolveBalance, rejectBalance) => {
+                db.get(
+                  `SELECT balance FROM accounts WHERE id = ?`,
                   [accountId],
-                  (err, row) => {
-                    if (err) rejectAccount(err);
-                    else resolveAccount(row);
+                  (err, row: any) => {
+                    if (err) rejectBalance(err);
+                    else resolveBalance(row?.balance || 0);
                   }
                 );
               });
 
-              if (accountInfo && accountInfo.email) {
-                // Determine transaction type for email
-                let emailType: 'deposit' | 'withdrawal' | 'transfer_in' | 'transfer_out';
-                if (type === 'credit') {
-                  emailType = description.toLowerCase().includes('transfer') ? 'transfer_in' : 'deposit';
-                } else {
-                  emailType = description.toLowerCase().includes('transfer') ? 'transfer_out' : 'withdrawal';
-                }
-
-                // Get updated balance
-                const updatedBalance = await new Promise<number>((resolveBalance, rejectBalance) => {
-                  this.db.get(
-                    `SELECT balance FROM accounts WHERE id = ?`,
-                    [accountId],
-                    (err, row: any) => {
-                      if (err) rejectBalance(err);
-                      else resolveBalance(row?.balance || 0);
-                    }
-                  );
-                });
-
-                // Send email notification
-                const emailService = getEmailService();
-                await emailService.sendTransactionNotification(accountInfo.email, {
-                  type: emailType,
-                  amount: amount,
-                  description,
-                  accountNumber: accountInfo.account_number,
-                  balance: updatedBalance,
-                  timestamp: new Date().toISOString(),
-                  merchantName
-                });
-              }
-            } catch (emailError) {
-              console.error('Failed to send transaction email notification:', emailError);
-              // Don't fail the transaction for email errors
+              // Send email notification
+              const emailService = getEmailService();
+              await emailService.sendTransactionNotification(accountInfo.email, {
+                type: emailType,
+                amount: amount,
+                description,
+                accountNumber: accountInfo.account_number,
+                balance: updatedBalance,
+                timestamp: new Date().toISOString(),
+                merchantName
+              });
             }
+          } catch (emailError) {
+            console.error('Failed to send transaction email notification:', emailError);
+            // Don't fail the transaction for email errors
+          }
 
-            resolve(this.lastID);
-          },
-        );
-      } catch (error) {
-        reject(error);
-      }
+          resolve(transactionId);
+        },
+      );
     });
   }
 
