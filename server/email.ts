@@ -61,6 +61,193 @@ class EmailService {
     }
   }
 
+  public async sendTransactionNotification(to: string, transactionData: {
+    type: 'deposit' | 'withdrawal' | 'transfer_in' | 'transfer_out';
+    amount: number;
+    description: string;
+    accountNumber: string;
+    balance: number;
+    timestamp: string;
+    merchantName?: string;
+  }): Promise<boolean> {
+    try {
+      const { type, amount, description, accountNumber, balance, timestamp, merchantName } = transactionData;
+
+      const formatCurrency = (amount: number) => `$${Math.abs(amount).toFixed(2)}`;
+      const formatDate = (dateString: string) => new Date(dateString).toLocaleString();
+
+      let subject = '';
+      let title = '';
+      let color = '';
+      let icon = '';
+
+      switch (type) {
+        case 'deposit':
+          subject = 'Deposit Confirmation';
+          title = 'Money Deposited';
+          color = '#10B981';
+          icon = '💰';
+          break;
+        case 'withdrawal':
+          subject = 'Withdrawal Confirmation';
+          title = 'Money Withdrawn';
+          color = '#EF4444';
+          icon = '💸';
+          break;
+        case 'transfer_in':
+          subject = 'Transfer Received';
+          title = 'Money Received';
+          color = '#10B981';
+          icon = '📥';
+          break;
+        case 'transfer_out':
+          subject = 'Transfer Sent';
+          title = 'Money Sent';
+          color = '#EF4444';
+          icon = '📤';
+          break;
+      }
+
+      const mailOptions = {
+        from: `"SecureBank Notifications" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
+        to,
+        subject: `${subject} - ${formatCurrency(amount)}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px;">
+            <div style="background-color: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 48px; margin-bottom: 10px;">${icon}</div>
+                <h1 style="color: ${color}; margin: 0; font-size: 24px;">${title}</h1>
+              </div>
+
+              <div style="background-color: #f8f9fa; border-radius: 6px; padding: 20px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                  <span style="font-weight: bold; color: #333;">Amount:</span>
+                  <span style="font-size: 18px; font-weight: bold; color: ${color};">${formatCurrency(amount)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                  <span style="font-weight: bold; color: #333;">Account:</span>
+                  <span>****${accountNumber.slice(-4)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                  <span style="font-weight: bold; color: #333;">Description:</span>
+                  <span>${description}</span>
+                </div>
+                ${merchantName ? `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                  <span style="font-weight: bold; color: #333;">Merchant:</span>
+                  <span>${merchantName}</span>
+                </div>
+                ` : ''}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                  <span style="font-weight: bold; color: #333;">Date:</span>
+                  <span>${formatDate(timestamp)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-top: 1px solid #e9ecef; padding-top: 10px; margin-top: 10px;">
+                  <span style="font-weight: bold; color: #333;">New Balance:</span>
+                  <span style="font-weight: bold; font-size: 16px; color: #00754A;">${formatCurrency(balance)}</span>
+                </div>
+              </div>
+
+              <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 15px; margin-bottom: 20px;">
+                <p style="margin: 0; color: #856404; font-size: 14px;">
+                  <strong>Security Notice:</strong> If you did not authorize this transaction, please contact us immediately at (555) 123-4567 or login to your account to report suspicious activity.
+                </p>
+              </div>
+
+              <div style="text-align: center; padding-top: 20px; border-top: 1px solid #e9ecef;">
+                <p style="margin: 0; color: #6c757d; font-size: 12px;">
+                  SecureBank - Keeping your money safe and secure<br>
+                  This is an automated message. Please do not reply to this email.
+                </p>
+              </div>
+            </div>
+          </div>
+        `,
+      };
+
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log(`Transaction notification email sent: ${type} - ${formatCurrency(amount)}`);
+      return true;
+    } catch (error) {
+      console.error("Transaction notification email error:", error);
+      return false;
+    }
+  }
+
+  public async sendProfileUpdateNotification(to: string, updateData: {
+    userName: string;
+    changedFields: string[];
+    timestamp: string;
+    ipAddress?: string;
+  }): Promise<boolean> {
+    try {
+      const { userName, changedFields, timestamp, ipAddress } = updateData;
+
+      const formatDate = (dateString: string) => new Date(dateString).toLocaleString();
+
+      const mailOptions = {
+        from: `"SecureBank Security" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
+        to,
+        subject: "Profile Update Notification",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px;">
+            <div style="background-color: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 48px; margin-bottom: 10px;">🔒</div>
+                <h1 style="color: #00754A; margin: 0; font-size: 24px;">Profile Updated</h1>
+              </div>
+
+              <div style="background-color: #f8f9fa; border-radius: 6px; padding: 20px; margin-bottom: 20px;">
+                <p style="margin: 0 0 15px 0; color: #333;">Hi ${userName},</p>
+                <p style="margin: 0 0 15px 0; color: #333;">Your profile information has been updated. Here are the details:</p>
+
+                <div style="margin: 15px 0;">
+                  <span style="font-weight: bold; color: #333;">Updated Fields:</span>
+                  <ul style="margin: 10px 0; padding-left: 20px;">
+                    ${changedFields.map(field => `<li style="color: #555; margin: 5px 0;">${field}</li>`).join('')}
+                  </ul>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                  <span style="font-weight: bold; color: #333;">Date & Time:</span>
+                  <span>${formatDate(timestamp)}</span>
+                </div>
+
+                ${ipAddress ? `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                  <span style="font-weight: bold; color: #333;">IP Address:</span>
+                  <span style="font-family: monospace; background-color: #e9ecef; padding: 2px 6px; border-radius: 3px;">${ipAddress}</span>
+                </div>
+                ` : ''}
+              </div>
+
+              <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; padding: 15px; margin-bottom: 20px;">
+                <p style="margin: 0; color: #721c24; font-size: 14px;">
+                  <strong>Security Alert:</strong> If you did not make these changes, please contact us immediately at (555) 123-4567 or login to your account to secure your profile.
+                </p>
+              </div>
+
+              <div style="text-align: center; padding-top: 20px; border-top: 1px solid #e9ecef;">
+                <p style="margin: 0; color: #6c757d; font-size: 12px;">
+                  SecureBank Security Team - Protecting your account 24/7<br>
+                  This is an automated security notification. Please do not reply to this email.
+                </p>
+              </div>
+            </div>
+          </div>
+        `,
+      };
+
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log("Profile update notification email sent");
+      return true;
+    } catch (error) {
+      console.error("Profile update notification email error:", error);
+      return false;
+    }
+  }
+
   public async verifyConnection(): Promise<boolean> {
     try {
       await this.transporter.verify();
