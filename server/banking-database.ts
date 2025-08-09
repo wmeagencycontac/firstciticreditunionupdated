@@ -548,43 +548,52 @@ export class BankingDatabase {
     amount: number,
     description: string,
   ): Promise<void> {
+    const db = this.db;
+
     return new Promise((resolve, reject) => {
-      this.db.serialize(() => {
-        this.db.run("BEGIN TRANSACTION");
+      db.serialize(() => {
+        db.run("BEGIN TRANSACTION");
 
         // Debit from source account
-        this.db.run(
+        db.run(
           `UPDATE accounts SET balance = balance - ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
           [amount, fromAccountId],
         );
 
         // Credit to destination account
-        this.db.run(
+        db.run(
           `UPDATE accounts SET balance = balance + ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
           [amount, toAccountId],
         );
 
         // Create debit transaction
-        this.db.run(
+        db.run(
           `INSERT INTO transactions (account_id, type, amount, description)
            VALUES (?, 'debit', ?, ?)`,
           [fromAccountId, amount, description],
         );
 
         // Create credit transaction
-        this.db.run(
+        db.run(
           `INSERT INTO transactions (account_id, type, amount, description)
            VALUES (?, 'credit', ?, ?)`,
           [toAccountId, amount, description],
-          (err) => {
+          async (err) => {
             if (err) {
-              this.db.run("ROLLBACK");
+              db.run("ROLLBACK");
               reject(err);
             } else {
-              this.db.run("COMMIT", (commitErr) => {
+              db.run("COMMIT", async (commitErr) => {
                 if (commitErr) {
                   reject(commitErr);
                 } else {
+                  // Send email notifications for both accounts after successful transfer
+                  try {
+                    await this.sendTransferEmailNotifications(fromAccountId, toAccountId, amount, description);
+                  } catch (emailError) {
+                    console.error('Failed to send transfer email notifications:', emailError);
+                    // Don't fail the transfer for email errors
+                  }
                   resolve();
                 }
               });
