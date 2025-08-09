@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { CreditCard, DollarSign, Shield, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function CheckingAccounts() {
   return (
