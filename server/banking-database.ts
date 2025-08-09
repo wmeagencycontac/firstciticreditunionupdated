@@ -2,6 +2,7 @@ import sqlite3 from "sqlite3";
 import path from "path";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
+import { getEmailService } from "./email";
 
 export interface BankingUser {
   id: number;
