@@ -604,6 +604,76 @@ export class BankingDatabase {
     });
   }
 
+  private async sendTransferEmailNotifications(
+    fromAccountId: number,
+    toAccountId: number,
+    amount: number,
+    description: string,
+  ): Promise<void> {
+    const emailService = getEmailService();
+
+    try {
+      // Get both account information
+      const [fromAccountInfo, toAccountInfo] = await Promise.all([
+        new Promise<any>((resolve, reject) => {
+          this.db.get(
+            `SELECT a.*, u.email, u.name, a.account_number, a.balance
+             FROM accounts a
+             JOIN users u ON a.user_id = u.id
+             WHERE a.id = ?`,
+            [fromAccountId],
+            (err, row) => {
+              if (err) reject(err);
+              else resolve(row);
+            }
+          );
+        }),
+        new Promise<any>((resolve, reject) => {
+          this.db.get(
+            `SELECT a.*, u.email, u.name, a.account_number, a.balance
+             FROM accounts a
+             JOIN users u ON a.user_id = u.id
+             WHERE a.id = ?`,
+            [toAccountId],
+            (err, row) => {
+              if (err) reject(err);
+              else resolve(row);
+            }
+          );
+        })
+      ]);
+
+      const timestamp = new Date().toISOString();
+
+      // Send email to sender (transfer out)
+      if (fromAccountInfo && fromAccountInfo.email) {
+        await emailService.sendTransactionNotification(fromAccountInfo.email, {
+          type: 'transfer_out',
+          amount: amount,
+          description,
+          accountNumber: fromAccountInfo.account_number,
+          balance: fromAccountInfo.balance,
+          timestamp,
+        });
+      }
+
+      // Send email to receiver (transfer in)
+      if (toAccountInfo && toAccountInfo.email) {
+        await emailService.sendTransactionNotification(toAccountInfo.email, {
+          type: 'transfer_in',
+          amount: amount,
+          description,
+          accountNumber: toAccountInfo.account_number,
+          balance: toAccountInfo.balance,
+          timestamp,
+        });
+      }
+    } catch (error) {
+      console.error('Error sending transfer email notifications:', error);
+      throw error;
+    }
+  }
+
   // Verification token methods (reuse from enhanced database)
   public async createVerificationToken(tokenData: {
     id: string;
