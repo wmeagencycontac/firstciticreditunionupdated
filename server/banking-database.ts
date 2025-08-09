@@ -326,7 +326,8 @@ export class BankingDatabase {
     description: string;
     merchantName?: string;
   }): Promise<number> {
-    const { accountId, type, amount, description, merchantName } = transactionData;
+    const { accountId, type, amount, description, merchantName } =
+      transactionData;
     const db = this.db;
 
     return new Promise((resolve, reject) => {
@@ -345,55 +346,73 @@ export class BankingDatabase {
 
           try {
             // Get account and user information for email notification
-            const accountInfo = await new Promise<any>((resolveAccount, rejectAccount) => {
-              db.get(
-                `SELECT a.*, u.email, u.name, a.account_number
+            const accountInfo = await new Promise<any>(
+              (resolveAccount, rejectAccount) => {
+                db.get(
+                  `SELECT a.*, u.email, u.name, a.account_number
                  FROM accounts a
                  JOIN users u ON a.user_id = u.id
                  WHERE a.id = ?`,
-                [accountId],
-                (err, row) => {
-                  if (err) rejectAccount(err);
-                  else resolveAccount(row);
-                }
-              );
-            });
+                  [accountId],
+                  (err, row) => {
+                    if (err) rejectAccount(err);
+                    else resolveAccount(row);
+                  },
+                );
+              },
+            );
 
             if (accountInfo && accountInfo.email) {
               // Determine transaction type for email
-              let emailType: 'deposit' | 'withdrawal' | 'transfer_in' | 'transfer_out';
-              if (type === 'credit') {
-                emailType = description.toLowerCase().includes('transfer') ? 'transfer_in' : 'deposit';
+              let emailType:
+                | "deposit"
+                | "withdrawal"
+                | "transfer_in"
+                | "transfer_out";
+              if (type === "credit") {
+                emailType = description.toLowerCase().includes("transfer")
+                  ? "transfer_in"
+                  : "deposit";
               } else {
-                emailType = description.toLowerCase().includes('transfer') ? 'transfer_out' : 'withdrawal';
+                emailType = description.toLowerCase().includes("transfer")
+                  ? "transfer_out"
+                  : "withdrawal";
               }
 
               // Get updated balance
-              const updatedBalance = await new Promise<number>((resolveBalance, rejectBalance) => {
-                db.get(
-                  `SELECT balance FROM accounts WHERE id = ?`,
-                  [accountId],
-                  (err, row: any) => {
-                    if (err) rejectBalance(err);
-                    else resolveBalance(row?.balance || 0);
-                  }
-                );
-              });
+              const updatedBalance = await new Promise<number>(
+                (resolveBalance, rejectBalance) => {
+                  db.get(
+                    `SELECT balance FROM accounts WHERE id = ?`,
+                    [accountId],
+                    (err, row: any) => {
+                      if (err) rejectBalance(err);
+                      else resolveBalance(row?.balance || 0);
+                    },
+                  );
+                },
+              );
 
               // Send email notification
               const emailService = getEmailService();
-              await emailService.sendTransactionNotification(accountInfo.email, {
-                type: emailType,
-                amount: amount,
-                description,
-                accountNumber: accountInfo.account_number,
-                balance: updatedBalance,
-                timestamp: new Date().toISOString(),
-                merchantName
-              });
+              await emailService.sendTransactionNotification(
+                accountInfo.email,
+                {
+                  type: emailType,
+                  amount: amount,
+                  description,
+                  accountNumber: accountInfo.account_number,
+                  balance: updatedBalance,
+                  timestamp: new Date().toISOString(),
+                  merchantName,
+                },
+              );
             }
           } catch (emailError) {
-            console.error('Failed to send transaction email notification:', emailError);
+            console.error(
+              "Failed to send transaction email notification:",
+              emailError,
+            );
             // Don't fail the transaction for email errors
           }
 
@@ -589,9 +608,17 @@ export class BankingDatabase {
                 } else {
                   // Send email notifications for both accounts after successful transfer
                   try {
-                    await this.sendTransferEmailNotifications(fromAccountId, toAccountId, amount, description);
+                    await this.sendTransferEmailNotifications(
+                      fromAccountId,
+                      toAccountId,
+                      amount,
+                      description,
+                    );
                   } catch (emailError) {
-                    console.error('Failed to send transfer email notifications:', emailError);
+                    console.error(
+                      "Failed to send transfer email notifications:",
+                      emailError,
+                    );
                     // Don't fail the transfer for email errors
                   }
                   resolve();
@@ -625,7 +652,7 @@ export class BankingDatabase {
             (err, row) => {
               if (err) reject(err);
               else resolve(row);
-            }
+            },
           );
         }),
         new Promise<any>((resolve, reject) => {
@@ -638,9 +665,9 @@ export class BankingDatabase {
             (err, row) => {
               if (err) reject(err);
               else resolve(row);
-            }
+            },
           );
-        })
+        }),
       ]);
 
       const timestamp = new Date().toISOString();
@@ -648,7 +675,7 @@ export class BankingDatabase {
       // Send email to sender (transfer out)
       if (fromAccountInfo && fromAccountInfo.email) {
         await emailService.sendTransactionNotification(fromAccountInfo.email, {
-          type: 'transfer_out',
+          type: "transfer_out",
           amount: amount,
           description,
           accountNumber: fromAccountInfo.account_number,
@@ -660,7 +687,7 @@ export class BankingDatabase {
       // Send email to receiver (transfer in)
       if (toAccountInfo && toAccountInfo.email) {
         await emailService.sendTransactionNotification(toAccountInfo.email, {
-          type: 'transfer_in',
+          type: "transfer_in",
           amount: amount,
           description,
           accountNumber: toAccountInfo.account_number,
@@ -669,7 +696,7 @@ export class BankingDatabase {
         });
       }
     } catch (error) {
-      console.error('Error sending transfer email notifications:', error);
+      console.error("Error sending transfer email notifications:", error);
       throw error;
     }
   }

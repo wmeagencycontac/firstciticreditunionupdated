@@ -61,56 +61,69 @@ class EmailService {
     }
   }
 
-  public async sendTransactionNotification(to: string, transactionData: {
-    type: 'deposit' | 'withdrawal' | 'transfer_in' | 'transfer_out';
-    amount: number;
-    description: string;
-    accountNumber: string;
-    balance: number;
-    timestamp: string;
-    merchantName?: string;
-  }): Promise<boolean> {
+  public async sendTransactionNotification(
+    to: string,
+    transactionData: {
+      type: "deposit" | "withdrawal" | "transfer_in" | "transfer_out";
+      amount: number;
+      description: string;
+      accountNumber: string;
+      balance: number;
+      timestamp: string;
+      merchantName?: string;
+    },
+  ): Promise<boolean> {
     try {
       // Validate email and required fields
-      if (!to || !to.includes('@') || !transactionData) {
-        console.error('Invalid email or transaction data for notification');
+      if (!to || !to.includes("@") || !transactionData) {
+        console.error("Invalid email or transaction data for notification");
         return false;
       }
 
-      const { type, amount, description, accountNumber, balance, timestamp, merchantName } = transactionData;
+      const {
+        type,
+        amount,
+        description,
+        accountNumber,
+        balance,
+        timestamp,
+        merchantName,
+      } = transactionData;
 
-      const formatCurrency = (amount: number) => `$${Math.abs(amount).toFixed(2)}`;
-      const formatDate = (dateString: string) => new Date(dateString).toLocaleString();
+      const formatCurrency = (amount: number) =>
+        `$${Math.abs(amount).toFixed(2)}`;
+      const formatDate = (dateString: string) =>
+        new Date(dateString).toLocaleString();
 
-      let subject = '';
-      let title = '';
-      let color = '';
-      let icon = '';
+      let subject = "";
+      let title = "";
+      let color = "";
+      let icon = "";
 
       switch (type) {
-        case 'deposit':
-          subject = 'Deposit Confirmation';
-          title = 'Money Deposited';
-          color = '#10B981';
-          icon = '💰';
+        case "deposit":
+          subject = "Deposit Confirmation";
+          title = "Money Deposited";
+          color = "#10B981";
+          icon = "💰";
           break;
-        case 'withdrawal':
-          subject = 'Withdrawal Confirmation';
-          title = 'Money Withdrawn';
-          color = '#EF4444';
-          icon = '💸';
+        case "withdrawal":
+          subject = "Withdrawal Confirmation";
+          title = "Money Withdrawn";
+          color = "#EF4444";
+          icon = "💸";
           break;
-        case 'transfer_in':
-          subject = 'Transfer Received';
-          title = 'Money Received';
-          color = '#10B981';
-          icon = '📥';
+        case "transfer_in":
+          subject = "Transfer Received";
+          title = "Money Received";
+          color = "#10B981";
+          icon = "📥";
           break;
-        case 'transfer_out':
-          subject = 'Transfer Sent';
-          title = 'Money Sent';
-          color = '#EF4444';
-          icon = '📤';
+        case "transfer_out":
+          subject = "Transfer Sent";
+          title = "Money Sent";
+          color = "#EF4444";
+          icon = "📤";
           break;
       }
 
@@ -139,12 +152,16 @@ class EmailService {
                   <span style="font-weight: bold; color: #333;">Description:</span>
                   <span>${description}</span>
                 </div>
-                ${merchantName ? `
+                ${
+                  merchantName
+                    ? `
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                   <span style="font-weight: bold; color: #333;">Merchant:</span>
                   <span>${merchantName}</span>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                   <span style="font-weight: bold; color: #333;">Date:</span>
                   <span>${formatDate(timestamp)}</span>
@@ -173,7 +190,9 @@ class EmailService {
       };
 
       const info = await this.transporter.sendMail(mailOptions);
-      console.log(`Transaction notification email sent: ${type} - ${formatCurrency(amount)}`);
+      console.log(
+        `Transaction notification email sent: ${type} - ${formatCurrency(amount)}`,
+      );
       return true;
     } catch (error) {
       console.error("Transaction notification email error:", error);
@@ -181,22 +200,31 @@ class EmailService {
     }
   }
 
-  public async sendProfileUpdateNotification(to: string, updateData: {
-    userName: string;
-    changedFields: string[];
-    timestamp: string;
-    ipAddress?: string;
-  }): Promise<boolean> {
+  public async sendProfileUpdateNotification(
+    to: string,
+    updateData: {
+      userName: string;
+      changedFields: string[];
+      timestamp: string;
+      ipAddress?: string;
+    },
+  ): Promise<boolean> {
     try {
       // Validate email and required fields
-      if (!to || !to.includes('@') || !updateData || !updateData.changedFields?.length) {
-        console.error('Invalid email or update data for profile notification');
+      if (
+        !to ||
+        !to.includes("@") ||
+        !updateData ||
+        !updateData.changedFields?.length
+      ) {
+        console.error("Invalid email or update data for profile notification");
         return false;
       }
 
       const { userName, changedFields, timestamp, ipAddress } = updateData;
 
-      const formatDate = (dateString: string) => new Date(dateString).toLocaleString();
+      const formatDate = (dateString: string) =>
+        new Date(dateString).toLocaleString();
 
       const mailOptions = {
         from: `"SecureBank Security" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
@@ -217,7 +245,7 @@ class EmailService {
                 <div style="margin: 15px 0;">
                   <span style="font-weight: bold; color: #333;">Updated Fields:</span>
                   <ul style="margin: 10px 0; padding-left: 20px;">
-                    ${changedFields.map(field => `<li style="color: #555; margin: 5px 0;">${field}</li>`).join('')}
+                    ${changedFields.map((field) => `<li style="color: #555; margin: 5px 0;">${field}</li>`).join("")}
                   </ul>
                 </div>
 
@@ -226,12 +254,16 @@ class EmailService {
                   <span>${formatDate(timestamp)}</span>
                 </div>
 
-                ${ipAddress ? `
+                ${
+                  ipAddress
+                    ? `
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                   <span style="font-weight: bold; color: #333;">IP Address:</span>
                   <span style="font-family: monospace; background-color: #e9ecef; padding: 2px 6px; border-radius: 3px;">${ipAddress}</span>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
               </div>
 
               <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; padding: 15px; margin-bottom: 20px;">

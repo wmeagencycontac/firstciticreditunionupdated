@@ -131,9 +131,12 @@ export default function EmailNotificationTest() {
                 <CardContent>
                   <div className="space-y-2">
                     {results.map((result, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      >
                         <span className="font-medium capitalize">
-                          {result.type.replace('_', ' ')}
+                          {result.type.replace("_", " ")}
                         </span>
                         {result.success ? (
                           <div className="flex items-center space-x-2 text-green-600">
@@ -162,7 +165,9 @@ export default function EmailNotificationTest() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-semibold mb-3 text-[#00754A]">Transaction Notifications</h3>
+                <h3 className="font-semibold mb-3 text-[#00754A]">
+                  Transaction Notifications
+                </h3>
                 <ul className="space-y-2 text-sm">
                   <li>• Deposits (all methods)</li>
                   <li>• Withdrawals (all methods)</li>
@@ -172,9 +177,11 @@ export default function EmailNotificationTest() {
                   <li>• Real-time balance updates</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h3 className="font-semibold mb-3 text-[#00754A]">Profile Update Notifications</h3>
+                <h3 className="font-semibold mb-3 text-[#00754A]">
+                  Profile Update Notifications
+                </h3>
                 <ul className="space-y-2 text-sm">
                   <li>• Name changes</li>
                   <li>• Email address updates</li>
@@ -187,7 +194,9 @@ export default function EmailNotificationTest() {
             </div>
 
             <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="font-semibold text-blue-900 mb-2">Security Features</h4>
+              <h4 className="font-semibold text-blue-900 mb-2">
+                Security Features
+              </h4>
               <ul className="space-y-1 text-sm text-blue-800">
                 <li>• All emails include security warnings</li>
                 <li>• Account numbers are masked (****1234)</li>

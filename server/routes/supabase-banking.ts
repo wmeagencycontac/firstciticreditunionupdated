@@ -228,11 +228,19 @@ export const createTransaction: RequestHandler = async (req, res) => {
 
       if (userEmail) {
         // Determine email type
-        let emailType: 'deposit' | 'withdrawal' | 'transfer_in' | 'transfer_out';
-        if (type === 'credit') {
-          emailType = description.toLowerCase().includes('transfer') ? 'transfer_in' : 'deposit';
+        let emailType:
+          | "deposit"
+          | "withdrawal"
+          | "transfer_in"
+          | "transfer_out";
+        if (type === "credit") {
+          emailType = description.toLowerCase().includes("transfer")
+            ? "transfer_in"
+            : "deposit";
         } else {
-          emailType = description.toLowerCase().includes('transfer') ? 'transfer_out' : 'withdrawal';
+          emailType = description.toLowerCase().includes("transfer")
+            ? "transfer_out"
+            : "withdrawal";
         }
 
         await emailService.sendTransactionNotification(userEmail, {
@@ -245,7 +253,10 @@ export const createTransaction: RequestHandler = async (req, res) => {
         });
       }
     } catch (emailError) {
-      console.error('Failed to send transaction email notification:', emailError);
+      console.error(
+        "Failed to send transaction email notification:",
+        emailError,
+      );
       // Don't fail the transaction for email errors
     }
 
@@ -385,34 +396,43 @@ export const transfer: RequestHandler = async (req, res) => {
           .from("banking_users")
           .select("email, name")
           .eq("id", toAccount.user_id)
-          .single()
+          .single(),
       ]);
 
       // Send email to sender (transfer out)
       if (fromUserResult.data?.email) {
-        await emailService.sendTransactionNotification(fromUserResult.data.email, {
-          type: 'transfer_out',
-          amount: amount,
-          description: `Transfer: ${description}`,
-          accountNumber: fromAccount.account_number,
-          balance: fromAccount.balance - amount,
-          timestamp,
-        });
+        await emailService.sendTransactionNotification(
+          fromUserResult.data.email,
+          {
+            type: "transfer_out",
+            amount: amount,
+            description: `Transfer: ${description}`,
+            accountNumber: fromAccount.account_number,
+            balance: fromAccount.balance - amount,
+            timestamp,
+          },
+        );
       }
 
       // Send email to receiver (transfer in) - only if different user
-      if (toUserResult.data?.email && fromAccount.user_id !== toAccount.user_id) {
-        await emailService.sendTransactionNotification(toUserResult.data.email, {
-          type: 'transfer_in',
-          amount: amount,
-          description: `Transfer: ${description}`,
-          accountNumber: toAccount.account_number,
-          balance: toAccount.balance + amount,
-          timestamp,
-        });
+      if (
+        toUserResult.data?.email &&
+        fromAccount.user_id !== toAccount.user_id
+      ) {
+        await emailService.sendTransactionNotification(
+          toUserResult.data.email,
+          {
+            type: "transfer_in",
+            amount: amount,
+            description: `Transfer: ${description}`,
+            accountNumber: toAccount.account_number,
+            balance: toAccount.balance + amount,
+            timestamp,
+          },
+        );
       }
     } catch (emailError) {
-      console.error('Failed to send transfer email notifications:', emailError);
+      console.error("Failed to send transfer email notifications:", emailError);
       // Don't fail the transfer for email errors
     }
 
