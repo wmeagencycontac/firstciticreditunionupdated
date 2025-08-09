@@ -188,6 +188,12 @@ class EmailService {
     ipAddress?: string;
   }): Promise<boolean> {
     try {
+      // Validate email and required fields
+      if (!to || !to.includes('@') || !updateData || !updateData.changedFields?.length) {
+        console.error('Invalid email or update data for profile notification');
+        return false;
+      }
+
       const { userName, changedFields, timestamp, ipAddress } = updateData;
 
       const formatDate = (dateString: string) => new Date(dateString).toLocaleString();
