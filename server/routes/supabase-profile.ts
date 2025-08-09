@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { supabaseAdmin } from "../supabase";
+import { getEmailService } from "../email";
 
 // Create banking profile for new user
 export const createBankingProfile: RequestHandler = async (req, res) => {
