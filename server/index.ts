@@ -266,6 +266,13 @@ export function createServer() {
     supabaseGetRecentTransactions,
   );
 
+  // Test email notification endpoints (development only)
+  if (process.env.NODE_ENV === "development") {
+    app.post("/api/test-email/transaction", testTransactionEmail);
+    app.post("/api/test-email/profile", testProfileUpdateEmail);
+    app.post("/api/test-email/all", testAllNotifications);
+  }
+
   // Migration endpoint (development only)
   if (process.env.NODE_ENV === "development") {
     app.post("/api/migrate-to-supabase", async (req, res) => {
