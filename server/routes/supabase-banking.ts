@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { supabase, supabaseAdmin } from "../supabase";
 import { z } from "zod";
+import { getEmailService } from "../email";
 
 // Validation schemas
 const createAccountSchema = z.object({
