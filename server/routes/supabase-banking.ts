@@ -219,6 +219,36 @@ export const createTransaction: RequestHandler = async (req, res) => {
         .json({ error: "Failed to update account balance" });
     }
 
+    // Send email notification for the transaction
+    try {
+      const emailService = getEmailService();
+
+      // Get user email from the user object
+      const userEmail = user.email;
+
+      if (userEmail) {
+        // Determine email type
+        let emailType: 'deposit' | 'withdrawal' | 'transfer_in' | 'transfer_out';
+        if (type === 'credit') {
+          emailType = description.toLowerCase().includes('transfer') ? 'transfer_in' : 'deposit';
+        } else {
+          emailType = description.toLowerCase().includes('transfer') ? 'transfer_out' : 'withdrawal';
+        }
+
+        await emailService.sendTransactionNotification(userEmail, {
+          type: emailType,
+          amount: amount,
+          description,
+          accountNumber: account.account_number,
+          balance: newBalance,
+          timestamp: new Date().toISOString(),
+        });
+      }
+    } catch (emailError) {
+      console.error('Failed to send transaction email notification:', emailError);
+      // Don't fail the transaction for email errors
+    }
+
     res.status(201).json(transaction);
   } catch (error) {
     console.error("Create transaction error:", error);
