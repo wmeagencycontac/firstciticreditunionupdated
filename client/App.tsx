@@ -135,7 +135,8 @@ export default function App() {
             <Route path="/demo-interactive" element={<InteractiveDemo />} />
 
             {/* Service Pages */}
-            <Route path="/mobile-deposit" element={<MobileDepositService />} />
+            <Route path="/mobile-deposit-service" element={<MobileDepositService />} />
+            <Route path="/mobile-deposit" element={<MobileDeposit />} />
             <Route path="/instant-transfers" element={<InstantTransfers />} />
             <Route path="/smart-alerts" element={<SmartAlerts />} />
 
