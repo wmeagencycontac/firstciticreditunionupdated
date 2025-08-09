@@ -344,7 +344,7 @@ export class BankingDatabase {
             try {
               // Get account and user information for email notification
               const accountInfo = await new Promise<any>((resolveAccount, rejectAccount) => {
-                db.db.get(
+                this.db.get(
                   `SELECT a.*, u.email, u.name, a.account_number
                    FROM accounts a
                    JOIN users u ON a.user_id = u.id
