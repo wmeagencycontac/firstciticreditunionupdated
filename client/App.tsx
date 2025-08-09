@@ -48,6 +48,7 @@ import SavingsCalculator from "./pages/SavingsCalculator";
 import HelpSearch from "./pages/HelpSearch";
 import InteractiveDemo from "./pages/InteractiveDemo";
 import MobileDepositService from "./pages/MobileDepositService";
+import MobileDeposit from "./pages/MobileDeposit";
 import InstantTransfers from "./pages/InstantTransfers";
 import SmartAlerts from "./pages/SmartAlerts";
 
