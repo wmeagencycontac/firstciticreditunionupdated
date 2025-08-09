@@ -24,9 +24,11 @@ export default function About() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground leading-relaxed mb-6">Founded in 1952, First City Credit Union has grown from a small community institution to a modern digital-first credit union, serving over 150,000 members with trust and integrity.</p>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Learn More
-            </Button>
+            <Link to="/company-history">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Learn More
+              </Button>
+            </Link>
           </CardContent>
         </Card>
         <Card className="group border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] bg-gradient-to-br from-white to-teal-50/30 overflow-hidden relative">
@@ -44,9 +46,11 @@ export default function About() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Michael Chen, CFO</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Elena Rodriguez, CTO</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Meet the Team
-            </Button>
+            <Link to="/team">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Meet the Team
+              </Button>
+            </Link>
           </CardContent>
         </Card>
         <Card className="group border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] bg-gradient-to-br from-white to-cyan-50/30 overflow-hidden relative">
