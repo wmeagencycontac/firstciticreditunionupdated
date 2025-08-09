@@ -71,6 +71,12 @@ class EmailService {
     merchantName?: string;
   }): Promise<boolean> {
     try {
+      // Validate email and required fields
+      if (!to || !to.includes('@') || !transactionData) {
+        console.error('Invalid email or transaction data for notification');
+        return false;
+      }
+
       const { type, amount, description, accountNumber, balance, timestamp, merchantName } = transactionData;
 
       const formatCurrency = (amount: number) => `$${Math.abs(amount).toFixed(2)}`;
