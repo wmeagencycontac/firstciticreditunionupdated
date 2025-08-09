@@ -56,6 +56,7 @@ import Settings from "./pages/Settings";
 import CompanyHistory from "./pages/CompanyHistory";
 import Team from "./pages/Team";
 import Mission from "./pages/Mission";
+import EmailNotificationTest from "./pages/EmailNotificationTest";
 
 const queryClient = new QueryClient();
 
