@@ -86,6 +86,9 @@ export default function App() {
               <Route path="/admin/dashboard" element={<AdminRoute />}>
                 <Route index element={<AdminDashboard />} />
               </Route>
+              <Route path="/admin/dashboard-pro" element={<AdminRoute />}>
+                <Route index element={<AdminDashboardPro />} />
+              </Route>
 
               {/* Test Setup Route */}
               <Route path="/test-setup" element={<TestSetup />} />
