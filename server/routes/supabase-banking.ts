@@ -369,6 +369,53 @@ export const transfer: RequestHandler = async (req, res) => {
         .json({ error: "Failed to update account balances" });
     }
 
+    // Send email notifications for transfer
+    try {
+      const emailService = getEmailService();
+      const timestamp = new Date().toISOString();
+
+      // Get user information for both accounts
+      const [fromUserResult, toUserResult] = await Promise.all([
+        supabaseAdmin
+          .from("banking_users")
+          .select("email, name")
+          .eq("id", fromAccount.user_id)
+          .single(),
+        supabaseAdmin
+          .from("banking_users")
+          .select("email, name")
+          .eq("id", toAccount.user_id)
+          .single()
+      ]);
+
+      // Send email to sender (transfer out)
+      if (fromUserResult.data?.email) {
+        await emailService.sendTransactionNotification(fromUserResult.data.email, {
+          type: 'transfer_out',
+          amount: amount,
+          description: `Transfer: ${description}`,
+          accountNumber: fromAccount.account_number,
+          balance: fromAccount.balance - amount,
+          timestamp,
+        });
+      }
+
+      // Send email to receiver (transfer in) - only if different user
+      if (toUserResult.data?.email && fromAccount.user_id !== toAccount.user_id) {
+        await emailService.sendTransactionNotification(toUserResult.data.email, {
+          type: 'transfer_in',
+          amount: amount,
+          description: `Transfer: ${description}`,
+          accountNumber: toAccount.account_number,
+          balance: toAccount.balance + amount,
+          timestamp,
+        });
+      }
+    } catch (emailError) {
+      console.error('Failed to send transfer email notifications:', emailError);
+      // Don't fail the transfer for email errors
+    }
+
     res.status(201).json({
       message: "Transfer completed successfully",
       debitTransaction,
