@@ -51,6 +51,11 @@ import MobileDepositService from "./pages/MobileDepositService";
 import MobileDeposit from "./pages/MobileDeposit";
 import InstantTransfers from "./pages/InstantTransfers";
 import SmartAlerts from "./pages/SmartAlerts";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
+import CompanyHistory from "./pages/CompanyHistory";
+import Team from "./pages/Team";
+import Mission from "./pages/Mission";
 
 const queryClient = new QueryClient();
 
