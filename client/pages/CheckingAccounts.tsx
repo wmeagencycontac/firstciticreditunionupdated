@@ -1,5 +1,17 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { CreditCard, DollarSign, Shield, ArrowRight, Check } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  CreditCard,
+  DollarSign,
+  Shield,
+  ArrowRight,
+  Check,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -19,7 +31,10 @@ export default function CheckingAccounts() {
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-[#00754A] hover:bg-green-50">
+              <Button
+                variant="ghost"
+                className="text-[#00754A] hover:bg-green-50"
+              >
                 Login
               </Button>
             </Link>
@@ -38,7 +53,8 @@ export default function CheckingAccounts() {
             Checking Accounts
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Choose from our range of checking accounts designed for your lifestyle and financial needs.
+            Choose from our range of checking accounts designed for your
+            lifestyle and financial needs.
           </p>
         </div>
 
@@ -58,7 +74,9 @@ export default function CheckingAccounts() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-4">$0 Monthly Fee</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-4">
+                $0 Monthly Fee
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -77,9 +95,11 @@ export default function CheckingAccounts() {
                   Mobile check deposit
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Open Account
-              </Button>
+              <Link to="/apply?type=checking-basic">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Open Account
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -101,7 +121,9 @@ export default function CheckingAccounts() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-4">$15/month</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-4">
+                $15/month
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -124,9 +146,11 @@ export default function CheckingAccounts() {
                   Overdraft protection
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Open Account
-              </Button>
+              <Link to="/apply?type=checking-premium">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Open Account
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -145,7 +169,9 @@ export default function CheckingAccounts() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#00754A] mb-4">Free for Students</div>
+              <div className="text-2xl font-bold text-[#00754A] mb-4">
+                Free for Students
+              </div>
               <ul className="space-y-3 text-muted-foreground mb-6">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[#00754A]" />
@@ -164,27 +190,35 @@ export default function CheckingAccounts() {
                   Student discounts and offers
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Open Account
-              </Button>
+              <Link to="/apply?type=checking-student">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Open Account
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
 
         {/* Additional Information */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-[#00754A] mb-6">Why Choose Our Checking Accounts?</h2>
+          <h2 className="text-2xl font-bold text-[#00754A] mb-6">
+            Why Choose Our Checking Accounts?
+          </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-3">Security First</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Your money is protected with advanced encryption, fraud monitoring, and FDIC insurance up to $250,000.
+                Your money is protected with advanced encryption, fraud
+                monitoring, and FDIC insurance up to $250,000.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-3">Digital Convenience</h3>
+              <h3 className="text-lg font-semibold mb-3">
+                Digital Convenience
+              </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Manage your account 24/7 with our mobile app, online banking, and extensive ATM network.
+                Manage your account 24/7 with our mobile app, online banking,
+                and extensive ATM network.
               </p>
             </div>
           </div>
@@ -192,7 +226,11 @@ export default function CheckingAccounts() {
 
         <div className="text-center">
           <Link to="/contact">
-            <Button variant="outline" size="lg" className="border-[#00754A] text-[#00754A] hover:bg-green-50">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-[#00754A] text-[#00754A] hover:bg-green-50"
+            >
               Questions? Contact Us
             </Button>
           </Link>

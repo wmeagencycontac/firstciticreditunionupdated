@@ -73,6 +73,11 @@ import {
   handleGetPendingUsers,
   authenticateToken,
 } from "./routes/banking";
+import {
+  testTransactionEmail,
+  testProfileUpdateEmail,
+  testAllNotifications,
+} from "./routes/test-email-notifications";
 
 // Global Socket.IO server instance
 export let io: SocketIOServer;
@@ -264,6 +269,13 @@ export function createServer() {
     supabaseAuthenticateUser,
     supabaseGetRecentTransactions,
   );
+
+  // Test email notification endpoints (development only)
+  if (process.env.NODE_ENV === "development") {
+    app.post("/api/test-email/transaction", testTransactionEmail);
+    app.post("/api/test-email/profile", testProfileUpdateEmail);
+    app.post("/api/test-email/all", testAllNotifications);
+  }
 
   // Migration endpoint (development only)
   if (process.env.NODE_ENV === "development") {

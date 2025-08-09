@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { supabaseAdmin } from "../supabase";
+import { getEmailService } from "../email";
 
 // Create banking profile for new user
 export const createBankingProfile: RequestHandler = async (req, res) => {
@@ -201,6 +202,42 @@ export const updateBankingProfile: RequestHandler = async (req, res) => {
       return res
         .status(500)
         .json({ error: "Failed to update banking profile" });
+    }
+
+    // Send email notification for profile update
+    try {
+      const emailService = getEmailService();
+      const changedFields = Object.keys(updateData).filter(
+        (key) => key !== "updated_at",
+      );
+
+      if (changedFields.length > 0 && updatedUser?.email) {
+        await emailService.sendProfileUpdateNotification(updatedUser.email, {
+          userName: updatedUser.name || updatedUser.email,
+          changedFields: changedFields.map((field) => {
+            // Convert field names to user-friendly labels
+            const fieldLabels: { [key: string]: string } = {
+              name: "Full Name",
+              email: "Email Address",
+              phone: "Phone Number",
+              address: "Address",
+              date_of_birth: "Date of Birth",
+              ssn: "Social Security Number",
+              occupation: "Occupation",
+              annual_income: "Annual Income",
+            };
+            return fieldLabels[field] || field;
+          }),
+          timestamp: new Date().toISOString(),
+          ipAddress: req.ip,
+        });
+      }
+    } catch (emailError) {
+      console.error(
+        "Failed to send profile update email notification:",
+        emailError,
+      );
+      // Don't fail the profile update for email errors
     }
 
     res.json({

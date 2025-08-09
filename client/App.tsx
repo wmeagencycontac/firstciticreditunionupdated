@@ -19,6 +19,7 @@ import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboardPro from "./pages/AdminDashboardPro";
 import AdminSetup from "./pages/AdminSetup";
 import TestSetup from "./pages/TestSetup";
 import Debug from "./pages/Debug";
@@ -47,8 +48,15 @@ import SavingsCalculator from "./pages/SavingsCalculator";
 import HelpSearch from "./pages/HelpSearch";
 import InteractiveDemo from "./pages/InteractiveDemo";
 import MobileDepositService from "./pages/MobileDepositService";
+import MobileDeposit from "./pages/MobileDeposit";
 import InstantTransfers from "./pages/InstantTransfers";
 import SmartAlerts from "./pages/SmartAlerts";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
+import CompanyHistory from "./pages/CompanyHistory";
+import Team from "./pages/Team";
+import Mission from "./pages/Mission";
+import EmailNotificationTest from "./pages/EmailNotificationTest";
 
 const queryClient = new QueryClient();
 
@@ -84,60 +92,79 @@ export default function App() {
               <Route path="/admin/dashboard" element={<AdminRoute />}>
                 <Route index element={<AdminDashboard />} />
               </Route>
+              <Route path="/admin/dashboard-pro" element={<AdminRoute />}>
+                <Route index element={<AdminDashboardPro />} />
+              </Route>
 
               {/* Test Setup Route */}
               <Route path="/test-setup" element={<TestSetup />} />
 
-            {/* Debug Route */}
-            <Route path="/debug" element={<Debug />} />
+              {/* Debug Route */}
+              <Route path="/debug" element={<Debug />} />
 
-            {/* Supabase Test Route */}
-            <Route path="/supabase-test" element={<SupabaseTest />} />
+              {/* Supabase Test Route */}
+              <Route path="/supabase-test" element={<SupabaseTest />} />
 
-            {/* Integration Test Route */}
-            <Route path="/integration-test" element={<IntegrationTest />} />
+              {/* Integration Test Route */}
+              <Route path="/integration-test" element={<IntegrationTest />} />
 
-            {/* Banking Pages */}
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/register-enhanced"
-              element={<EnhancedRegistration />}
-            />
-            <Route path="/personal" element={<Personal />} />
-            <Route path="/business" element={<Business />} />
-            <Route path="/investments" element={<Investments />} />
-            <Route path="/checking" element={<CheckingAccounts />} />
-            <Route path="/savings" element={<SavingsAccounts />} />
-            <Route path="/credit-cards" element={<CreditCards />} />
-            <Route path="/loans" element={<Loans />} />
-            <Route path="/help" element={<HelpCenter />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/security" element={<SecurityCenter />} />
-            <Route path="/transactions" element={<Transactions />} />
-            <Route path="/demo" element={<DemoExperience />} />
+              {/* Banking Pages */}
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/register-enhanced"
+                element={<EnhancedRegistration />}
+              />
+              <Route path="/personal" element={<Personal />} />
+              <Route path="/business" element={<Business />} />
+              <Route path="/investments" element={<Investments />} />
+              <Route path="/checking" element={<CheckingAccounts />} />
+              <Route path="/savings" element={<SavingsAccounts />} />
+              <Route path="/credit-cards" element={<CreditCards />} />
+              <Route path="/loans" element={<Loans />} />
+              <Route path="/help" element={<HelpCenter />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/security" element={<SecurityCenter />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/demo" element={<DemoExperience />} />
 
-            {/* Legal Pages */}
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/accessibility" element={<Accessibility />} />
+              {/* Legal Pages */}
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/accessibility" element={<Accessibility />} />
 
-            {/* Interactive Features */}
-            <Route path="/apply" element={<ApplicationForm />} />
-            <Route path="/chat" element={<LiveChat />} />
-            <Route path="/calculator" element={<SavingsCalculator />} />
-            <Route path="/search" element={<HelpSearch />} />
-            <Route path="/demo-interactive" element={<InteractiveDemo />} />
+              {/* Interactive Features */}
+              <Route path="/apply" element={<ApplicationForm />} />
+              <Route path="/chat" element={<LiveChat />} />
+              <Route path="/calculator" element={<SavingsCalculator />} />
+              <Route path="/search" element={<HelpSearch />} />
+              <Route path="/demo-interactive" element={<InteractiveDemo />} />
 
-            {/* Service Pages */}
-            <Route path="/mobile-deposit" element={<MobileDepositService />} />
-            <Route path="/instant-transfers" element={<InstantTransfers />} />
-            <Route path="/smart-alerts" element={<SmartAlerts />} />
+              {/* Service Pages */}
+              <Route
+                path="/mobile-deposit-service"
+                element={<MobileDepositService />}
+              />
+              <Route path="/mobile-deposit" element={<MobileDeposit />} />
+              <Route path="/instant-transfers" element={<InstantTransfers />} />
+              <Route path="/smart-alerts" element={<SmartAlerts />} />
 
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
+              {/* User Account Pages */}
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/settings" element={<Settings />} />
+
+              {/* Company Info Pages */}
+              <Route path="/company-history" element={<CompanyHistory />} />
+              <Route path="/team" element={<Team />} />
+              <Route path="/mission" element={<Mission />} />
+
+              {/* Development/Testing Pages */}
+              <Route path="/email-test" element={<EmailNotificationTest />} />
+
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

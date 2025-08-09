@@ -2,6 +2,7 @@ import sqlite3 from "sqlite3";
 import path from "path";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
+import { getEmailService } from "./email";
 
 export interface BankingUser {
   id: number;
@@ -323,19 +324,99 @@ export class BankingDatabase {
     type: "credit" | "debit";
     amount: number;
     description: string;
+    merchantName?: string;
   }): Promise<number> {
+    const { accountId, type, amount, description, merchantName } =
+      transactionData;
+    const db = this.db;
+
     return new Promise((resolve, reject) => {
-      const { accountId, type, amount, description } = transactionData;
-      this.db.run(
+      // Insert transaction
+      db.run(
         `INSERT INTO transactions (account_id, type, amount, description)
          VALUES (?, ?, ?, ?)`,
         [accountId, type, amount, description],
-        function (err) {
+        async function (err) {
           if (err) {
             reject(err);
-          } else {
-            resolve(this.lastID);
+            return;
           }
+
+          const transactionId = this.lastID;
+
+          try {
+            // Get account and user information for email notification
+            const accountInfo = await new Promise<any>(
+              (resolveAccount, rejectAccount) => {
+                db.get(
+                  `SELECT a.*, u.email, u.name, a.account_number
+                 FROM accounts a
+                 JOIN users u ON a.user_id = u.id
+                 WHERE a.id = ?`,
+                  [accountId],
+                  (err, row) => {
+                    if (err) rejectAccount(err);
+                    else resolveAccount(row);
+                  },
+                );
+              },
+            );
+
+            if (accountInfo && accountInfo.email) {
+              // Determine transaction type for email
+              let emailType:
+                | "deposit"
+                | "withdrawal"
+                | "transfer_in"
+                | "transfer_out";
+              if (type === "credit") {
+                emailType = description.toLowerCase().includes("transfer")
+                  ? "transfer_in"
+                  : "deposit";
+              } else {
+                emailType = description.toLowerCase().includes("transfer")
+                  ? "transfer_out"
+                  : "withdrawal";
+              }
+
+              // Get updated balance
+              const updatedBalance = await new Promise<number>(
+                (resolveBalance, rejectBalance) => {
+                  db.get(
+                    `SELECT balance FROM accounts WHERE id = ?`,
+                    [accountId],
+                    (err, row: any) => {
+                      if (err) rejectBalance(err);
+                      else resolveBalance(row?.balance || 0);
+                    },
+                  );
+                },
+              );
+
+              // Send email notification
+              const emailService = getEmailService();
+              await emailService.sendTransactionNotification(
+                accountInfo.email,
+                {
+                  type: emailType,
+                  amount: amount,
+                  description,
+                  accountNumber: accountInfo.account_number,
+                  balance: updatedBalance,
+                  timestamp: new Date().toISOString(),
+                  merchantName,
+                },
+              );
+            }
+          } catch (emailError) {
+            console.error(
+              "Failed to send transaction email notification:",
+              emailError,
+            );
+            // Don't fail the transaction for email errors
+          }
+
+          resolve(transactionId);
         },
       );
     });
@@ -486,43 +567,60 @@ export class BankingDatabase {
     amount: number,
     description: string,
   ): Promise<void> {
+    const db = this.db;
+
     return new Promise((resolve, reject) => {
-      this.db.serialize(() => {
-        this.db.run("BEGIN TRANSACTION");
+      db.serialize(() => {
+        db.run("BEGIN TRANSACTION");
 
         // Debit from source account
-        this.db.run(
+        db.run(
           `UPDATE accounts SET balance = balance - ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
           [amount, fromAccountId],
         );
 
         // Credit to destination account
-        this.db.run(
+        db.run(
           `UPDATE accounts SET balance = balance + ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
           [amount, toAccountId],
         );
 
         // Create debit transaction
-        this.db.run(
+        db.run(
           `INSERT INTO transactions (account_id, type, amount, description)
            VALUES (?, 'debit', ?, ?)`,
           [fromAccountId, amount, description],
         );
 
         // Create credit transaction
-        this.db.run(
+        db.run(
           `INSERT INTO transactions (account_id, type, amount, description)
            VALUES (?, 'credit', ?, ?)`,
           [toAccountId, amount, description],
-          (err) => {
+          async (err) => {
             if (err) {
-              this.db.run("ROLLBACK");
+              db.run("ROLLBACK");
               reject(err);
             } else {
-              this.db.run("COMMIT", (commitErr) => {
+              db.run("COMMIT", async (commitErr) => {
                 if (commitErr) {
                   reject(commitErr);
                 } else {
+                  // Send email notifications for both accounts after successful transfer
+                  try {
+                    await this.sendTransferEmailNotifications(
+                      fromAccountId,
+                      toAccountId,
+                      amount,
+                      description,
+                    );
+                  } catch (emailError) {
+                    console.error(
+                      "Failed to send transfer email notifications:",
+                      emailError,
+                    );
+                    // Don't fail the transfer for email errors
+                  }
                   resolve();
                 }
               });
@@ -531,6 +629,76 @@ export class BankingDatabase {
         );
       });
     });
+  }
+
+  private async sendTransferEmailNotifications(
+    fromAccountId: number,
+    toAccountId: number,
+    amount: number,
+    description: string,
+  ): Promise<void> {
+    const emailService = getEmailService();
+
+    try {
+      // Get both account information
+      const [fromAccountInfo, toAccountInfo] = await Promise.all([
+        new Promise<any>((resolve, reject) => {
+          this.db.get(
+            `SELECT a.*, u.email, u.name, a.account_number, a.balance
+             FROM accounts a
+             JOIN users u ON a.user_id = u.id
+             WHERE a.id = ?`,
+            [fromAccountId],
+            (err, row) => {
+              if (err) reject(err);
+              else resolve(row);
+            },
+          );
+        }),
+        new Promise<any>((resolve, reject) => {
+          this.db.get(
+            `SELECT a.*, u.email, u.name, a.account_number, a.balance
+             FROM accounts a
+             JOIN users u ON a.user_id = u.id
+             WHERE a.id = ?`,
+            [toAccountId],
+            (err, row) => {
+              if (err) reject(err);
+              else resolve(row);
+            },
+          );
+        }),
+      ]);
+
+      const timestamp = new Date().toISOString();
+
+      // Send email to sender (transfer out)
+      if (fromAccountInfo && fromAccountInfo.email) {
+        await emailService.sendTransactionNotification(fromAccountInfo.email, {
+          type: "transfer_out",
+          amount: amount,
+          description,
+          accountNumber: fromAccountInfo.account_number,
+          balance: fromAccountInfo.balance,
+          timestamp,
+        });
+      }
+
+      // Send email to receiver (transfer in)
+      if (toAccountInfo && toAccountInfo.email) {
+        await emailService.sendTransactionNotification(toAccountInfo.email, {
+          type: "transfer_in",
+          amount: amount,
+          description,
+          accountNumber: toAccountInfo.account_number,
+          balance: toAccountInfo.balance,
+          timestamp,
+        });
+      }
+    } catch (error) {
+      console.error("Error sending transfer email notifications:", error);
+      throw error;
+    }
   }
 
   // Verification token methods (reuse from enhanced database)

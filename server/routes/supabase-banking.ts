@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { supabase, supabaseAdmin } from "../supabase";
 import { z } from "zod";
+import { getEmailService } from "../email";
 
 // Validation schemas
 const createAccountSchema = z.object({
@@ -218,6 +219,47 @@ export const createTransaction: RequestHandler = async (req, res) => {
         .json({ error: "Failed to update account balance" });
     }
 
+    // Send email notification for the transaction
+    try {
+      const emailService = getEmailService();
+
+      // Get user email from the user object
+      const userEmail = user.email;
+
+      if (userEmail) {
+        // Determine email type
+        let emailType:
+          | "deposit"
+          | "withdrawal"
+          | "transfer_in"
+          | "transfer_out";
+        if (type === "credit") {
+          emailType = description.toLowerCase().includes("transfer")
+            ? "transfer_in"
+            : "deposit";
+        } else {
+          emailType = description.toLowerCase().includes("transfer")
+            ? "transfer_out"
+            : "withdrawal";
+        }
+
+        await emailService.sendTransactionNotification(userEmail, {
+          type: emailType,
+          amount: amount,
+          description,
+          accountNumber: account.account_number,
+          balance: newBalance,
+          timestamp: new Date().toISOString(),
+        });
+      }
+    } catch (emailError) {
+      console.error(
+        "Failed to send transaction email notification:",
+        emailError,
+      );
+      // Don't fail the transaction for email errors
+    }
+
     res.status(201).json(transaction);
   } catch (error) {
     console.error("Create transaction error:", error);
@@ -336,6 +378,62 @@ export const transfer: RequestHandler = async (req, res) => {
       return res
         .status(500)
         .json({ error: "Failed to update account balances" });
+    }
+
+    // Send email notifications for transfer
+    try {
+      const emailService = getEmailService();
+      const timestamp = new Date().toISOString();
+
+      // Get user information for both accounts
+      const [fromUserResult, toUserResult] = await Promise.all([
+        supabaseAdmin
+          .from("banking_users")
+          .select("email, name")
+          .eq("id", fromAccount.user_id)
+          .single(),
+        supabaseAdmin
+          .from("banking_users")
+          .select("email, name")
+          .eq("id", toAccount.user_id)
+          .single(),
+      ]);
+
+      // Send email to sender (transfer out)
+      if (fromUserResult.data?.email) {
+        await emailService.sendTransactionNotification(
+          fromUserResult.data.email,
+          {
+            type: "transfer_out",
+            amount: amount,
+            description: `Transfer: ${description}`,
+            accountNumber: fromAccount.account_number,
+            balance: fromAccount.balance - amount,
+            timestamp,
+          },
+        );
+      }
+
+      // Send email to receiver (transfer in) - only if different user
+      if (
+        toUserResult.data?.email &&
+        fromAccount.user_id !== toAccount.user_id
+      ) {
+        await emailService.sendTransactionNotification(
+          toUserResult.data.email,
+          {
+            type: "transfer_in",
+            amount: amount,
+            description: `Transfer: ${description}`,
+            accountNumber: toAccount.account_number,
+            balance: toAccount.balance + amount,
+            timestamp,
+          },
+        );
+      }
+    } catch (emailError) {
+      console.error("Failed to send transfer email notifications:", emailError);
+      // Don't fail the transfer for email errors
     }
 
     res.status(201).json({
