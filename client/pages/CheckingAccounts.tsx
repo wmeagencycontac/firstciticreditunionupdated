@@ -78,9 +78,11 @@ export default function CheckingAccounts() {
                   Mobile check deposit
                 </li>
               </ul>
-              <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
-                Open Account
-              </Button>
+              <Link to="/apply?type=checking-basic">
+                <Button className="w-full bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white">
+                  Open Account
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
