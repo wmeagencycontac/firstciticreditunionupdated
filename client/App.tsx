@@ -145,6 +145,15 @@ export default function App() {
             <Route path="/instant-transfers" element={<InstantTransfers />} />
             <Route path="/smart-alerts" element={<SmartAlerts />} />
 
+            {/* User Account Pages */}
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/settings" element={<Settings />} />
+
+            {/* Company Info Pages */}
+            <Route path="/company-history" element={<CompanyHistory />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/mission" element={<Mission />} />
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
