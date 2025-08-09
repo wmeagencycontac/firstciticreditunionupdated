@@ -68,9 +68,11 @@ export default function About() {
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Financial transparency</li>
               <li className="flex items-center gap-2"><ArrowRight className="w-4 h-4 text-[#00754A]" />Community impact</li>
             </ul>
-            <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
-              Our Mission
-            </Button>
+            <Link to="/mission">
+              <Button variant="outline" className="w-full border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300">
+                Our Mission
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -79,12 +81,16 @@ export default function About() {
           At First City Credit Union, we believe in empowering our members to achieve their financial goals with confidence and security. Our commitment to innovation, community service, and member satisfaction drives everything we do.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all duration-300 hover:scale-105">
-            Become a Member
-          </Button>
-          <Button variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300 hover:scale-105">
-            Contact Us
-          </Button>
+          <Link to="/signup">
+            <Button className="bg-gradient-to-r from-[#00754A] to-[#005A39] hover:from-[#005A39] hover:to-[#004830] text-white shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all duration-300 hover:scale-105">
+              Become a Member
+            </Button>
+          </Link>
+          <Link to="/contact">
+            <Button variant="outline" className="border-[#00754A] text-[#00754A] hover:bg-green-50 transition-all duration-300 hover:scale-105">
+              Contact Us
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
