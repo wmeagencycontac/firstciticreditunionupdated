@@ -73,6 +73,7 @@ import {
   handleGetPendingUsers,
   authenticateToken,
 } from "./routes/banking";
+import { testTransactionEmail, testProfileUpdateEmail, testAllNotifications } from "./routes/test-email-notifications";
 
 // Global Socket.IO server instance
 export let io: SocketIOServer;
