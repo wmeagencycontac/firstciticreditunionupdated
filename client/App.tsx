@@ -19,6 +19,7 @@ import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboardPro from "./pages/AdminDashboardPro";
 import AdminSetup from "./pages/AdminSetup";
 import TestSetup from "./pages/TestSetup";
 import Debug from "./pages/Debug";
