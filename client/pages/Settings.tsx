@@ -7,18 +7,18 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  ArrowLeft, 
-  User, 
-  Bell, 
-  Shield, 
-  CreditCard, 
+import {
+  ArrowLeft,
+  User,
+  Bell,
+  Shield,
+  CreditCard,
   Smartphone,
   Mail,
   Lock,
   Eye,
   EyeOff,
-  Save
+  Save,
 } from "lucide-react";
 
 export default function Settings() {
@@ -27,20 +27,20 @@ export default function Settings() {
     email: true,
     sms: false,
     push: true,
-    marketing: false
+    marketing: false,
   });
-  
+
   const [profile, setProfile] = useState({
     name: "John Smith",
     email: "john.smith@example.com",
     phone: "+1 (555) 123-4567",
-    address: "123 Main St, Anytown, ST 12345"
+    address: "123 Main St, Anytown, ST 12345",
   });
 
   const handleNotificationChange = (key: keyof typeof notifications) => {
-    setNotifications(prev => ({
+    setNotifications((prev) => ({
       ...prev,
-      [key]: !prev[key]
+      [key]: !prev[key],
     }));
   };
 
@@ -57,7 +57,9 @@ export default function Settings() {
                   Back to Dashboard
                 </Button>
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Account Settings</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Account Settings
+              </h1>
             </div>
           </div>
         </div>
@@ -67,19 +69,31 @@ export default function Settings() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <Tabs defaultValue="profile" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profile" className="flex items-center space-x-2">
+            <TabsTrigger
+              value="profile"
+              className="flex items-center space-x-2"
+            >
               <User className="w-4 h-4" />
               <span>Profile</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center space-x-2">
+            <TabsTrigger
+              value="security"
+              className="flex items-center space-x-2"
+            >
               <Shield className="w-4 h-4" />
               <span>Security</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center space-x-2">
+            <TabsTrigger
+              value="notifications"
+              className="flex items-center space-x-2"
+            >
               <Bell className="w-4 h-4" />
               <span>Notifications</span>
             </TabsTrigger>
-            <TabsTrigger value="billing" className="flex items-center space-x-2">
+            <TabsTrigger
+              value="billing"
+              className="flex items-center space-x-2"
+            >
               <CreditCard className="w-4 h-4" />
               <span>Billing</span>
             </TabsTrigger>
@@ -95,35 +109,55 @@ export default function Settings() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
-                    <Input 
-                      id="name" 
+                    <Input
+                      id="name"
                       value={profile.name}
-                      onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
+                      onChange={(e) =>
+                        setProfile((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address</Label>
-                    <Input 
-                      id="email" 
-                      type="email" 
+                    <Input
+                      id="email"
+                      type="email"
                       value={profile.email}
-                      onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))}
+                      onChange={(e) =>
+                        setProfile((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input 
-                      id="phone" 
+                    <Input
+                      id="phone"
                       value={profile.phone}
-                      onChange={(e) => setProfile(prev => ({ ...prev, phone: e.target.value }))}
+                      onChange={(e) =>
+                        setProfile((prev) => ({
+                          ...prev,
+                          phone: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="address">Address</Label>
-                    <Input 
-                      id="address" 
+                    <Input
+                      id="address"
                       value={profile.address}
-                      onChange={(e) => setProfile(prev => ({ ...prev, address: e.target.value }))}
+                      onChange={(e) =>
+                        setProfile((prev) => ({
+                          ...prev,
+                          address: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                 </div>
@@ -149,8 +183,8 @@ export default function Settings() {
                   <div className="space-y-2">
                     <Label htmlFor="current-password">Current Password</Label>
                     <div className="relative">
-                      <Input 
-                        id="current-password" 
+                      <Input
+                        id="current-password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter current password"
                       />
@@ -161,23 +195,27 @@ export default function Settings() {
                         className="absolute right-0 top-0 h-full px-3"
                         onClick={() => setShowPassword(!showPassword)}
                       >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="new-password">New Password</Label>
-                      <Input 
-                        id="new-password" 
+                      <Input
+                        id="new-password"
                         type="password"
                         placeholder="Enter new password"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="confirm-password">Confirm Password</Label>
-                      <Input 
-                        id="confirm-password" 
+                      <Input
+                        id="confirm-password"
                         type="password"
                         placeholder="Confirm new password"
                       />
@@ -198,14 +236,18 @@ export default function Settings() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium">SMS Authentication</h4>
-                      <p className="text-sm text-gray-600">Receive codes via text message</p>
+                      <p className="text-sm text-gray-600">
+                        Receive codes via text message
+                      </p>
                     </div>
                     <Switch />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium">Email Authentication</h4>
-                      <p className="text-sm text-gray-600">Receive codes via email</p>
+                      <p className="text-sm text-gray-600">
+                        Receive codes via email
+                      </p>
                     </div>
                     <Switch defaultChecked />
                   </div>
@@ -231,60 +273,72 @@ export default function Settings() {
                       <Mail className="w-5 h-5 text-gray-500" />
                       <div>
                         <h4 className="font-medium">Email Notifications</h4>
-                        <p className="text-sm text-gray-600">Receive notifications via email</p>
+                        <p className="text-sm text-gray-600">
+                          Receive notifications via email
+                        </p>
                       </div>
                     </div>
-                    <Switch 
+                    <Switch
                       checked={notifications.email}
-                      onCheckedChange={() => handleNotificationChange('email')}
+                      onCheckedChange={() => handleNotificationChange("email")}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Smartphone className="w-5 h-5 text-gray-500" />
                       <div>
                         <h4 className="font-medium">SMS Notifications</h4>
-                        <p className="text-sm text-gray-600">Receive notifications via text</p>
+                        <p className="text-sm text-gray-600">
+                          Receive notifications via text
+                        </p>
                       </div>
                     </div>
-                    <Switch 
+                    <Switch
                       checked={notifications.sms}
-                      onCheckedChange={() => handleNotificationChange('sms')}
+                      onCheckedChange={() => handleNotificationChange("sms")}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Bell className="w-5 h-5 text-gray-500" />
                       <div>
                         <h4 className="font-medium">Push Notifications</h4>
-                        <p className="text-sm text-gray-600">Receive browser notifications</p>
+                        <p className="text-sm text-gray-600">
+                          Receive browser notifications
+                        </p>
                       </div>
                     </div>
-                    <Switch 
+                    <Switch
                       checked={notifications.push}
-                      onCheckedChange={() => handleNotificationChange('push')}
+                      onCheckedChange={() => handleNotificationChange("push")}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Mail className="w-5 h-5 text-gray-500" />
                       <div>
-                        <h4 className="font-medium">Marketing Communications</h4>
-                        <p className="text-sm text-gray-600">Receive promotional emails</p>
+                        <h4 className="font-medium">
+                          Marketing Communications
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          Receive promotional emails
+                        </p>
                       </div>
                     </div>
-                    <Switch 
+                    <Switch
                       checked={notifications.marketing}
-                      onCheckedChange={() => handleNotificationChange('marketing')}
+                      onCheckedChange={() =>
+                        handleNotificationChange("marketing")
+                      }
                     />
                   </div>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="flex justify-end">
                   <Button className="bg-[#00754A] hover:bg-[#005A39]">
                     <Save className="w-4 h-4 mr-2" />
@@ -308,13 +362,12 @@ export default function Settings() {
                     Account Management
                   </h3>
                   <p className="text-gray-600 mb-6">
-                    Manage your account details, billing information, and payment methods.
+                    Manage your account details, billing information, and
+                    payment methods.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link to="/contact">
-                      <Button variant="outline">
-                        Contact Support
-                      </Button>
+                      <Button variant="outline">Contact Support</Button>
                     </Link>
                     <Link to="/help">
                       <Button className="bg-[#00754A] hover:bg-[#005A39]">

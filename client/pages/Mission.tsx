@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  ArrowLeft, 
-  Target, 
-  Eye, 
+import {
+  ArrowLeft,
+  Target,
+  Eye,
   Heart,
   Shield,
   Users,
   Globe,
   TrendingUp,
   Award,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 
 export default function Mission() {
@@ -19,33 +19,39 @@ export default function Mission() {
     {
       icon: Shield,
       title: "Security First",
-      description: "We prioritize the security and privacy of our customers' financial information above all else."
+      description:
+        "We prioritize the security and privacy of our customers' financial information above all else.",
     },
     {
       icon: Users,
       title: "Customer-Centric",
-      description: "Every decision we make is guided by what's best for our customers and their financial well-being."
+      description:
+        "Every decision we make is guided by what's best for our customers and their financial well-being.",
     },
     {
       icon: TrendingUp,
       title: "Innovation",
-      description: "We continuously evolve our services to meet the changing needs of the digital age."
+      description:
+        "We continuously evolve our services to meet the changing needs of the digital age.",
     },
     {
       icon: Heart,
       title: "Community Impact",
-      description: "We're committed to making a positive impact in the communities we serve."
+      description:
+        "We're committed to making a positive impact in the communities we serve.",
     },
     {
       icon: Award,
       title: "Excellence",
-      description: "We strive for excellence in every interaction and service we provide."
+      description:
+        "We strive for excellence in every interaction and service we provide.",
     },
     {
       icon: Globe,
       title: "Accessibility",
-      description: "We believe banking should be accessible to everyone, regardless of their background or location."
-    }
+      description:
+        "We believe banking should be accessible to everyone, regardless of their background or location.",
+    },
   ];
 
   const commitments = [
@@ -54,7 +60,7 @@ export default function Mission() {
     "Support financial literacy and education in our communities",
     "Offer innovative solutions that simplify banking experiences",
     "Build lasting relationships based on trust and reliability",
-    "Contribute to sustainable economic growth and development"
+    "Contribute to sustainable economic growth and development",
   ];
 
   return (
@@ -70,14 +76,14 @@ export default function Mission() {
               </Button>
             </Link>
           </div>
-          
+
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Our Mission & Vision
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover the driving forces behind SecureBank and our commitment to 
-              transforming the banking experience for everyone.
+              Discover the driving forces behind SecureBank and our commitment
+              to transforming the banking experience for everyone.
             </p>
           </div>
         </div>
@@ -93,9 +99,10 @@ export default function Mission() {
               <Target className="w-16 h-16 mx-auto mb-6 opacity-90" />
               <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
               <p className="text-xl opacity-90 max-w-4xl mx-auto leading-relaxed">
-                To empower individuals and businesses with innovative, secure, and accessible 
-                banking solutions that foster financial growth and stability, while building 
-                lasting relationships based on trust, transparency, and exceptional service.
+                To empower individuals and businesses with innovative, secure,
+                and accessible banking solutions that foster financial growth
+                and stability, while building lasting relationships based on
+                trust, transparency, and exceptional service.
               </p>
             </div>
           </CardContent>
@@ -109,9 +116,10 @@ export default function Mission() {
               <Eye className="w-16 h-16 mx-auto mb-6 opacity-90" />
               <h2 className="text-3xl font-bold mb-6">Our Vision</h2>
               <p className="text-xl opacity-90 max-w-4xl mx-auto leading-relaxed">
-                To be the world's most trusted and innovative banking partner, leading the 
-                transformation of financial services through technology, while maintaining 
-                the human touch that makes banking personal and meaningful.
+                To be the world's most trusted and innovative banking partner,
+                leading the transformation of financial services through
+                technology, while maintaining the human touch that makes banking
+                personal and meaningful.
               </p>
             </div>
           </CardContent>
@@ -126,12 +134,17 @@ export default function Mission() {
             {values.map((value, index) => {
               const IconComponent = value.icon;
               return (
-                <Card key={index} className="p-6 hover:shadow-lg transition-all duration-300 text-center">
+                <Card
+                  key={index}
+                  className="p-6 hover:shadow-lg transition-all duration-300 text-center"
+                >
                   <CardContent>
                     <div className="w-16 h-16 bg-[#00754A]/10 rounded-full flex items-center justify-center mx-auto mb-4">
                       <IconComponent className="w-8 h-8 text-[#00754A]" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {value.title}
+                    </h3>
                     <p className="text-gray-600">{value.description}</p>
                   </CardContent>
                 </Card>
@@ -162,20 +175,28 @@ export default function Mission() {
         {/* Impact Section */}
         <Card className="mb-12">
           <CardHeader>
-            <CardTitle className="text-center text-2xl">Making a Difference</CardTitle>
+            <CardTitle className="text-center text-2xl">
+              Making a Difference
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div>
-                <div className="text-3xl font-bold text-[#00754A] mb-2">5M+</div>
+                <div className="text-3xl font-bold text-[#00754A] mb-2">
+                  5M+
+                </div>
                 <p className="text-gray-600">Customers Served</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-[#00754A] mb-2">$50B+</div>
+                <div className="text-3xl font-bold text-[#00754A] mb-2">
+                  $50B+
+                </div>
                 <p className="text-gray-600">Assets Under Management</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-[#00754A] mb-2">1000+</div>
+                <div className="text-3xl font-bold text-[#00754A] mb-2">
+                  1000+
+                </div>
                 <p className="text-gray-600">Communities Supported</p>
               </div>
             </div>
@@ -189,8 +210,9 @@ export default function Mission() {
               Experience Our Mission
             </h2>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Join millions of customers who trust SecureBank with their financial journey. 
-              Experience banking that's built on strong values and innovative solutions.
+              Join millions of customers who trust SecureBank with their
+              financial journey. Experience banking that's built on strong
+              values and innovative solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/signup">
@@ -199,9 +221,7 @@ export default function Mission() {
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button variant="outline">
-                  Contact Us
-                </Button>
+                <Button variant="outline">Contact Us</Button>
               </Link>
             </div>
           </CardContent>

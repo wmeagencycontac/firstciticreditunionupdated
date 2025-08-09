@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Bell, 
-  ArrowLeft, 
-  AlertCircle, 
-  CheckCircle, 
-  Info, 
+import {
+  Bell,
+  ArrowLeft,
+  AlertCircle,
+  CheckCircle,
+  Info,
   DollarSign,
   CreditCard,
   Settings,
-  Trash2
+  Trash2,
 } from "lucide-react";
 
 export default function Notifications() {
@@ -25,7 +25,7 @@ export default function Notifications() {
       time: "2 minutes ago",
       read: false,
       icon: DollarSign,
-      color: "text-green-600"
+      color: "text-green-600",
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ export default function Notifications() {
       time: "1 hour ago",
       read: false,
       icon: AlertCircle,
-      color: "text-orange-600"
+      color: "text-orange-600",
     },
     {
       id: 3,
@@ -45,7 +45,7 @@ export default function Notifications() {
       time: "1 day ago",
       read: true,
       icon: Info,
-      color: "text-blue-600"
+      color: "text-blue-600",
     },
     {
       id: 4,
@@ -55,23 +55,21 @@ export default function Notifications() {
       time: "2 days ago",
       read: false,
       icon: CreditCard,
-      color: "text-red-600"
-    }
+      color: "text-red-600",
+    },
   ]);
 
   const markAsRead = (id: number) => {
-    setNotifications(prev => 
-      prev.map(notif => 
-        notif.id === id ? { ...notif, read: true } : notif
-      )
+    setNotifications((prev) =>
+      prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif)),
     );
   };
 
   const deleteNotification = (id: number) => {
-    setNotifications(prev => prev.filter(notif => notif.id !== id));
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -88,7 +86,9 @@ export default function Notifications() {
               </Link>
               <div className="flex items-center space-x-2">
                 <Bell className="w-6 h-6 text-[#00754A]" />
-                <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Notifications
+                </h1>
                 {unreadCount > 0 && (
                   <Badge variant="destructive">{unreadCount}</Badge>
                 )}
@@ -126,21 +126,29 @@ export default function Notifications() {
                 <Card
                   key={notification.id}
                   className={`transition-all duration-200 hover:shadow-lg cursor-pointer ${
-                    !notification.read ? "border-l-4 border-l-[#00754A] bg-blue-50/30" : ""
+                    !notification.read
+                      ? "border-l-4 border-l-[#00754A] bg-blue-50/30"
+                      : ""
                   }`}
                   onClick={() => markAsRead(notification.id)}
                 >
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
-                      <div className={`p-2 rounded-full bg-gray-100 ${notification.color}`}>
+                      <div
+                        className={`p-2 rounded-full bg-gray-100 ${notification.color}`}
+                      >
                         <IconComponent className="w-5 h-5" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className={`text-sm font-semibold ${
-                              !notification.read ? "text-gray-900" : "text-gray-700"
-                            }`}>
+                            <h3
+                              className={`text-sm font-semibold ${
+                                !notification.read
+                                  ? "text-gray-900"
+                                  : "text-gray-700"
+                              }`}
+                            >
                               {notification.title}
                             </h3>
                             <p className="text-sm text-gray-600 mt-1">

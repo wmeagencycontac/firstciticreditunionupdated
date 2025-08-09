@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ArrowLeft, 
-  Linkedin, 
-  Mail, 
+import {
+  ArrowLeft,
+  Linkedin,
+  Mail,
   Award,
   Users,
   Building,
-  Globe
+  Globe,
 } from "lucide-react";
 
 export default function Team() {
@@ -21,16 +21,17 @@ export default function Team() {
       bio: "With over 20 years in financial services, Sarah leads SecureBank with a vision for innovative, customer-centric banking solutions.",
       experience: "Former VP at Goldman Sachs, MBA from Wharton",
       email: "sarah.chen@securebank.com",
-      linkedin: "#"
+      linkedin: "#",
     },
     {
       name: "Michael Rodriguez",
       role: "Chief Technology Officer",
       image: "/placeholder.svg",
       bio: "Michael drives our digital transformation initiatives and ensures our technology infrastructure remains cutting-edge and secure.",
-      experience: "Former Engineering Director at JPMorgan Chase, MS Computer Science from MIT",
+      experience:
+        "Former Engineering Director at JPMorgan Chase, MS Computer Science from MIT",
       email: "michael.rodriguez@securebank.com",
-      linkedin: "#"
+      linkedin: "#",
     },
     {
       name: "Emily Watson",
@@ -39,17 +40,18 @@ export default function Team() {
       bio: "Emily oversees all financial operations and strategic planning, ensuring sustainable growth and financial stability.",
       experience: "Former CFO at Regional Trust Bank, CPA, MBA from Harvard",
       email: "emily.watson@securebank.com",
-      linkedin: "#"
+      linkedin: "#",
     },
     {
       name: "David Kim",
       role: "Chief Risk Officer",
       image: "/placeholder.svg",
       bio: "David ensures the highest standards of security and compliance across all banking operations and customer interactions.",
-      experience: "Former Risk Management Director at Wells Fargo, PhD in Risk Management",
+      experience:
+        "Former Risk Management Director at Wells Fargo, PhD in Risk Management",
       email: "david.kim@securebank.com",
-      linkedin: "#"
-    }
+      linkedin: "#",
+    },
   ];
 
   const departments = [
@@ -57,30 +59,34 @@ export default function Team() {
       name: "Customer Experience",
       head: "Jennifer Thompson",
       size: "45 team members",
-      description: "Dedicated to providing exceptional customer service and support across all touchpoints.",
-      icon: Users
+      description:
+        "Dedicated to providing exceptional customer service and support across all touchpoints.",
+      icon: Users,
     },
     {
       name: "Security & Compliance",
       head: "Robert Johnson",
       size: "32 team members",
-      description: "Ensuring the highest standards of security, privacy, and regulatory compliance.",
-      icon: Building
+      description:
+        "Ensuring the highest standards of security, privacy, and regulatory compliance.",
+      icon: Building,
     },
     {
       name: "Product Innovation",
       head: "Lisa Park",
       size: "28 team members",
-      description: "Developing next-generation banking products and digital experiences.",
-      icon: Award
+      description:
+        "Developing next-generation banking products and digital experiences.",
+      icon: Award,
     },
     {
       name: "Global Operations",
       head: "Ahmed Hassan",
       size: "67 team members",
-      description: "Managing worldwide operations and expanding our global footprint.",
-      icon: Globe
-    }
+      description:
+        "Managing worldwide operations and expanding our global footprint.",
+      icon: Globe,
+    },
   ];
 
   return (
@@ -96,14 +102,14 @@ export default function Team() {
               </Button>
             </Link>
           </div>
-          
+
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Meet Our Team
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our dedicated professionals bring decades of experience and a passion for 
-              innovation to deliver exceptional banking services.
+              Our dedicated professionals bring decades of experience and a
+              passion for innovation to deliver exceptional banking services.
             </p>
           </div>
         </div>
@@ -118,17 +124,29 @@ export default function Team() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {leadership.map((member, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-all duration-300">
+              <Card
+                key={index}
+                className="overflow-hidden hover:shadow-lg transition-all duration-300"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     <div className="w-20 h-20 bg-gradient-to-r from-[#00754A] to-[#005A39] rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                      {member.name.split(' ').map(n => n[0]).join('')}
+                      {member.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900">{member.name}</h3>
-                      <Badge variant="secondary" className="mb-3">{member.role}</Badge>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        {member.name}
+                      </h3>
+                      <Badge variant="secondary" className="mb-3">
+                        {member.role}
+                      </Badge>
                       <p className="text-gray-600 text-sm mb-3">{member.bio}</p>
-                      <p className="text-xs text-gray-500 mb-4">{member.experience}</p>
+                      <p className="text-xs text-gray-500 mb-4">
+                        {member.experience}
+                      </p>
                       <div className="flex space-x-2">
                         <Button variant="ghost" size="sm" className="p-2">
                           <Mail className="w-4 h-4" />
@@ -154,7 +172,10 @@ export default function Team() {
             {departments.map((dept, index) => {
               const IconComponent = dept.icon;
               return (
-                <Card key={index} className="p-6 hover:shadow-lg transition-all duration-300">
+                <Card
+                  key={index}
+                  className="p-6 hover:shadow-lg transition-all duration-300"
+                >
                   <CardHeader className="pb-4">
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 bg-[#00754A]/10 rounded-lg flex items-center justify-center">
@@ -169,7 +190,9 @@ export default function Team() {
                   <CardContent>
                     <p className="text-gray-600 mb-3">{dept.description}</p>
                     <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-gray-700">Led by:</span>
+                      <span className="text-sm font-medium text-gray-700">
+                        Led by:
+                      </span>
                       <Badge variant="outline">{dept.head}</Badge>
                     </div>
                   </CardContent>
@@ -187,17 +210,26 @@ export default function Team() {
               <div className="text-center">
                 <Users className="w-12 h-12 mx-auto mb-4 opacity-90" />
                 <h3 className="text-xl font-bold mb-2">Collaboration</h3>
-                <p className="opacity-90">We work together to achieve common goals and support each other's growth.</p>
+                <p className="opacity-90">
+                  We work together to achieve common goals and support each
+                  other's growth.
+                </p>
               </div>
               <div className="text-center">
                 <Award className="w-12 h-12 mx-auto mb-4 opacity-90" />
                 <h3 className="text-xl font-bold mb-2">Excellence</h3>
-                <p className="opacity-90">We strive for excellence in everything we do, from customer service to innovation.</p>
+                <p className="opacity-90">
+                  We strive for excellence in everything we do, from customer
+                  service to innovation.
+                </p>
               </div>
               <div className="text-center">
                 <Building className="w-12 h-12 mx-auto mb-4 opacity-90" />
                 <h3 className="text-xl font-bold mb-2">Integrity</h3>
-                <p className="opacity-90">We operate with the highest ethical standards and transparency in all our actions.</p>
+                <p className="opacity-90">
+                  We operate with the highest ethical standards and transparency
+                  in all our actions.
+                </p>
               </div>
             </div>
           </CardContent>
@@ -210,8 +242,9 @@ export default function Team() {
               Join Our Team
             </h2>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              We're always looking for talented individuals who share our passion for 
-              innovation and customer service. Explore career opportunities with SecureBank.
+              We're always looking for talented individuals who share our
+              passion for innovation and customer service. Explore career
+              opportunities with SecureBank.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/contact">
@@ -220,9 +253,7 @@ export default function Team() {
                 </Button>
               </Link>
               <Link to="/about">
-                <Button variant="outline">
-                  Learn More About Us
-                </Button>
+                <Button variant="outline">Learn More About Us</Button>
               </Link>
             </div>
           </CardContent>
