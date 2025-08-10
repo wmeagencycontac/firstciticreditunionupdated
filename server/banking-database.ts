@@ -47,13 +47,15 @@ export class BankingDatabase {
   private db: sqlite3.Database;
 
   constructor() {
-    // Create data directory if it doesn't exist
-    const dataDir = path.join(process.cwd(), "data");
+    // Use DATABASE_PATH from env if available (for production), otherwise default to local path
+    const dbPath =
+      process.env.DATABASE_PATH || path.join(process.cwd(), "data/auth.db");
+
+    // Ensure the directory exists
+    const dataDir = path.dirname(dbPath);
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
-
-    const dbPath = path.join(dataDir, "auth.db");
 
     this.db = new sqlite3.Database(dbPath, (err) => {
       if (err) {

@@ -28,9 +28,20 @@ services:
     buildCommand: npm ci && npm run build:server
     startCommand: npm start
     healthCheckPath: /api/ping
+    disks:
+      - name: data
+        mountPath: /mnt/data
+        sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
+      - key: DATABASE_PATH
+        value: /mnt/data/auth.db
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: fusion-starter-frontend
+          property: url
       - key: PORT
         fromService:
           type: web
