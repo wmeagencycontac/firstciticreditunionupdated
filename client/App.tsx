@@ -15,6 +15,7 @@ import EnhancedRegistration from "./pages/EnhancedRegistration";
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import PasswordResetTest from "./pages/PasswordResetTest";
+import DashboardLayout from "./pages/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminLogin from "./pages/AdminLogin";
@@ -82,7 +83,14 @@ export default function App() {
                 path="/password-reset-test"
                 element={<PasswordResetTest />}
               />
-              <Route path="/dashboard" element={<PrivateRoute />}>
+              <Route
+                path="/dashboard"
+                element={
+                  <PrivateRoute>
+                    <DashboardLayout />
+                  </PrivateRoute>
+                }
+              >
                 <Route index element={<Dashboard />} />
               </Route>
 
