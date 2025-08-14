@@ -113,7 +113,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
-    await auth.signOut();
+    // Check if this is an admin session
+    const adminToken = localStorage.getItem("admin_token");
+
+    if (adminToken) {
+      // Admin logout
+      try {
+        await fetch("/api/admin/logout", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${adminToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+      } catch (error) {
+        console.error("Admin logout error:", error);
+      }
+      localStorage.removeItem("admin_token");
+      localStorage.removeItem("admin_user");
+    } else {
+      // Regular user logout
+      await auth.signOut();
+    }
+
     setUser(null);
     setSession(null);
     setProfile(null);
