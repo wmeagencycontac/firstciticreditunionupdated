@@ -25,6 +25,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // If Supabase is not configured, don't try to authenticate
+    if (!isSupabaseConfigured) {
+      console.warn("Supabase not configured - user authentication disabled");
+      setLoading(false);
+      return;
+    }
+
     const setData = async (session: Session | null) => {
       if (session?.user) {
         setUser(session.user);
