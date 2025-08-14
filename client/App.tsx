@@ -96,8 +96,13 @@ export default function App() {
 
               {/* Admin Routes */}
               <Route path="/admin/setup" element={<AdminSetup />} />
+              <Route path="/AdminSetup" element={<AdminSetup />} />
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/AdminLogin" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminRoute />}>
+                <Route index element={<AdminDashboard />} />
+              </Route>
+              <Route path="/AdminDashboard" element={<AdminRoute />}>
                 <Route index element={<AdminDashboard />} />
               </Route>
               <Route path="/admin/dashboard-pro" element={<AdminRoute />}>
@@ -154,8 +159,11 @@ export default function App() {
                 element={<MobileDepositService />}
               />
               <Route path="/mobile-deposit" element={<MobileDeposit />} />
+              <Route path="/MobileDeposit" element={<MobileDeposit />} />
               <Route path="/instant-transfers" element={<InstantTransfers />} />
+              <Route path="/InstantTransfers" element={<InstantTransfers />} />
               <Route path="/smart-alerts" element={<SmartAlerts />} />
+              <Route path="/SmartAlerts" element={<SmartAlerts />} />
 
               {/* User Account Pages */}
               <Route path="/notifications" element={<Notifications />} />
