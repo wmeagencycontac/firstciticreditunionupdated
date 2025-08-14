@@ -13,7 +13,6 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, Lock, User } from "lucide-react";
 import { toast } from "sonner";
-import { auth } from "@/lib/supabase";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -28,15 +27,23 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const { data, error: signInError } = await auth.signIn(email, password);
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      if (signInError) {
-        throw new Error(signInError.message);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed");
       }
 
-      if (!data.user) {
-        throw new Error("Authentication failed");
-      }
+      // Store admin token in localStorage
+      localStorage.setItem("admin_token", data.token);
+      localStorage.setItem("admin_user", JSON.stringify(data.user));
 
       toast.success("Login successful! Redirecting...");
       navigate("/admin/dashboard");
