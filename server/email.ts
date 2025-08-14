@@ -85,6 +85,10 @@ class EmailService {
       merchantName?: string;
     },
   ): Promise<boolean> {
+    if (!this.transporter) {
+      console.log("📧 Email disabled - transaction notification would be sent to:", to);
+      return false;
+    }
     try {
       // Validate email and required fields
       if (!to || !to.includes("@") || !transactionData) {
@@ -221,6 +225,10 @@ class EmailService {
       ipAddress?: string;
     },
   ): Promise<boolean> {
+    if (!this.transporter) {
+      console.log("📧 Email disabled - profile update notification would be sent to:", to);
+      return false;
+    }
     try {
       // Validate email and required fields
       if (
