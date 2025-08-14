@@ -7,21 +7,21 @@ export const setupSupabaseDatabase: RequestHandler = async (req, res) => {
 
     // 1. Enable uuid-ossp extension
     try {
-      await supabaseAdmin.rpc('exec_sql', { 
-        sql: 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' 
+      await supabaseAdmin.rpc("exec_sql", {
+        sql: 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";',
       });
       results.push({ step: "Enable uuid-ossp extension", status: "success" });
     } catch (error: any) {
       // Try direct SQL execution
       const { error: extError } = await supabaseAdmin
-        .from('_placeholder_for_sql_execution')
-        .select('*')
+        .from("_placeholder_for_sql_execution")
+        .select("*")
         .limit(0);
-      
-      results.push({ 
-        step: "Enable uuid-ossp extension", 
-        status: "info", 
-        message: "Extension may already exist or requires manual setup"
+
+      results.push({
+        step: "Enable uuid-ossp extension",
+        status: "info",
+        message: "Extension may already exist or requires manual setup",
       });
     }
 
@@ -57,13 +57,16 @@ export const setupSupabaseDatabase: RequestHandler = async (req, res) => {
     `;
 
     try {
-      await supabaseAdmin.rpc('exec_sql', { sql: generateAccountNumberSQL });
-      results.push({ step: "Create generate_account_number function", status: "success" });
+      await supabaseAdmin.rpc("exec_sql", { sql: generateAccountNumberSQL });
+      results.push({
+        step: "Create generate_account_number function",
+        status: "success",
+      });
     } catch (error: any) {
-      results.push({ 
-        step: "Create generate_account_number function", 
-        status: "error", 
-        error: error.message 
+      results.push({
+        step: "Create generate_account_number function",
+        status: "error",
+        error: error.message,
       });
     }
 
@@ -84,13 +87,16 @@ export const setupSupabaseDatabase: RequestHandler = async (req, res) => {
     `;
 
     try {
-      await supabaseAdmin.rpc('exec_sql', { sql: getRoutingNumberSQL });
-      results.push({ step: "Create get_routing_number function", status: "success" });
+      await supabaseAdmin.rpc("exec_sql", { sql: getRoutingNumberSQL });
+      results.push({
+        step: "Create get_routing_number function",
+        status: "success",
+      });
     } catch (error: any) {
-      results.push({ 
-        step: "Create get_routing_number function", 
-        status: "error", 
-        error: error.message 
+      results.push({
+        step: "Create get_routing_number function",
+        status: "error",
+        error: error.message,
       });
     }
 
@@ -122,13 +128,16 @@ export const setupSupabaseDatabase: RequestHandler = async (req, res) => {
     `;
 
     try {
-      await supabaseAdmin.rpc('exec_sql', { sql: handleNewUserSQL });
-      results.push({ step: "Create handle_new_user function", status: "success" });
+      await supabaseAdmin.rpc("exec_sql", { sql: handleNewUserSQL });
+      results.push({
+        step: "Create handle_new_user function",
+        status: "success",
+      });
     } catch (error: any) {
-      results.push({ 
-        step: "Create handle_new_user function", 
-        status: "error", 
-        error: error.message 
+      results.push({
+        step: "Create handle_new_user function",
+        status: "error",
+        error: error.message,
       });
     }
 
@@ -141,42 +150,44 @@ export const setupSupabaseDatabase: RequestHandler = async (req, res) => {
     `;
 
     try {
-      await supabaseAdmin.rpc('exec_sql', { sql: triggerSQL });
+      await supabaseAdmin.rpc("exec_sql", { sql: triggerSQL });
       results.push({ step: "Create user creation trigger", status: "success" });
     } catch (error: any) {
-      results.push({ 
-        step: "Create user creation trigger", 
-        status: "error", 
-        error: error.message 
+      results.push({
+        step: "Create user creation trigger",
+        status: "error",
+        error: error.message,
       });
     }
 
     // Test the generate_account_number function
     try {
-      const { data: testResult, error: testError } = await supabaseAdmin
-        .rpc('generate_account_number', { 
-          user_id_input: '00000000-0000-0000-0000-000000000001', 
-          account_type_input: 'checking' 
-        });
+      const { data: testResult, error: testError } = await supabaseAdmin.rpc(
+        "generate_account_number",
+        {
+          user_id_input: "00000000-0000-0000-0000-000000000001",
+          account_type_input: "checking",
+        },
+      );
 
       if (!testError && testResult) {
-        results.push({ 
-          step: "Test generate_account_number function", 
-          status: "success", 
-          result: testResult 
+        results.push({
+          step: "Test generate_account_number function",
+          status: "success",
+          result: testResult,
         });
       } else {
-        results.push({ 
-          step: "Test generate_account_number function", 
-          status: "error", 
-          error: testError?.message 
+        results.push({
+          step: "Test generate_account_number function",
+          status: "error",
+          error: testError?.message,
         });
       }
     } catch (error: any) {
-      results.push({ 
-        step: "Test generate_account_number function", 
-        status: "error", 
-        error: error.message 
+      results.push({
+        step: "Test generate_account_number function",
+        status: "error",
+        error: error.message,
       });
     }
 
@@ -185,15 +196,14 @@ export const setupSupabaseDatabase: RequestHandler = async (req, res) => {
       message: "Database setup process completed",
       results,
       timestamp: new Date().toISOString(),
-      note: "Some steps may require manual execution in Supabase SQL Editor if direct execution fails"
+      note: "Some steps may require manual execution in Supabase SQL Editor if direct execution fails",
     });
-
   } catch (error) {
     console.error("Database setup error:", error);
     res.status(500).json({
       status: "error",
       error: error instanceof Error ? error.message : "Unknown error",
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 };

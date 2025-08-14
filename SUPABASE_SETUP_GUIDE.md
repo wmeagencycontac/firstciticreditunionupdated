@@ -1,6 +1,7 @@
 # Supabase Database Setup Guide
 
 ## Step 1: Go to Your Supabase Dashboard
+
 1. Open [https://supabase.com/dashboard](https://supabase.com/dashboard)
 2. Select your project: `dvtcujhaymlnfembrwzw`
 3. Navigate to the **SQL Editor** tab
@@ -10,12 +11,14 @@
 Copy and paste each block below into your SQL Editor and run them **one by one**:
 
 ### Block 1: Enable Extensions
+
 ```sql
 -- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ```
 
 ### Block 2: Create Account Number Generator Function
+
 ```sql
 -- Create generate_account_number function
 CREATE OR REPLACE FUNCTION generate_account_number(
@@ -51,6 +54,7 @@ $$;
 ```
 
 ### Block 3: Create Routing Number Function
+
 ```sql
 -- Create function to get routing number based on account type
 CREATE OR REPLACE FUNCTION get_routing_number(account_type_input TEXT)
@@ -68,6 +72,7 @@ $$;
 ```
 
 ### Block 4: Create User Profile Auto-Creation Function
+
 ```sql
 -- Create trigger function to auto-create banking profile
 CREATE OR REPLACE FUNCTION handle_new_user()
@@ -104,6 +109,7 @@ $$;
 ```
 
 ### Block 5: Create Trigger for Auto User Creation
+
 ```sql
 -- Create trigger to auto-create banking profile on user signup
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
@@ -113,6 +119,7 @@ CREATE TRIGGER on_auth_user_created
 ```
 
 ### Block 6: Enable Row Level Security
+
 ```sql
 -- Enable RLS on all tables
 ALTER TABLE banking_users ENABLE ROW LEVEL SECURITY;
@@ -122,6 +129,7 @@ ALTER TABLE cards ENABLE ROW LEVEL SECURITY;
 ```
 
 ### Block 7: Create RLS Policies for Banking Users
+
 ```sql
 -- Banking users can only see their own profile
 CREATE POLICY "Users can view own profile" ON banking_users
@@ -132,6 +140,7 @@ CREATE POLICY "Users can update own profile" ON banking_users
 ```
 
 ### Block 8: Create RLS Policies for Accounts
+
 ```sql
 -- Accounts policies
 CREATE POLICY "Users can view own accounts" ON accounts
@@ -142,8 +151,9 @@ CREATE POLICY "Users can insert own accounts" ON accounts
 ```
 
 ### Block 9: Create RLS Policies for Transactions
+
 ```sql
--- Transactions policies  
+-- Transactions policies
 CREATE POLICY "Users can view own transactions" ON transactions
   FOR SELECT USING (
     account_id IN (
@@ -160,6 +170,7 @@ CREATE POLICY "Users can insert own transactions" ON transactions
 ```
 
 ### Block 10: Create RLS Policies for Cards
+
 ```sql
 -- Cards policies
 CREATE POLICY "Users can view own cards" ON cards
@@ -170,6 +181,7 @@ CREATE POLICY "Users can insert own cards" ON cards
 ```
 
 ### Block 11: Create Admin/Service Role Policies
+
 ```sql
 -- Admin policies (service role can do everything)
 CREATE POLICY "Service role can do anything on banking_users" ON banking_users
@@ -186,17 +198,20 @@ CREATE POLICY "Service role can do anything on cards" ON cards
 ```
 
 ## Step 3: Verify Setup
+
 After running all the SQL blocks, test the setup by visiting: `http://localhost:8080/api/test-supabase`
 
 You should see `"hasGenerateAccountFunction": true` in the response.
 
 ## Important Notes:
+
 - Run each block **one at a time** and wait for success before proceeding
 - If you get any errors, stop and let me know the specific error message
 - The setup creates secure policies that ensure users can only access their own data
 - All functions are created with proper error handling
 
 ## Troubleshooting:
+
 - If you see "permission denied" errors, make sure you're running the commands as the project owner
 - If functions already exist, the `CREATE OR REPLACE` statements will update them
 - If policies already exist, you may get harmless warnings that you can ignore
