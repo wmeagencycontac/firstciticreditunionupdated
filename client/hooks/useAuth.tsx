@@ -5,7 +5,7 @@ import {
   useContext,
   ReactNode,
 } from "react";
-import { auth, db, BankingUser } from "@/lib/supabase";
+import { auth, db, BankingUser, isSupabaseConfigured } from "@/lib/supabase";
 import { Session, User } from "@supabase/supabase-js";
 
 interface AuthContextType {
