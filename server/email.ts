@@ -77,31 +77,17 @@ class EmailService {
       return false;
     }
     try {
+      const template = this.loadTemplate('otp-template');
+      const htmlContent = this.renderTemplate(template, {
+        OTP_CODE: otp,
+      });
+
       const mailOptions = {
         from: `"Fusion Bank Secure Login" <${process.env.EMAIL_USER}>`,
         to,
-        subject: "Your Login Code",
-        text: `Your one-time login code is: ${otp}\n\nIt will expire in 5 minutes.`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">Your Login Code</h2>
-            <p style="font-size: 16px; color: #555;">
-              Your one-time login code is:
-            </p>
-            <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0;">
-              <span style="font-size: 32px; font-weight: bold; color: #2563eb; letter-spacing: 4px;">
-                ${otp}
-              </span>
-            </div>
-            <p style="font-size: 14px; color: #666;">
-              This code will expire in 5 minutes. If you didn't request this code, please ignore this email.
-            </p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="font-size: 12px; color: #999;">
-              Fusion Bank - Secure Authentication
-            </p>
-          </div>
-        `,
+        subject: "Your Login Code - Fusion Bank",
+        text: `Your one-time login code is: ${otp}\n\nIt will expire in 5 minutes.\n\nFusion Bank - Secure Authentication`,
+        html: htmlContent,
       };
 
       const info = await this.transporter.sendMail(mailOptions);
