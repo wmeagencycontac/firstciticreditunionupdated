@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TRANSACTION_TYPE}} Confirmation - Fusion Bank</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00754a;
+            margin-bottom: 10px;
+        }
+        .transaction-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .transaction-details {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #333;
+        }
+        .detail-value {
+            color: #555;
+        }
+        .amount {
+            font-size: 18px;
+            font-weight: bold;
+            color: {{TRANSACTION_COLOR}};
+        }
+        .balance-row {
+            border-top: 1px solid #e9ecef;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .new-balance {
+            font-weight: bold;
+            font-size: 16px;
+            color: #00754a;
+        }
+        .security-notice {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+        .help-section {
+            background-color: #e8f4f8;
+            border-left: 4px solid #00754a;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        @media (max-width: 600px) {
+            .detail-row {
+                flex-direction: column;
+            }
+            .detail-value {
+                text-align: left;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🏦 Fusion Bank</div>
+            <div class="transaction-icon">{{TRANSACTION_ICON}}</div>
+            <h1 style="color: {{TRANSACTION_COLOR}}; margin: 0;">{{TRANSACTION_TITLE}}</h1>
+        </div>
+        
+        <p style="font-size: 16px; color: #555;">
+            This email confirms that a transaction has been processed on your Fusion Bank account.
+        </p>
+        
+        <div class="transaction-details">
+            <div class="detail-row">
+                <span class="detail-label">Transaction Type:</span>
+                <span class="detail-value">{{TRANSACTION_TYPE}}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Amount:</span>
+                <span class="detail-value amount">{{FORMATTED_AMOUNT}}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Account:</span>
+                <span class="detail-value">****{{ACCOUNT_LAST_FOUR}}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Description:</span>
+                <span class="detail-value">{{DESCRIPTION}}</span>
+            </div>
+            
+            {{#if MERCHANT_NAME}}
+            <div class="detail-row">
+                <span class="detail-label">Merchant:</span>
+                <span class="detail-value">{{MERCHANT_NAME}}</span>
+            </div>
+            {{/if}}
+            
+            <div class="detail-row">
+                <span class="detail-label">Date & Time:</span>
+                <span class="detail-value">{{FORMATTED_DATE}}</span>
+            </div>
+            
+            <div class="detail-row balance-row">
+                <span class="detail-label">New Account Balance:</span>
+                <span class="detail-value new-balance">{{FORMATTED_BALANCE}}</span>
+            </div>
+        </div>
+        
+        <div class="security-notice">
+            <strong>🔒 Security Notice</strong><br>
+            If you did not authorize this transaction, please contact us immediately at 
+            <strong>(555) 123-4567</strong> or login to your account to report suspicious activity.
+        </div>
+        
+        <div class="help-section">
+            <h3 style="margin-top: 0; color: #00754a;">Need Help?</h3>
+            <p style="margin: 0;">
+                <strong>Customer Support:</strong> Available 24/7<br>
+                <strong>Phone:</strong> (555) 123-4567<br>
+                <strong>Email:</strong> <a href="mailto:support@fusionbank.com" style="color: #00754a;">support@fusionbank.com</a><br>
+                <strong>Online Banking:</strong> <a href="https://app.fusionbank.com" style="color: #00754a;">app.fusionbank.com</a>
+            </p>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <a href="https://app.fusionbank.com/transactions" 
+               style="display: inline-block; background-color: #00754a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                View Transaction History
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Fusion Bank - Keeping your money safe and secure</p>
+            <p>This is an automated transaction notification. Please do not reply to this email.</p>
+            <p>&copy; 2024 Fusion Bank. All rights reserved.</p>
+            <p>
+                <a href="#" style="color: #999;">Privacy Policy</a> | 
+                <a href="#" style="color: #999;">Terms of Service</a> | 
+                <a href="#" style="color: #999;">Unsubscribe</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
