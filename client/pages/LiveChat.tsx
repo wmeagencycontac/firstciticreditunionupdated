@@ -44,7 +44,7 @@ export default function LiveChat() {
           id: "2",
           type: "agent",
           content:
-            "Hi! I'm Sarah from First City Credit Union. How can I help you today?",
+            "Hi! I'm Sarah from Fusion Bank. How can I help you today?",
           timestamp: new Date(),
           agentName: "Sarah",
         },
@@ -134,7 +134,7 @@ export default function LiveChat() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">

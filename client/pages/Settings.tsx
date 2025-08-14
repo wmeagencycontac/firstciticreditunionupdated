@@ -21,7 +21,12 @@ import {
   Save,
 } from "lucide-react";
 
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import { db } from "@/lib/supabase";
+
 export default function Settings() {
+  const { user, profile: bankingProfile, setProfile } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
@@ -29,19 +34,52 @@ export default function Settings() {
     push: true,
     marketing: false,
   });
+  const [isSaving, setIsSaving] = useState(false);
 
-  const [profile, setProfile] = useState({
-    name: "John Smith",
-    email: "john.smith@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, Anytown, ST 12345",
-  });
+  useEffect(() => {
+    if (bankingProfile) {
+      setProfile(bankingProfile);
+      // Assuming notification settings are part of the profile in a real app
+      // For now, we'll keep them in local state
+    }
+  }, [bankingProfile]);
+
+  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProfile({
+      ...profile,
+      [e.target.id]: e.target.value,
+    });
+  };
 
   const handleNotificationChange = (key: keyof typeof notifications) => {
     setNotifications((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
+  };
+
+  const handleProfileSave = async () => {
+    if (!user || !profile) return;
+
+    setIsSaving(true);
+    try {
+      const { error } = await db.updateBankingProfile(user.id, {
+        name: profile.name,
+        email: profile.email,
+        phone_number: profile.phone_number,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update profile. Please try again.");
+      console.error("Profile update error:", error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -111,13 +149,8 @@ export default function Settings() {
                     <Label htmlFor="name">Full Name</Label>
                     <Input
                       id="name"
-                      value={profile.name}
-                      onChange={(e) =>
-                        setProfile((prev) => ({
-                          ...prev,
-                          name: e.target.value,
-                        }))
-                      }
+                      value={profile?.name || ""}
+                      onChange={handleProfileChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -125,47 +158,52 @@ export default function Settings() {
                     <Input
                       id="email"
                       type="email"
-                      value={profile.email}
-                      onChange={(e) =>
-                        setProfile((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }))
-                      }
+                      value={profile?.email || ""}
+                      onChange={handleProfileChange}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
                     <Input
                       id="phone"
-                      value={profile.phone}
-                      onChange={(e) =>
-                        setProfile((prev) => ({
-                          ...prev,
-                          phone: e.target.value,
-                        }))
-                      }
+                      value={profile?.phone_number || ""}
+                      onChange={handleProfileChange}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="address">Address</Label>
                     <Input
                       id="address"
-                      value={profile.address}
-                      onChange={(e) =>
-                        setProfile((prev) => ({
-                          ...prev,
-                          address: e.target.value,
-                        }))
+                      value={
+                        `${profile?.address_street || ""}, ${
+                          profile?.address_city || ""
+                        }, ${profile?.address_state || ""} ${
+                          profile?.address_zip || ""
+                        }`
                       }
+                      onChange={handleProfileChange}
+                      disabled // Address is complex, so disable for now
                     />
                   </div>
                 </div>
                 <Separator />
                 <div className="flex justify-end">
-                  <Button className="bg-[#00754A] hover:bg-[#005A39]">
-                    <Save className="w-4 h-4 mr-2" />
-                    Save Changes
+                  <Button
+                    onClick={handleProfileSave}
+                    disabled={isSaving}
+                    className="bg-[#00754A] hover:bg-[#005A39]"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Save className="w-4 h-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
                   </Button>
                 </div>
               </CardContent>

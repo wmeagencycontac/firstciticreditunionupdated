@@ -82,7 +82,7 @@ export default function Mission() {
               Our Mission & Vision
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover the driving forces behind SecureBank and our commitment
+              Discover the driving forces behind Fusion Bank and our commitment
               to transforming the banking experience for everyone.
             </p>
           </div>
@@ -210,7 +210,7 @@ export default function Mission() {
               Experience Our Mission
             </h2>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Join millions of customers who trust SecureBank with their
+              Join millions of customers who trust Fusion Bank with their
               financial journey. Experience banking that's built on strong
               values and innovative solutions.
             </p>

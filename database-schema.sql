@@ -1,4 +1,4 @@
--- First City Credit Union Database Schema
+-- Fusion Bank Database Schema
 -- This file contains the complete Supabase PostgreSQL schema
 
 -- Enable necessary extensions

@@ -86,7 +86,7 @@ export default function InteractiveDemo() {
                 <Building2 className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </h3>
               <p className="text-muted-foreground">Secure Login</p>
             </div>
@@ -342,7 +342,7 @@ export default function InteractiveDemo() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">
@@ -489,7 +489,7 @@ export default function InteractiveDemo() {
               Ready to Experience the Real Thing?
             </h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              This demo shows just a fraction of what First City Credit Union
+              This demo shows just a fraction of what Fusion Bank
               offers. Open an account today to access all features with your own
               secure banking portal.
             </p>

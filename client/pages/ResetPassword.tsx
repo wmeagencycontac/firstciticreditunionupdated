@@ -124,7 +124,7 @@ export default function ResetPassword() {
               </div>
               <div className="text-left">
                 <div className="text-2xl font-bold text-[#00754A]">
-                  First City Credit Union
+                  Fusion Bank
                 </div>
                 <div className="text-sm text-muted-foreground">
                   Password Reset
@@ -252,7 +252,7 @@ export default function ResetPassword() {
             </div>
             <div className="text-left">
               <div className="text-2xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-sm text-muted-foreground">
                 Password Reset

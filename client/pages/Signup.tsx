@@ -404,8 +404,8 @@ export default function Signup() {
                   <Link to="/terms" className="text-[#00754A] hover:underline">
                     Terms of Service
                   </Link>{" "}
-                  and understand my rights and responsibilities as a First City
-                  Credit Union member. *
+                  and understand my rights and responsibilities as a Fusion Bank
+                  member. *
                 </Label>
               </div>
 
@@ -446,7 +446,7 @@ export default function Signup() {
                   className="text-sm leading-relaxed"
                 >
                   I would like to receive promotional emails and updates about
-                  First City Credit Union products and services.
+                  Fusion Bank products and services.
                 </Label>
               </div>
             </div>
@@ -478,7 +478,7 @@ export default function Signup() {
             </div>
             <div>
               <div className="text-2xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-sm text-muted-foreground">
                 Join today and start banking smarter

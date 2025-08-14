@@ -82,7 +82,7 @@ export default function InstantTransfers() {
             </div>
             <div>
               <div className="text-xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-xs text-muted-foreground">
                 Instant Transfers
@@ -360,7 +360,7 @@ export default function InstantTransfers() {
                 </h3>
                 <p className="text-orange-800 mb-4">
                   Always verify recipient information before sending transfers.
-                  First City Credit Union will never ask for your login
+                  Fusion Bank will never ask for your login
                   credentials or account information via email or phone calls.
                 </p>
                 <ul className="space-y-1 text-orange-700 text-sm">
@@ -389,7 +389,7 @@ export default function InstantTransfers() {
               Ready to start transferring money instantly?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Join over 150,000 members who trust First City Credit Union for
+              Join over 150,000 members who trust Fusion Bank for
               fast, secure money transfers.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -424,7 +424,7 @@ export default function InstantTransfers() {
               <div className="w-8 h-8 bg-gradient-to-br from-[#00754A] to-[#005A39] rounded-lg flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-white" />
               </div>
-              <div className="text-lg font-bold">First City Credit Union</div>
+              <div className="text-lg font-bold">Fusion Bank</div>
             </div>
             <p className="text-gray-400 mb-4">
               Member NCUA. Equal Housing Lender. Your deposits are insured up to

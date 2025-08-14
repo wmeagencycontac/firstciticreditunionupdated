@@ -17,6 +17,9 @@ import {
   LogOut,
   LayoutDashboard,
   CreditCard,
+  Wallet,
+  ArrowRightLeft,
+  Send,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -51,7 +54,7 @@ const DashboardLayout = () => {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <CreditCard className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold">SecureBank</span>
+              <span className="text-xl font-bold">Fusion Bank</span>
             </div>
           </SidebarHeader>
           <SidebarContent>
@@ -67,6 +70,54 @@ const DashboardLayout = () => {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+            </SidebarMenu>
+            <SidebarMenu label="Management">
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === "/accounts"}
+                >
+                  <Link to="/accounts">
+                    <Wallet />
+                    <span>Accounts</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === "/transactions"}
+                >
+                  <Link to="/transactions">
+                    <ArrowRightLeft />
+                    <span>Transactions</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === "/cards"}
+                >
+                  <Link to="/cards">
+                    <CreditCard />
+                    <span>Cards</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === "/transfers"}
+                >
+                  <Link to="/transfers">
+                    <Send />
+                    <span>Transfers</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+            <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild

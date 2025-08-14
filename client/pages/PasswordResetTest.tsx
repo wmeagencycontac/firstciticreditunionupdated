@@ -254,7 +254,7 @@ export default function PasswordResetTest() {
               <CreditCard className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold text-foreground">
-              SecureBank
+              Fusion Bank
             </span>
           </Link>
           <div className="flex items-center justify-center space-x-2 mb-4">

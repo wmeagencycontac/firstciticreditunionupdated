@@ -218,7 +218,7 @@ export default function ResetPasswordConfirm() {
                 <CreditCard className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">
-                SecureBank
+                Fusion Bank
               </span>
             </Link>
           </div>
@@ -279,7 +279,7 @@ export default function ResetPasswordConfirm() {
                 <CreditCard className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">
-                SecureBank
+                Fusion Bank
               </span>
             </Link>
           </div>
@@ -327,7 +327,7 @@ export default function ResetPasswordConfirm() {
               <CreditCard className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold text-foreground">
-              SecureBank
+              Fusion Bank
             </span>
           </Link>
         </div>

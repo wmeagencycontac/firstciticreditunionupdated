@@ -150,7 +150,7 @@ export default function OtpLogin() {
             </div>
             <div className="text-left">
               <div className="text-2xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-sm text-muted-foreground">
                 Secure Login Portal

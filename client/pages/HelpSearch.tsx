@@ -197,7 +197,7 @@ export default function HelpSearch() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">

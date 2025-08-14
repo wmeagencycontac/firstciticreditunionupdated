@@ -405,7 +405,7 @@ export default function IntegrationTest() {
                 </Link>
               </Button>
               <Button variant="outline" className="h-20 flex-col" asChild>
-                <Link to="/register">
+                <Link to="/signup">
                   <Users className="h-6 w-6 mb-2" />
                   Register
                 </Link>

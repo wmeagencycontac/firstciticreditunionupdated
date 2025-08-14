@@ -64,7 +64,7 @@ export default function Contact() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Get in touch with First City Credit Union. We're here to help with
+            Get in touch with Fusion Bank. We're here to help with
             all your banking needs.
           </p>
         </div>
@@ -271,7 +271,7 @@ export default function Contact() {
                       htmlFor="consent"
                       className="text-sm leading-relaxed"
                     >
-                      I consent to First City Credit Union collecting and
+                      I consent to Fusion Bank collecting and
                       processing my personal information for the purpose of
                       responding to my inquiry. *
                     </Label>

@@ -25,8 +25,19 @@ import {
   EyeOff,
   AlertCircle,
 } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import {
   db,
   realtimeManager,
@@ -41,6 +52,7 @@ export default function Dashboard() {
   const [recentTransactions, setRecentTransactions] = useState<Transaction[]>(
     [],
   );
+  const [spendingData, setSpendingData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [error, setError] = useState("");
@@ -52,6 +64,24 @@ export default function Dashboard() {
       setupRealtimeSubscriptions(user.id);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (recentTransactions.length > 0) {
+      const spending = recentTransactions
+        .filter((t) => t.type === "debit")
+        .reduce((acc, t) => {
+          const category = t.category || "Other";
+          const existing = acc.find((item) => item.name === category);
+          if (existing) {
+            existing.amount += t.amount;
+          } else {
+            acc.push({ name: category, amount: t.amount });
+          }
+          return acc;
+        }, [] as { name: string; amount: number }[]);
+      setSpendingData(spending);
+    }
+  }, [recentTransactions]);
 
   const loadDashboardData = async (userId: string) => {
     setLoading(true);
@@ -145,10 +175,20 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 p-8">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+          <LoadingSpinner className="w-8 h-8 mx-auto mb-4" />
           <p className="text-muted-foreground">Loading your dashboard...</p>
+        </div>
+        <div className="grid lg:grid-cols-3 gap-8 mt-8">
+          <div className="lg:col-span-2 space-y-6">
+            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+          </div>
+          <div>
+            <Skeleton className="h-96 w-full" />
+          </div>
         </div>
       </div>
     );
@@ -174,7 +214,7 @@ export default function Dashboard() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <CreditCard className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold">SecureBank</span>
+              <span className="text-xl font-bold">Fusion Bank</span>
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/notifications">
@@ -207,6 +247,30 @@ export default function Dashboard() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">Welcome, {bankingProfile?.name?.split(" ")[0]}!</h1>
+          <div className="flex space-x-2">
+            <Button asChild>
+              <Link to="/transfers">
+                <Send className="w-4 h-4 mr-2" />
+                New Transfer
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to="/deposit">
+                <ArrowDownRight className="w-4 h-4 mr-2" />
+                Deposit
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to="/pay-bills">
+                <CreditCard className="w-4 h-4 mr-2" />
+                Pay Bills
+              </Link>
+            </Button>
+          </div>
+        </div>
+
         {/* Show notice if no accounts exist */}
         {accounts.length === 0 && (
           <Alert className="mb-8">
@@ -426,6 +490,28 @@ export default function Dashboard() {
                       : "Start Banking"}
                   </Button>
                 </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg mt-8">
+              <CardHeader>
+                <CardTitle className="text-lg">Spending Breakdown</CardTitle>
+                <CardDescription>
+                  Your spending by category for the last 30 days
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={spendingData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip
+                      formatter={(value: number) => formatCurrency(value)}
+                    />
+                    <Bar dataKey="amount" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>

@@ -210,7 +210,7 @@ export interface MobileDeposit {
 }
 
 // Enhanced service with encryption
-export class SecureBankingService {
+export class FusionBankingService {
   private encryption = getEncryptionService();
 
   /**
@@ -400,7 +400,7 @@ export class SecureBankingService {
       const accountData = {
         user_id: userId,
         account_number: accountNumber,
-        routing_number: "031100209", // First City Credit Union routing number
+        routing_number: "031100209", // Fusion Bank routing number
         account_type: accountType,
         nickname:
           accountType === "checking" ? "Primary Checking" : "Primary Savings",
@@ -609,13 +609,13 @@ export class SecureBankingService {
 }
 
 // Singleton instance
-let secureBankingService: SecureBankingService | null = null;
+let fusionBankingService: FusionBankingService | null = null;
 
-export function getSecureBankingService(): SecureBankingService {
-  if (!secureBankingService) {
-    secureBankingService = new SecureBankingService();
+export function getFusionBankingService(): FusionBankingService {
+  if (!fusionBankingService) {
+    fusionBankingService = new FusionBankingService();
   }
-  return secureBankingService;
+  return fusionBankingService;
 }
 
 // Simple health check function

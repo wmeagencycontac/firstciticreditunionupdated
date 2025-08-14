@@ -631,7 +631,7 @@ export default function EnhancedSignup() {
                   className="text-sm leading-relaxed"
                 >
                   I would like to receive promotional emails and updates about
-                  First City Credit Union products and services.
+                  Fusion Bank products and services.
                 </Label>
               </div>
             </div>
@@ -748,7 +748,7 @@ export default function EnhancedSignup() {
                 Account Created Successfully!
               </h3>
               <p className="text-muted-foreground">
-                Your First City Credit Union account has been created and your
+                Your Fusion Bank account has been created and your
                 documents have been submitted for verification.
               </p>
             </div>
@@ -797,7 +797,7 @@ export default function EnhancedSignup() {
             </div>
             <div>
               <div className="text-2xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-sm text-muted-foreground">
                 Secure banking with industry-leading protection

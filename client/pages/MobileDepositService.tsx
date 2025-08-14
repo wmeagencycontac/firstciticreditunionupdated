@@ -23,7 +23,7 @@ export default function MobileDepositService() {
       id: 1,
       title: "Open the App",
       description:
-        "Launch the First City Credit Union mobile app on your smartphone",
+        "Launch the Fusion Bank mobile app on your smartphone",
       icon: <Smartphone className="w-6 h-6" />,
     },
     {
@@ -59,7 +59,7 @@ export default function MobileDepositService() {
             </div>
             <div>
               <div className="text-xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-xs text-muted-foreground">
                 Mobile Deposit Service
@@ -302,7 +302,7 @@ export default function MobileDepositService() {
               <div className="w-8 h-8 bg-gradient-to-br from-[#00754A] to-[#005A39] rounded-lg flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-white" />
               </div>
-              <div className="text-lg font-bold">First City Credit Union</div>
+              <div className="text-lg font-bold">Fusion Bank</div>
             </div>
             <p className="text-gray-400 mb-4">
               Member NCUA. Equal Housing Lender. Your deposits are insured up to

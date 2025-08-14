@@ -28,7 +28,7 @@ export default function DemoExperience() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">
@@ -55,7 +55,7 @@ export default function DemoExperience() {
             Demo Experience
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Experience First City Credit Union's features with our interactive
+            Experience Fusion Bank's features with our interactive
             demo and see how we can help manage your finances.
           </p>
         </div>
@@ -316,7 +316,7 @@ export default function DemoExperience() {
           </h2>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
             After exploring our demo, join thousands of satisfied members who
-            trust First City Credit Union with their financial future.
+            trust Fusion Bank with their financial future.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">

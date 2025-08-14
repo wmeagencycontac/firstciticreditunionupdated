@@ -4,7 +4,7 @@ import multer from "multer";
 import crypto from "crypto";
 import path from "path";
 import fs from "fs/promises";
-import { getSecureBankingService } from "../supabase-enhanced";
+import { getFusionBankingService } from "../supabase-enhanced";
 import { supabase } from "../supabase";
 
 // Validation schema
@@ -108,7 +108,7 @@ export const submitMobileDeposit: RequestHandler = async (req, res) => {
         .json({ error: "Account is not active for deposits" });
     }
 
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
 
     // Generate secure file paths and store images
     const frontFileName = `${crypto.randomUUID()}-front.jpg`;
@@ -343,7 +343,7 @@ export const getMobileDepositDetails: RequestHandler = async (req, res) => {
     }
 
     // For admin view, decrypt image paths (but don't send actual images)
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
     const decryptedDeposit = {
       ...deposit,
       front_image_path: deposit.front_image_encrypted
@@ -397,7 +397,7 @@ export const processMobileDeposit: RequestHandler = async (req, res) => {
         .json({ error: "Deposit has already been processed" });
     }
 
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
     const now = new Date().toISOString();
 
     if (action === "approve") {

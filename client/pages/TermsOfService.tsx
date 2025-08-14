@@ -14,7 +14,7 @@ export default function TermsOfService() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">
@@ -61,7 +61,7 @@ export default function TermsOfService() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed">
-                By accessing or using First City Credit Union's services,
+                By accessing or using Fusion Bank's services,
                 including our website, mobile applications, and banking
                 services, you agree to be bound by these Terms of Service and
                 all applicable laws and regulations. If you do not agree with
@@ -263,7 +263,7 @@ export default function TermsOfService() {
                 <p className="font-semibold text-[#00754A] mb-2">
                   Customer Service
                 </p>
-                <p className="text-muted-foreground">First City Credit Union</p>
+                <p className="text-muted-foreground">Fusion Bank</p>
                 <p className="text-muted-foreground">123 Banking Street</p>
                 <p className="text-muted-foreground">City, State 12345</p>
                 <p className="text-muted-foreground">Email: support@fccu.com</p>
