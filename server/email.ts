@@ -9,9 +9,17 @@ interface EmailConfig {
 }
 
 class EmailService {
-  private transporter: nodemailer.Transporter;
+  private transporter: nodemailer.Transporter | null;
 
   constructor() {
+    // Skip email configuration if credentials are not provided
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS ||
+        process.env.EMAIL_USER === "test@example.com") {
+      console.log("📧 Email service disabled - no valid credentials provided");
+      this.transporter = null;
+      return;
+    }
+
     const config: EmailConfig = {
       service: "gmail",
       auth: {
@@ -24,6 +32,10 @@ class EmailService {
   }
 
   public async sendOTP(to: string, otp: string): Promise<boolean> {
+    if (!this.transporter) {
+      console.log("📧 Email disabled - OTP would be sent to:", to, "OTP:", otp);
+      return false;
+    }
     try {
       const mailOptions = {
         from: `"Fusion Bank Secure Login" <${process.env.EMAIL_USER}>`,
@@ -293,6 +305,10 @@ class EmailService {
   }
 
   public async verifyConnection(): Promise<boolean> {
+    if (!this.transporter) {
+      console.log("📧 Email service disabled - skipping verification");
+      return true;
+    }
     try {
       await this.transporter.verify();
       console.log("✅ Email service is ready");
