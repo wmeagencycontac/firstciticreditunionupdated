@@ -55,7 +55,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser({
               id: userData.id,
               email: userData.email,
-              user_metadata: { name: userData.name }
+              user_metadata: { name: userData.name },
+              app_metadata: {},
+              aud: "authenticated",
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
             } as User);
             setProfile({
               id: userData.id,
