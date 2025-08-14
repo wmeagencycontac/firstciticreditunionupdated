@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               app_metadata: {},
               aud: "authenticated",
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
+              updated_at: new Date().toISOString(),
             } as User);
             setProfile({
               id: userData.id,
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               picture: null,
               email_verified: true,
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
+              updated_at: new Date().toISOString(),
             } as BankingUser);
           } catch (error) {
             console.error("Admin auth parsing error:", error);
@@ -97,18 +97,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (adminToken) {
       setData(null); // This will trigger admin auth check
     } else {
-      auth.getUser().then(({ data: { user } }) => {
-        if (user) {
-          auth.getSession().then(({ data: { session } }) => {
-            setData(session);
-          });
-        } else {
+      auth
+        .getUser()
+        .then(({ data: { user } }) => {
+          if (user) {
+            auth.getSession().then(({ data: { session } }) => {
+              setData(session);
+            });
+          } else {
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Auth initialization error:", error);
           setLoading(false);
-        }
-      }).catch((error) => {
-        console.error("Auth initialization error:", error);
-        setLoading(false);
-      });
+        });
     }
 
     return () => {
@@ -126,7 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         await fetch("/api/admin/logout", {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${adminToken}`,
+            Authorization: `Bearer ${adminToken}`,
             "Content-Type": "application/json",
           },
         });
