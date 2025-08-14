@@ -81,15 +81,10 @@ export default function App() {
                 path="/password-reset-test"
                 element={<PasswordResetTest />}
               />
-              <Route
-                path="/dashboard"
-                element={
-                  <PrivateRoute>
-                    <DashboardLayout />
-                  </PrivateRoute>
-                }
-              >
-                <Route index element={<Dashboard />} />
+              <Route path="/dashboard" element={<PrivateRoute />}>
+                <Route path="" element={<DashboardLayout />}>
+                  <Route index element={<Dashboard />} />
+                </Route>
               </Route>
 
               {/* Admin Routes */}
