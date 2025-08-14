@@ -18,7 +18,7 @@ export default function Team() {
       name: "Sarah Chen",
       role: "Chief Executive Officer",
       image: "/placeholder.svg",
-      bio: "With over 20 years in financial services, Sarah leads SecureBank with a vision for innovative, customer-centric banking solutions.",
+      bio: "With over 20 years in financial services, Sarah leads Fusion Bank with a vision for innovative, customer-centric banking solutions.",
       experience: "Former VP at Goldman Sachs, MBA from Wharton",
       email: "sarah.chen@securebank.com",
       linkedin: "#",
@@ -244,7 +244,7 @@ export default function Team() {
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
               We're always looking for talented individuals who share our
               passion for innovation and customer service. Explore career
-              opportunities with SecureBank.
+              opportunities with Fusion Bank.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/contact">

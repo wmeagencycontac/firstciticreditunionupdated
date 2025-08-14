@@ -131,7 +131,7 @@ export default function ApplicationForm() {
                 <Building2 className="w-6 h-6 text-white" />
               </div>
               <div className="text-xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
             </Link>
           </div>
@@ -217,7 +217,7 @@ export default function ApplicationForm() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">
@@ -617,7 +617,7 @@ export default function ApplicationForm() {
                       }
                     />
                     <label htmlFor="agreeToCredit" className="text-sm">
-                      I authorize First City Credit Union to check my credit
+                      I authorize Fusion Bank to check my credit
                       report and verify my information
                     </label>
                   </div>

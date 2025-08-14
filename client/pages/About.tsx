@@ -14,7 +14,7 @@ export default function About() {
     <section className="container mx-auto px-4 py-20 bg-gradient-to-br from-emerald-50 via-teal-50/20 to-cyan-50/30">
       <div className="text-center mb-16">
         <h2 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-[#00754A] to-[#005A39] bg-clip-text text-transparent">
-          About First City Credit Union
+          About Fusion Bank
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           Your trusted financial partner, serving our community with integrity
@@ -37,7 +37,7 @@ export default function About() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Founded in 1952, First City Credit Union has grown from a small
+              Founded in 1952, Fusion Bank has grown from a small
               community institution to a modern digital-first credit union,
               serving over 150,000 members with trust and integrity.
             </p>
@@ -130,7 +130,7 @@ export default function About() {
       </div>
       <div className="text-center bg-gradient-to-r from-white to-green-50/50 rounded-2xl p-8 border border-green-200/50">
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-6">
-          At First City Credit Union, we believe in empowering our members to
+          At Fusion Bank, we believe in empowering our members to
           achieve their financial goals with confidence and security. Our
           commitment to innovation, community service, and member satisfaction
           drives everything we do.

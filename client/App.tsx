@@ -9,9 +9,7 @@ import AdminRoute from "./components/auth/AdminRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import OtpLogin from "./pages/OtpLogin";
-import Register from "./pages/Register";
 import Signup from "./pages/Signup";
-import EnhancedRegistration from "./pages/EnhancedRegistration";
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import PasswordResetTest from "./pages/PasswordResetTest";
@@ -117,11 +115,6 @@ export default function App() {
               <Route path="/integration-test" element={<IntegrationTest />} />
 
               {/* Banking Pages */}
-              <Route path="/register" element={<Register />} />
-              <Route
-                path="/register-enhanced"
-                element={<EnhancedRegistration />}
-              />
               <Route path="/personal" element={<Personal />} />
               <Route path="/business" element={<Business />} />
               <Route path="/investments" element={<Investments />} />

@@ -433,7 +433,7 @@ export default function AdminDashboardPro() {
                 <h1 className="text-xl font-bold text-gray-900">
                   Admin Dashboard
                 </h1>
-                <p className="text-sm text-gray-500">First City Credit Union</p>
+                <p className="text-sm text-gray-500">Fusion Bank</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">

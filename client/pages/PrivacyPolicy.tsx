@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">
@@ -188,7 +188,7 @@ export default function PrivacyPolicy() {
                 <p className="font-semibold text-[#00754A] mb-2">
                   Privacy Officer
                 </p>
-                <p className="text-muted-foreground">First City Credit Union</p>
+                <p className="text-muted-foreground">Fusion Bank</p>
                 <p className="text-muted-foreground">123 Banking Street</p>
                 <p className="text-muted-foreground">City, State 12345</p>
                 <p className="text-muted-foreground">Email: privacy@fccu.com</p>

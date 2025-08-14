@@ -15,8 +15,8 @@ class EmailService {
     const config: EmailConfig = {
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER || "Baytagdkdv@gmail.com",
-        pass: process.env.EMAIL_PASS || "cxva oshq iybh unfg",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     };
 
@@ -26,7 +26,7 @@ class EmailService {
   public async sendOTP(to: string, otp: string): Promise<boolean> {
     try {
       const mailOptions = {
-        from: `"New Horizon Secure Login" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
+        from: `"Fusion Bank Secure Login" <${process.env.EMAIL_USER}>`,
         to,
         subject: "Your Login Code",
         text: `Your one-time login code is: ${otp}\n\nIt will expire in 5 minutes.`,
@@ -46,7 +46,7 @@ class EmailService {
             </p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
             <p style="font-size: 12px; color: #999;">
-              New Horizon Banking - Secure Authentication
+              Fusion Bank - Secure Authentication
             </p>
           </div>
         `,
@@ -128,7 +128,7 @@ class EmailService {
       }
 
       const mailOptions = {
-        from: `"SecureBank Notifications" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
+        from: `"Fusion Bank Notifications" <${process.env.EMAIL_USER}>`,
         to,
         subject: `${subject} - ${formatCurrency(amount)}`,
         html: `
@@ -180,7 +180,7 @@ class EmailService {
 
               <div style="text-align: center; padding-top: 20px; border-top: 1px solid #e9ecef;">
                 <p style="margin: 0; color: #6c757d; font-size: 12px;">
-                  SecureBank - Keeping your money safe and secure<br>
+                  Fusion Bank - Keeping your money safe and secure<br>
                   This is an automated message. Please do not reply to this email.
                 </p>
               </div>
@@ -227,7 +227,7 @@ class EmailService {
         new Date(dateString).toLocaleString();
 
       const mailOptions = {
-        from: `"SecureBank Security" <${process.env.EMAIL_USER || "Baytagdkdv@gmail.com"}>`,
+        from: `"Fusion Bank Security" <${process.env.EMAIL_USER}>`,
         to,
         subject: "Profile Update Notification",
         html: `
@@ -274,7 +274,7 @@ class EmailService {
 
               <div style="text-align: center; padding-top: 20px; border-top: 1px solid #e9ecef;">
                 <p style="margin: 0; color: #6c757d; font-size: 12px;">
-                  SecureBank Security Team - Protecting your account 24/7<br>
+                  Fusion Bank Security Team - Protecting your account 24/7<br>
                   This is an automated security notification. Please do not reply to this email.
                 </p>
               </div>

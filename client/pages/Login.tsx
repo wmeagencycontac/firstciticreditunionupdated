@@ -112,7 +112,7 @@ export default function Login() {
             </div>
             <div>
               <div className="text-xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-xs text-muted-foreground">
                 Your Future. Your Credit Union.
@@ -125,7 +125,7 @@ export default function Login() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Welcome back</CardTitle>
             <CardDescription>
-              Sign in to your First City Credit Union account
+              Sign in to your Fusion Bank account
             </CardDescription>
           </CardHeader>
           <CardContent>

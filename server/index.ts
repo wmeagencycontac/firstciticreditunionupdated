@@ -60,11 +60,6 @@ import {
   handleGetOTPUser,
 } from "./routes/otp-auth";
 import {
-  uploadMiddleware,
-  handleEnhancedRegistration,
-  handleEmailVerification,
-} from "./routes/enhanced-registration";
-import {
   handleAccountSummary,
   handleGetAllTransactions,
   handleSendTransfer,
@@ -187,13 +182,6 @@ export function createServer() {
   app.post("/api/otp/verify-code", handleVerifyOTP);
   app.get("/api/otp/user/:userId", handleGetOTPUser);
 
-  // Enhanced Registration endpoints
-  app.post(
-    "/api/register-enhanced",
-    uploadMiddleware,
-    handleEnhancedRegistration,
-  );
-  app.get("/api/verify-email", handleEmailVerification);
 
   // Banking API endpoints (protected)
   app.get("/api/account-summary", authenticateToken, handleAccountSummary);

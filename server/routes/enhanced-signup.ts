@@ -5,7 +5,7 @@ import crypto from "crypto";
 import path from "path";
 import fs from "fs/promises";
 import { supabase } from "../supabase";
-import { getSecureBankingService } from "../supabase-enhanced";
+import { getFusionBankingService } from "../supabase-enhanced";
 import { PIISchemas } from "../encryption";
 
 // Enhanced validation schemas with PII validation
@@ -93,7 +93,7 @@ export const enhancedSignup: RequestHandler = async (req, res) => {
     // Validate input data
     const validatedData = enhancedSignupSchema.parse(req.body);
 
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
 
     // Create Supabase auth user first
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -159,9 +159,9 @@ export const enhancedSignup: RequestHandler = async (req, res) => {
         type: "credit",
         amount: 0.0,
         description:
-          "Welcome to First City Credit Union! Your account is ready.",
+          "Welcome to Fusion Bank! Your account is ready.",
         category: "welcome",
-        merchantName: "First City Credit Union",
+        merchantName: "Fusion Bank",
       });
     }
 
@@ -222,7 +222,7 @@ export const uploadKYCDocument: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
 
     // Generate secure file path
     const fileExtension = path.extname(req.file.originalname);

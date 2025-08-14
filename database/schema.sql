@@ -1,4 +1,4 @@
--- First City Credit Union Production Database Schema
+-- Fusion Bank Production Database Schema
 -- Comprehensive banking platform with security, encryption, and compliance
 
 -- Enable Row Level Security and required extensions
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS public.accounts (
   
   -- Account details
   account_number TEXT UNIQUE NOT NULL,
-  routing_number TEXT NOT NULL DEFAULT '031100209', -- First City Credit Union routing
+  routing_number TEXT NOT NULL DEFAULT '031100209', -- Fusion Bank routing
   account_type TEXT CHECK (account_type IN ('checking', 'savings', 'business_checking')) NOT NULL,
   nickname TEXT,
   

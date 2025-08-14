@@ -14,7 +14,7 @@ export default function Accessibility() {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div className="text-xl font-bold text-[#00754A]">
-              First City Credit Union
+              Fusion Bank
             </div>
           </Link>
           <div className="flex items-center space-x-4">
@@ -58,7 +58,7 @@ export default function Accessibility() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                First City Credit Union is committed to providing equal access
+                Fusion Bank is committed to providing equal access
                 to our financial services and digital platforms for all users.
                 We strive to meet or exceed accessibility standards and
                 continuously work to improve the user experience for people with
@@ -248,7 +248,7 @@ export default function Accessibility() {
                   <p>
                     <strong>Mail:</strong> Accessibility Services
                     <br />
-                    First City Credit Union
+                    Fusion Bank
                     <br />
                     123 Banking Street
                     <br />

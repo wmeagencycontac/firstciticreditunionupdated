@@ -19,7 +19,7 @@ export default function CompanyHistory() {
       year: "1985",
       title: "Foundation",
       description:
-        "SecureBank was founded with a mission to provide secure and accessible banking services to communities nationwide.",
+        "Fusion Bank was founded with a mission to provide secure and accessible banking services to communities nationwide.",
       icon: Building,
       color: "bg-blue-500",
     },
@@ -113,7 +113,7 @@ export default function CompanyHistory() {
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Story</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              For nearly four decades, SecureBank has been at the forefront of
+              For nearly four decades, Fusion Bank has been at the forefront of
               banking innovation, consistently delivering secure, reliable, and
               customer-focused financial services.
             </p>

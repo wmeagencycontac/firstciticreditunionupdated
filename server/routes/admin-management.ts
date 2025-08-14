@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { z } from "zod";
 import { supabaseAdmin } from "../supabase-enhanced";
-import { getSecureBankingService } from "../supabase-enhanced";
+import { getFusionBankingService } from "../supabase-enhanced";
 
 // Validation schemas
 const lockUserSchema = z.object({
@@ -56,7 +56,7 @@ export const requireAdmin: RequestHandler = async (req, res, next) => {
  */
 export const getDashboardStats: RequestHandler = async (req, res) => {
   try {
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
 
     // Get user count
     const { count: totalUsers, error: usersError } = await supabaseAdmin
@@ -162,7 +162,7 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 export const getUserDetailed: RequestHandler = async (req, res) => {
   try {
     const { userId } = req.params;
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
 
     const { data: user, error } =
       await secureBankingService.getBankingUserDecrypted(userId);
@@ -231,7 +231,7 @@ export const lockUnlockUser: RequestHandler = async (req, res) => {
 
     // Log admin action
     if (adminId) {
-      const secureBankingService = getSecureBankingService();
+      const secureBankingService = getFusionBankingService();
       await secureBankingService.logAdminAction({
         adminId,
         action: `${action}_user`,
@@ -326,14 +326,14 @@ export const updateAccountBalance: RequestHandler = async (req, res) => {
     }
 
     // Create transaction record for audit trail
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
     await secureBankingService.createTransaction({
       accountId,
       type: difference > 0 ? "credit" : "debit",
       amount: Math.abs(difference),
       description: `Admin balance adjustment: ${reason}`,
       category: "admin_adjustment",
-      merchantName: "First City Credit Union",
+      merchantName: "Fusion Bank",
     });
 
     // Log admin action
@@ -447,7 +447,7 @@ export const handleKYCAction: RequestHandler = async (req, res) => {
     }
 
     const status = action === "approve" ? "verified" : "rejected";
-    const secureBankingService = getSecureBankingService();
+    const secureBankingService = getFusionBankingService();
 
     // Update document status
     const { error } = await secureBankingService.verifyKYCDocument(

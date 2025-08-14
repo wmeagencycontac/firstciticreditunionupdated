@@ -51,7 +51,7 @@ export default function Index() {
             </div>
             <div>
               <div className="text-xl font-bold text-[#00754A]">
-                First City Credit Union
+                Fusion Bank
               </div>
               <div className="text-xs text-muted-foreground">
                 Your Future. Your Credit Union.
@@ -368,10 +368,10 @@ export default function Index() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-white/10 to-transparent rounded-full -translate-y-48 translate-x-48"></div>
           <CardContent className="text-center py-16 relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to join First City Credit Union?
+              Ready to join Fusion Bank?
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Join over 150,000 members who trust First City Credit Union with
+              Join over 150,000 members who trust Fusion Bank with
               their financial future. Open your account in minutes and start
               banking smarter today.
             </p>
@@ -413,7 +413,7 @@ export default function Index() {
                 </div>
                 <div>
                   <div className="text-xl font-bold">
-                    First City Credit Union
+                    Fusion Bank
                   </div>
                   <div className="text-xs text-gray-400">
                     Your Future. Your Credit Union.
@@ -526,7 +526,7 @@ export default function Index() {
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p>
-                &copy; 2024 First City Credit Union. All rights reserved. Member
+                &copy; 2024 Fusion Bank. All rights reserved. Member
                 NCUA. Equal Housing Lender.
               </p>
               <div className="flex items-center gap-6 text-sm">

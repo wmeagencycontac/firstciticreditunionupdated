@@ -19,7 +19,7 @@ export const testTransactionEmail: RequestHandler = async (req, res) => {
       accountNumber: "1234567890",
       balance: 1500.0,
       timestamp: new Date().toISOString(),
-      merchantName: "SecureBank Test",
+      merchantName: "Fusion Bank Test",
     });
 
     if (success) {
