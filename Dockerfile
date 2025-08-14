@@ -1,16 +1,16 @@
-# Use Node.js 18 Alpine image for smaller size
-FROM node:18-alpine AS base
+# Use Node.js 20 Alpine image for smaller size
+FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat curl
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-RUN npm ci --only=production --silent
+RUN npm ci --only=production --legacy-peer-deps --silent
 
 # Build the application
 FROM base AS builder
@@ -18,10 +18,18 @@ WORKDIR /app
 
 # Copy package files and install all dependencies (including devDependencies)
 COPY package*.json ./
-RUN npm ci --silent
+RUN npm ci --legacy-peer-deps --silent
 
 # Copy source code
 COPY . .
+
+# Set dummy environment variables for build process
+ENV SUPABASE_URL=https://dummy.supabase.co
+ENV SUPABASE_ANON_KEY=dummy_anon_key
+ENV SUPABASE_SERVICE_ROLE_KEY=dummy_service_role_key
+ENV VITE_SUPABASE_URL=https://dummy.supabase.co
+ENV VITE_SUPABASE_ANON_KEY=dummy_anon_key
+ENV NODE_ENV=production
 
 # Build the application
 RUN npm run build:full
@@ -29,6 +37,9 @@ RUN npm run build:full
 # Production image
 FROM base AS runner
 WORKDIR /app
+
+# Install curl for health check
+RUN apk add --no-cache curl
 
 # Don't run as root
 RUN addgroup --system --gid 1001 nodejs
