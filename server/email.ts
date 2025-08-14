@@ -12,6 +12,7 @@ interface EmailConfig {
 
 class EmailService {
   private transporter: nodemailer.Transporter | null;
+  private templateCache: Map<string, string> = new Map();
 
   constructor() {
     // Skip email configuration if credentials are not provided
@@ -88,7 +89,7 @@ class EmailService {
     },
   ): Promise<boolean> {
     if (!this.transporter) {
-      console.log("📧 Email disabled - transaction notification would be sent to:", to);
+      console.log("���� Email disabled - transaction notification would be sent to:", to);
       return false;
     }
     try {
