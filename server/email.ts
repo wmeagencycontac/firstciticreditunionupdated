@@ -34,6 +34,43 @@ class EmailService {
     this.transporter = nodemailer.createTransport(config);
   }
 
+  private loadTemplate(templateName: string): string {
+    if (this.templateCache.has(templateName)) {
+      return this.templateCache.get(templateName)!;
+    }
+
+    try {
+      const templatePath = path.join(__dirname, 'email-templates', `${templateName}.html`);
+      const template = fs.readFileSync(templatePath, 'utf-8');
+      this.templateCache.set(templateName, template);
+      return template;
+    } catch (error) {
+      console.error(`Error loading email template ${templateName}:`, error);
+      return this.getFallbackTemplate();
+    }
+  }
+
+  private getFallbackTemplate(): string {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #333;">{{SUBJECT}}</h2>
+        <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0;">
+          {{CONTENT}}
+        </div>
+        <p style="font-size: 12px; color: #999;">Fusion Bank - Secure Banking</p>
+      </div>
+    `;
+  }
+
+  private renderTemplate(template: string, variables: Record<string, string>): string {
+    let rendered = template;
+    for (const [key, value] of Object.entries(variables)) {
+      const regex = new RegExp(`{{${key}}}`, 'g');
+      rendered = rendered.replace(regex, value);
+    }
+    return rendered;
+  }
+
   public async sendOTP(to: string, otp: string): Promise<boolean> {
     if (!this.transporter) {
       console.log("📧 Email disabled - OTP would be sent to:", to, "OTP:", otp);
@@ -89,7 +126,7 @@ class EmailService {
     },
   ): Promise<boolean> {
     if (!this.transporter) {
-      console.log("���� Email disabled - transaction notification would be sent to:", to);
+      console.log("📧 Email disabled - transaction notification would be sent to:", to);
       return false;
     }
     try {
