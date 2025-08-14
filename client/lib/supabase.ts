@@ -129,6 +129,9 @@ export const auth = {
 
   // Get current user
   async getUser() {
+    if (!isSupabaseConfigured) {
+      return { user: null, error: new Error("Supabase not configured") };
+    }
     const {
       data: { user },
       error,
@@ -136,8 +139,20 @@ export const auth = {
     return { user, error };
   },
 
+  // Get current session
+  async getSession() {
+    if (!isSupabaseConfigured) {
+      return { data: { session: null }, error: new Error("Supabase not configured") };
+    }
+    const { data, error } = await supabase.auth.getSession();
+    return { data, error };
+  },
+
   // Listen for auth state changes
   onAuthStateChange(callback: (event: string, session: any) => void) {
+    if (!isSupabaseConfigured) {
+      return { data: { subscription: { unsubscribe: () => {} } } };
+    }
     return supabase.auth.onAuthStateChange(callback);
   },
 
