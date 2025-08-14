@@ -280,6 +280,10 @@ export function createServer() {
     app.post("/api/test-email/transaction", testTransactionEmail);
     app.post("/api/test-email/profile", testProfileUpdateEmail);
     app.post("/api/test-email/all", testAllNotifications);
+
+    // Supabase connection test
+    const { testSupabaseConnection } = await import("./routes/supabase-test");
+    app.get("/api/test-supabase", testSupabaseConnection);
   }
 
   // Migration endpoint (development only)
