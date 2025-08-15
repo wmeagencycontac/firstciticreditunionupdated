@@ -70,7 +70,7 @@ export default function Dashboard() {
       const spending = recentTransactions
         .filter((t) => t.type === "debit")
         .reduce((acc, t) => {
-          const category = t.category || "Other";
+          const category = (t as any).category || "Other";
           const existing = acc.find((item) => item.name === category);
           if (existing) {
             existing.amount += t.amount;
