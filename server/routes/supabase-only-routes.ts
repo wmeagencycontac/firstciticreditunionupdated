@@ -29,6 +29,8 @@ import {
   updateBankingProfile,
 } from "./supabase-profile";
 
+import { getDashboardSummary } from "./dashboard";
+
 // Auth rate limiting
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -94,6 +96,13 @@ export function configureSupabaseRoutes(app: Express) {
   // Cards
   app.get("/api/v2/cards", supabaseAuthenticateUser, supabaseGetCards);
   app.post("/api/v2/cards", supabaseAuthenticateUser, supabaseCreateCard);
+
+  // Dashboard
+  app.get(
+    "/api/v2/dashboard/summary/:userId",
+    supabaseAuthenticateUser,
+    getDashboardSummary,
+  );
 }
 
 /**

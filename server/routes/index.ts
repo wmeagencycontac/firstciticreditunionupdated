@@ -1,6 +1,4 @@
 import { Express } from "express";
-import { configureAuthRoutes } from "./auth-routes";
-import { configureBankingRoutes } from "./banking-routes";
 import {
   configureDevelopmentRoutes,
   configureUtilityRoutes,
@@ -10,7 +8,6 @@ import {
   configureLegacyDeprecationRoutes,
   configureApiMigrationStatus,
 } from "./supabase-only-routes";
-import { authenticateToken } from "./banking";
 
 /**
  * Configure all application routes
@@ -29,15 +26,9 @@ export function configureRoutes(app: Express) {
   // Configure legacy deprecation notices
   configureLegacyDeprecationRoutes(app);
 
-  // Configure legacy routes (for backward compatibility)
-  // TODO: Remove these after migration period (target: 2024-06-01)
-  configureAuthRoutes(app, authenticateToken);
-  configureBankingRoutes(app, authenticateToken);
-
   // Configure development and testing routes
   configureDevelopmentRoutes(app);
 }
 
 // Re-export commonly used middleware
-export { authenticateToken } from "./banking";
 export { authenticateUser as supabaseAuthenticateUser } from "./supabase-auth";

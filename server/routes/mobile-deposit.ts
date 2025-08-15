@@ -311,79 +311,82 @@ export const getMobileDeposits: RequestHandler = async (req, res) => {
   }
 };
 
+import { authenticateAdmin } from "./banking";
+
 /**
  * Get mobile deposit details (admin only)
  */
-export const getMobileDepositDetails: RequestHandler = async (req, res) => {
-  try {
-    const { depositId } = req.params;
+export const getMobileDepositDetails: RequestHandler[] = [
+  authenticateAdmin,
+  async (req, res) => {
+    try {
+      const { depositId } = req.params;
 
-    // This would require admin authentication middleware
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ error: "No authorization header" });
+      const { data: deposit, error } = await supabase
+        .from("mobile_deposits")
+        .select(
+          `
+          *,
+          banking_users!inner(name, email),
+          accounts!inner(account_number, account_type)
+        `,
+        )
+        .eq("id", depositId)
+        .single();
+
+      if (error || !deposit) {
+        return res.status(404).json({ error: "Mobile deposit not found" });
+      }
+
+      // For admin view, decrypt image paths (but don't send actual images)
+      const secureBankingService = getFusionBankingService();
+      const decryptedDeposit = {
+        ...deposit,
+        front_image_path: deposit.front_image_encrypted
+          ? secureBankingService.encryption.decrypt(
+              deposit.front_image_encrypted,
+            )
+          : null,
+        back_image_path: deposit.back_image_encrypted
+          ? secureBankingService.encryption.decrypt(
+              deposit.back_image_encrypted,
+            )
+          : null,
+      };
+
+      res.json({ deposit: decryptedDeposit });
+    } catch (error) {
+      console.error("Get mobile deposit details error:", error);
+      res.status(500).json({ error: "Failed to load deposit details" });
     }
-
-    // TODO: Verify admin access
-
-    const { data: deposit, error } = await supabase
-      .from("mobile_deposits")
-      .select(
-        `
-        *,
-        banking_users!inner(name, email),
-        accounts!inner(account_number, account_type)
-      `,
-      )
-      .eq("id", depositId)
-      .single();
-
-    if (error || !deposit) {
-      return res.status(404).json({ error: "Mobile deposit not found" });
-    }
-
-    // For admin view, decrypt image paths (but don't send actual images)
-    const secureBankingService = getFusionBankingService();
-    const decryptedDeposit = {
-      ...deposit,
-      front_image_path: deposit.front_image_encrypted
-        ? secureBankingService.encryption.decrypt(deposit.front_image_encrypted)
-        : null,
-      back_image_path: deposit.back_image_encrypted
-        ? secureBankingService.encryption.decrypt(deposit.back_image_encrypted)
-        : null,
-    };
-
-    res.json({ deposit: decryptedDeposit });
-  } catch (error) {
-    console.error("Get mobile deposit details error:", error);
-    res.status(500).json({ error: "Failed to load deposit details" });
-  }
-};
+  },
+];
 
 /**
  * Process mobile deposit (admin only)
  */
-export const processMobileDeposit: RequestHandler = async (req, res) => {
-  try {
-    const { depositId } = req.params;
-    const { action, notes } = req.body; // 'approve' or 'reject'
+export const processMobileDeposit: RequestHandler[] = [
+  authenticateAdmin,
+  async (req, res) => {
+    try {
+      const { depositId } = req.params;
+      const { action, notes } = req.body; // 'approve' or 'reject'
 
-    if (!["approve", "reject"].includes(action)) {
-      return res
-        .status(400)
-        .json({ error: "Invalid action. Must be 'approve' or 'reject'" });
-    }
+      if (!["approve", "reject"].includes(action)) {
+        return res
+          .status(400)
+          .json({ error: "Invalid action. Must be 'approve' or 'reject'" });
+      }
 
-    // TODO: Verify admin access
-    const adminId = req.user?.id;
-    if (!adminId) {
-      return res.status(401).json({ error: "Admin authentication required" });
-    }
+      const adminId = req.user?.id;
+      if (!adminId) {
+        // This should not happen if authenticateAdmin is working correctly
+        return res.status(401).json({ error: "Admin authentication failed" });
+      }
 
-    const { data: deposit, error: depositError } = await supabase
-      .from("mobile_deposits")
-      .select("*")
+      const { data: deposit, error: depositError } = await supabase
+        .from("mobile_deposits")
+        .select("*")
       .eq("id", depositId)
       .single();
 
