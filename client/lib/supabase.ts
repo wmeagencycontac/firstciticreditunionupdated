@@ -103,6 +103,9 @@ export const auth = {
     bio?: string,
     picture?: string,
   ) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -119,6 +122,9 @@ export const auth = {
 
   // Sign in user
   async signIn(email: string, password: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -128,6 +134,9 @@ export const auth = {
 
   // Sign out user
   async signOut() {
+    if (!supabase) {
+      return { error: new Error("Supabase not configured") };
+    }
     // Clean up realtime subscriptions
     realtimeManager.unsubscribeAll();
 
