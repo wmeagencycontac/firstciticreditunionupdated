@@ -1,4 +1,4 @@
-import { Suspense, ComponentType } from 'react';
+import React, { Suspense, ComponentType } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 interface LazyRouteProps {
