@@ -1,5 +1,5 @@
-# Use Node.js 18 Alpine image for smaller size
-FROM node:18-alpine AS base
+# Use Node.js 20 Alpine image for smaller size
+FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -29,6 +29,9 @@ RUN npm run build:full
 # Production image
 FROM base AS runner
 WORKDIR /app
+
+# Install curl for health check
+RUN apk add --no-cache curl
 
 # Don't run as root
 RUN addgroup --system --gid 1001 nodejs

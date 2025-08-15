@@ -16,13 +16,16 @@ export interface DemoResponse {
  */
 
 export interface User {
-  id: number;
+  id: number | string;
   email: string;
   name: string;
+  firstName?: string;
+  lastName?: string;
   email_verified: boolean;
   role: string;
   created_at: string;
   updated_at: string;
+  password_hash?: string;
 }
 
 export interface Account {
@@ -38,12 +41,16 @@ export interface Account {
 }
 
 export interface Transaction {
-  id: number;
+  id: number | string;
   account_id: number;
-  type: "debit" | "credit";
+  type: "debit" | "credit" | "transfer";
   amount: number;
   description: string;
   timestamp: string;
+  category?: string;
+  merchant?: string;
+  status?: "pending" | "processing" | "completed" | "failed" | "cancelled" | "reversed";
+  createdAt?: string;
 }
 
 // Dashboard-specific extended types

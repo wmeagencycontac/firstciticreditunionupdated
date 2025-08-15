@@ -8,6 +8,7 @@ export interface BankingUser {
   id: number;
   email: string;
   name: string;
+  password_hash?: string;
   email_verified: boolean;
   role: "user" | "admin";
   created_at: string;

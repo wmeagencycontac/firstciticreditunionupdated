@@ -98,10 +98,16 @@ class MonitoringService {
 
     // Console output in development
     if (process.env.NODE_ENV === "development") {
-      console[level.toLowerCase() as keyof Console](
-        `[${entry.timestamp}] ${level}: ${message}`,
-        metadata || "",
-      );
+      const logLevel = level.toLowerCase();
+      if (logLevel === "error") {
+        console.error(`[${entry.timestamp}] ${level}: ${message}`, metadata || "");
+      } else if (logLevel === "warn") {
+        console.warn(`[${entry.timestamp}] ${level}: ${message}`, metadata || "");
+      } else if (logLevel === "info") {
+        console.info(`[${entry.timestamp}] ${level}: ${message}`, metadata || "");
+      } else {
+        console.log(`[${entry.timestamp}] ${level}: ${message}`, metadata || "");
+      }
     }
 
     // Send to external service in production
