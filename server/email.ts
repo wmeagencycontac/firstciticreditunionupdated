@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import fs from "fs";
+import path from "path";
 
 interface EmailConfig {
   service: string;
@@ -9,9 +11,21 @@ interface EmailConfig {
 }
 
 class EmailService {
-  private transporter: nodemailer.Transporter;
+  private transporter: nodemailer.Transporter | null;
+  private templateCache: Map<string, string> = new Map();
 
   constructor() {
+    // Skip email configuration if credentials are not provided
+    if (
+      !process.env.EMAIL_USER ||
+      !process.env.EMAIL_PASS ||
+      process.env.EMAIL_USER === "test@example.com"
+    ) {
+      console.log("📧 Email service disabled - no valid credentials provided");
+      this.transporter = null;
+      return;
+    }
+
     const config: EmailConfig = {
       service: "gmail",
       auth: {
@@ -23,33 +37,67 @@ class EmailService {
     this.transporter = nodemailer.createTransport(config);
   }
 
-  public async sendOTP(to: string, otp: string): Promise<boolean> {
+  private loadTemplate(templateName: string): string {
+    if (this.templateCache.has(templateName)) {
+      return this.templateCache.get(templateName)!;
+    }
+
     try {
+      const templatePath = path.join(
+        __dirname,
+        "email-templates",
+        `${templateName}.html`,
+      );
+      const template = fs.readFileSync(templatePath, "utf-8");
+      this.templateCache.set(templateName, template);
+      return template;
+    } catch (error) {
+      console.error(`Error loading email template ${templateName}:`, error);
+      return this.getFallbackTemplate();
+    }
+  }
+
+  private getFallbackTemplate(): string {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #333;">{{SUBJECT}}</h2>
+        <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0;">
+          {{CONTENT}}
+        </div>
+        <p style="font-size: 12px; color: #999;">Fusion Bank - Secure Banking</p>
+      </div>
+    `;
+  }
+
+  private renderTemplate(
+    template: string,
+    variables: Record<string, string>,
+  ): string {
+    let rendered = template;
+    for (const [key, value] of Object.entries(variables)) {
+      const regex = new RegExp(`{{${key}}}`, "g");
+      rendered = rendered.replace(regex, value);
+    }
+    return rendered;
+  }
+
+  public async sendOTP(to: string, otp: string): Promise<boolean> {
+    if (!this.transporter) {
+      console.log("📧 Email disabled - OTP would be sent to:", to, "OTP:", otp);
+      return false;
+    }
+    try {
+      const template = this.loadTemplate("otp-template");
+      const htmlContent = this.renderTemplate(template, {
+        OTP_CODE: otp,
+      });
+
       const mailOptions = {
         from: `"Fusion Bank Secure Login" <${process.env.EMAIL_USER}>`,
         to,
-        subject: "Your Login Code",
-        text: `Your one-time login code is: ${otp}\n\nIt will expire in 5 minutes.`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">Your Login Code</h2>
-            <p style="font-size: 16px; color: #555;">
-              Your one-time login code is:
-            </p>
-            <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0;">
-              <span style="font-size: 32px; font-weight: bold; color: #2563eb; letter-spacing: 4px;">
-                ${otp}
-              </span>
-            </div>
-            <p style="font-size: 14px; color: #666;">
-              This code will expire in 5 minutes. If you didn't request this code, please ignore this email.
-            </p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="font-size: 12px; color: #999;">
-              Fusion Bank - Secure Authentication
-            </p>
-          </div>
-        `,
+        subject: "Your Login Code - Fusion Bank",
+        text: `Your one-time login code is: ${otp}\n\nIt will expire in 5 minutes.\n\nFusion Bank - Secure Authentication`,
+        html: htmlContent,
       };
 
       const info = await this.transporter.sendMail(mailOptions);
@@ -73,6 +121,13 @@ class EmailService {
       merchantName?: string;
     },
   ): Promise<boolean> {
+    if (!this.transporter) {
+      console.log(
+        "📧 Email disabled - transaction notification would be sent to:",
+        to,
+      );
+      return false;
+    }
     try {
       // Validate email and required fields
       if (!to || !to.includes("@") || !transactionData) {
@@ -209,6 +264,13 @@ class EmailService {
       ipAddress?: string;
     },
   ): Promise<boolean> {
+    if (!this.transporter) {
+      console.log(
+        "📧 Email disabled - profile update notification would be sent to:",
+        to,
+      );
+      return false;
+    }
     try {
       // Validate email and required fields
       if (
@@ -293,6 +355,10 @@ class EmailService {
   }
 
   public async verifyConnection(): Promise<boolean> {
+    if (!this.transporter) {
+      console.log("📧 Email service disabled - skipping verification");
+      return true;
+    }
     try {
       await this.transporter.verify();
       console.log("✅ Email service is ready");

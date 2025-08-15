@@ -5,7 +5,7 @@ import {
   useContext,
   ReactNode,
 } from "react";
-import { auth, db, BankingUser } from "@/lib/supabase";
+import { auth, db, BankingUser, isSupabaseConfigured } from "@/lib/supabase";
 import { Session, User } from "@supabase/supabase-js";
 
 interface AuthContextType {
@@ -25,6 +25,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // If Supabase is not configured, don't try to authenticate
+    if (!isSupabaseConfigured) {
+      console.warn("Supabase not configured - user authentication disabled");
+      setLoading(false);
+      return;
+    }
+
     const setData = async (session: Session | null) => {
       if (session?.user) {
         setUser(session.user);
@@ -53,7 +60,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
 
     // Initial load
-    auth.getUser().then(({ data: { user } }) => {
+    auth.getUser().then((response) => {
+      const user = 'data' in response ? response.data?.user : response.user;
       if (user) {
         auth.getSession().then(({ data: { session } }) => {
           setData(session);

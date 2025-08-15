@@ -3,7 +3,18 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Check if Supabase is configured with real values
+export const isSupabaseConfigured = !!(
+  supabaseUrl &&
+  supabaseAnonKey &&
+  supabaseUrl !== "https://placeholder.supabase.co" &&
+  supabaseAnonKey !== "placeholder_key"
+);
+
+// Only create client if properly configured
+export const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 // Real-time subscription management
 export class RealtimeManager {
@@ -92,6 +103,9 @@ export const auth = {
     bio?: string,
     picture?: string,
   ) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -108,6 +122,9 @@ export const auth = {
 
   // Sign in user
   async signIn(email: string, password: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -117,6 +134,9 @@ export const auth = {
 
   // Sign out user
   async signOut() {
+    if (!supabase) {
+      return { error: new Error("Supabase not configured") };
+    }
     // Clean up realtime subscriptions
     realtimeManager.unsubscribeAll();
 
@@ -126,6 +146,9 @@ export const auth = {
 
   // Get current user
   async getUser() {
+    if (!supabase) {
+      return { user: null, error: new Error("Supabase not configured") };
+    }
     const {
       data: { user },
       error,
@@ -133,8 +156,23 @@ export const auth = {
     return { user, error };
   },
 
+  // Get current session
+  async getSession() {
+    if (!supabase) {
+      return {
+        data: { session: null },
+        error: new Error("Supabase not configured"),
+      };
+    }
+    const { data, error } = await supabase.auth.getSession();
+    return { data, error };
+  },
+
   // Listen for auth state changes
   onAuthStateChange(callback: (event: string, session: any) => void) {
+    if (!supabase) {
+      return { data: { subscription: { unsubscribe: () => {} } } };
+    }
     return supabase.auth.onAuthStateChange(callback);
   },
 
@@ -172,6 +210,9 @@ export const auth = {
 export const db = {
   // Get user's accounts
   async getAccounts(userId: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase
       .from("accounts")
       .select("*")
@@ -183,6 +224,9 @@ export const db = {
 
   // Get transactions for a specific account or all user accounts
   async getTransactions(userId: string, accountId?: number, limit = 50) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     let query = supabase
       .from("transactions")
       .select(
@@ -205,6 +249,9 @@ export const db = {
 
   // Get user's cards
   async getCards(userId: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase
       .from("cards")
       .select("*")
@@ -216,6 +263,9 @@ export const db = {
 
   // Get user's banking profile
   async getBankingProfile(userId: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase
       .from("banking_users")
       .select("*")
