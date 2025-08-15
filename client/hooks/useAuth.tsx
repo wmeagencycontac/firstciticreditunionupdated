@@ -15,6 +15,7 @@ interface AuthContextType {
   user: User | null;
   profile: BankingUser | null;
   loading: boolean;
+  isAuthenticated: boolean;
   signOut: () => Promise<void>;
   setProfile: (profile: BankingUser | null) => void;
 }
