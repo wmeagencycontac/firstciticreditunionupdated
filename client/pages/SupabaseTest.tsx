@@ -247,16 +247,19 @@ export default function SupabaseTest() {
     if (!user) return;
     setLoading(true);
     try {
-      const response = await fetch("/api/supabase/cards", {
+      // Use SQLite API endpoint when Supabase is not configured
+      const endpoint = "/api/cards";
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access_token}`,
+          Authorization: `Bearer ${user.access_token || 'dev-token'}`,
         },
       });
 
       if (response.ok) {
-        setMessage("Card created successfully!");
+        const result = await response.json();
+        setMessage(result.message || "Card created successfully!");
         setMessageType("success");
         await loadCards(user.id);
       } else {
