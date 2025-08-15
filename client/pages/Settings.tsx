@@ -171,7 +171,7 @@ export default function Settings() {
                     <Label htmlFor="phone">Phone Number</Label>
                     <Input
                       id="phone"
-                      value={profile?.phone_number || ""}
+                      value={""}
                       onChange={handleProfileChange}
                     />
                   </div>
@@ -179,7 +179,7 @@ export default function Settings() {
                     <Label htmlFor="address_street">Street Address</Label>
                     <Input
                       id="address_street"
-                      value={profile?.address_street || ""}
+                      value={""}
                       onChange={handleProfileChange}
                       placeholder="123 Main Street"
                     />
@@ -190,7 +190,7 @@ export default function Settings() {
                     <Label htmlFor="address_city">City</Label>
                     <Input
                       id="address_city"
-                      value={profile?.address_city || ""}
+                      value={""}
                       onChange={handleProfileChange}
                       placeholder="City"
                     />
@@ -199,7 +199,7 @@ export default function Settings() {
                     <Label htmlFor="address_state">State</Label>
                     <Input
                       id="address_state"
-                      value={profile?.address_state || ""}
+                      value={""}
                       onChange={handleProfileChange}
                       placeholder="State"
                     />
@@ -208,7 +208,7 @@ export default function Settings() {
                     <Label htmlFor="address_zip">ZIP Code</Label>
                     <Input
                       id="address_zip"
-                      value={profile?.address_zip || ""}
+                      value={""}
                       onChange={handleProfileChange}
                       placeholder="12345"
                     />
