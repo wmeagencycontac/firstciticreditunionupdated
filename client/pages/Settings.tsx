@@ -27,6 +27,7 @@ import { db } from "@/lib/supabase";
 
 export default function Settings() {
   const { user, profile: bankingProfile, setProfile } = useAuth();
+  const [profile, setLocalProfile] = useState(bankingProfile);
   const [showPassword, setShowPassword] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
