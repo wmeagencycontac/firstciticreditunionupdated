@@ -39,7 +39,7 @@ export default function Settings() {
 
   useEffect(() => {
     if (bankingProfile) {
-      setProfile(bankingProfile);
+      setLocalProfile(bankingProfile);
       // Assuming notification settings are part of the profile in a real app
       // For now, we'll keep them in local state
     }
