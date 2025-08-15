@@ -73,6 +73,8 @@ import {
   testProfileUpdateEmail,
   testAllNotifications,
 } from "./routes/test-email-notifications";
+import { testSupabaseConnection } from "./routes/supabase-test";
+import { setupSupabaseDatabase } from "./routes/setup-supabase";
 
 // Global Socket.IO server instance
 export let io: SocketIOServer;
@@ -268,6 +270,8 @@ export function createServer() {
     app.post("/api/test-email/transaction", testTransactionEmail);
     app.post("/api/test-email/profile", testProfileUpdateEmail);
     app.post("/api/test-email/all", testAllNotifications);
+    app.get("/api/test-supabase", testSupabaseConnection);
+    app.post("/api/setup-supabase", setupSupabaseDatabase);
   }
 
   // Migration endpoint (development only)
