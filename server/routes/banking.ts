@@ -203,6 +203,33 @@ export const handleGetCards: RequestHandler = async (req, res) => {
   }
 };
 
+// POST /api/cards - Create a new card
+export const handleCreateCard: RequestHandler = async (req, res) => {
+  try {
+    const db = getBankingDatabase();
+    const userId = req.user.id;
+
+    // Generate unique card number
+    const cardNumber = await db.generateUniqueCardNumber();
+
+    // Create the card
+    const cardId = await db.createCard({
+      userId,
+      cardNumber,
+    });
+
+    res.json({
+      success: true,
+      message: "Card created successfully",
+      cardId,
+      cardNumber: `****-****-****-${cardNumber.slice(-4)}`, // Return masked number
+    });
+  } catch (error) {
+    console.error("Create card error:", error);
+    res.status(500).json({ error: "Failed to create card" });
+  }
+};
+
 // GET /api/admin/users-pending - Get all unverified users for admin review
 export const handleGetPendingUsers: RequestHandler = async (req, res) => {
   try {

@@ -14,6 +14,7 @@ interface AuthContextType {
   profile: BankingUser | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  setProfile: (profile: BankingUser | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -61,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Initial load
     auth.getUser().then((response) => {
-      const user = 'data' in response ? response.data?.user : response.user;
+      const user = "data" in response ? response.data?.user : response.user;
       if (user) {
         auth.getSession().then(({ data: { session } }) => {
           setData(session);
@@ -89,6 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     profile,
     loading,
     signOut,
+    setProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

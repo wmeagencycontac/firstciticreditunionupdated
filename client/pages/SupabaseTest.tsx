@@ -27,6 +27,7 @@ import {
   Transaction,
   Card as CardType,
   BankingUser,
+  isSupabaseConfigured,
 } from "@/lib/supabase";
 
 export default function SupabaseTest() {
@@ -55,6 +56,71 @@ export default function SupabaseTest() {
   const [messageType, setMessageType] = useState<"success" | "error">(
     "success",
   );
+
+  // Development mode: Set mock user when Supabase is not configured
+  useEffect(() => {
+    if (!isSupabaseConfigured) {
+      console.log("Development mode: Setting mock user");
+      const mockUser = {
+        id: "dev-user-1",
+        email: "dev@example.com",
+        access_token: "dev-token",
+      };
+      setUser(mockUser);
+      setBankingProfile({
+        id: "dev-profile-1",
+        user_id: "dev-user-1",
+        name: "Development User",
+        email: "dev@example.com",
+        phone_number: "+1-555-0123",
+        address_street: "123 Dev Street",
+        address_city: "DevCity",
+        address_state: "DevState",
+        address_zip: "12345",
+        date_of_birth: "1990-01-01",
+        ssn: "***-**-1234",
+        identity_verified: true,
+        verification_method: "development",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+
+      // Load some mock data for development
+      setAccounts([
+        {
+          id: "dev-account-1",
+          user_id: "dev-user-1",
+          account_number: "1234567890",
+          account_type: "checking",
+          balance: 1500.0,
+          currency: "USD",
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: "dev-account-2",
+          user_id: "dev-user-1",
+          account_number: "0987654321",
+          account_type: "savings",
+          balance: 5000.0,
+          currency: "USD",
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+      setCards([
+        {
+          id: "dev-card-1",
+          user_id: "dev-user-1",
+          card_number: "****-****-****-1234",
+          status: "active",
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+      setMessage("Development mode: Mock user loaded");
+      setMessageType("success");
+    }
+  }, []);
 
   useEffect(() => {
     // Check for existing user session
@@ -247,22 +313,39 @@ export default function SupabaseTest() {
     if (!user) return;
     setLoading(true);
     try {
-      const response = await fetch("/api/supabase/cards", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access_token}`,
-        },
-      });
-
-      if (response.ok) {
-        setMessage("Card created successfully!");
+      if (!isSupabaseConfigured) {
+        // Development mode: Create a mock card
+        const newCard = {
+          id: `dev-card-${Date.now()}`,
+          user_id: user.id,
+          card_number: `****-****-****-${Math.floor(1000 + Math.random() * 9000)}`,
+          status: "active",
+          created_at: new Date().toISOString(),
+        };
+        setCards((prev) => [...prev, newCard]);
+        setMessage("Card created successfully! (Development mode)");
         setMessageType("success");
-        await loadCards(user.id);
       } else {
-        const error = await response.json();
-        setMessage(error.error || "Failed to create card");
-        setMessageType("error");
+        // Use SQLite API endpoint when Supabase is not configured
+        const endpoint = "/api/cards";
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.access_token || "dev-token"}`,
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          setMessage(result.message || "Card created successfully!");
+          setMessageType("success");
+          await loadCards(user.id);
+        } else {
+          const error = await response.json();
+          setMessage(error.error || "Failed to create card");
+          setMessageType("error");
+        }
       }
     } catch (error) {
       setMessage("Failed to create card");

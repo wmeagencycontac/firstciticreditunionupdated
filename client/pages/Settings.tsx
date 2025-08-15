@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +27,7 @@ import { db } from "@/lib/supabase";
 
 export default function Settings() {
   const { user, profile: bankingProfile, setProfile } = useAuth();
+  const [profile, setLocalProfile] = useState(bankingProfile);
   const [showPassword, setShowPassword] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
@@ -38,14 +39,14 @@ export default function Settings() {
 
   useEffect(() => {
     if (bankingProfile) {
-      setProfile(bankingProfile);
+      setLocalProfile(bankingProfile);
       // Assuming notification settings are part of the profile in a real app
       // For now, we'll keep them in local state
     }
   }, [bankingProfile]);
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfile({
+    setLocalProfile({
       ...profile,
       [e.target.id]: e.target.value,
     });
@@ -67,6 +68,10 @@ export default function Settings() {
         name: profile.name,
         email: profile.email,
         phone_number: profile.phone_number,
+        address_street: profile.address_street,
+        address_city: profile.address_city,
+        address_state: profile.address_state,
+        address_zip: profile.address_zip,
       });
 
       if (error) {
@@ -171,18 +176,41 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="address">Address</Label>
+                    <Label htmlFor="address_street">Street Address</Label>
                     <Input
-                      id="address"
-                      value={
-                        `${profile?.address_street || ""}, ${
-                          profile?.address_city || ""
-                        }, ${profile?.address_state || ""} ${
-                          profile?.address_zip || ""
-                        }`
-                      }
+                      id="address_street"
+                      value={profile?.address_street || ""}
                       onChange={handleProfileChange}
-                      disabled // Address is complex, so disable for now
+                      placeholder="123 Main Street"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="address_city">City</Label>
+                    <Input
+                      id="address_city"
+                      value={profile?.address_city || ""}
+                      onChange={handleProfileChange}
+                      placeholder="City"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="address_state">State</Label>
+                    <Input
+                      id="address_state"
+                      value={profile?.address_state || ""}
+                      onChange={handleProfileChange}
+                      placeholder="State"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="address_zip">ZIP Code</Label>
+                    <Input
+                      id="address_zip"
+                      value={profile?.address_zip || ""}
+                      onChange={handleProfileChange}
+                      placeholder="12345"
                     />
                   </div>
                 </div>

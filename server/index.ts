@@ -64,6 +64,7 @@ import {
   handleGetAllTransactions,
   handleSendTransfer,
   handleGetCards,
+  handleCreateCard,
   handleAdminVerifyUser,
   handleGetPendingUsers,
   authenticateToken,
@@ -182,12 +183,12 @@ export function createServer() {
   app.post("/api/otp/verify-code", handleVerifyOTP);
   app.get("/api/otp/user/:userId", handleGetOTPUser);
 
-
   // Banking API endpoints (protected)
   app.get("/api/account-summary", authenticateToken, handleAccountSummary);
   app.get("/api/all-transactions", authenticateToken, handleGetAllTransactions);
   app.post("/api/send-transfer", authenticateToken, handleSendTransfer);
   app.get("/api/cards", authenticateToken, handleGetCards);
+  app.post("/api/cards", authenticateToken, handleCreateCard);
 
   // Admin setup endpoints (no auth required for initial setup)
   app.post("/api/admin/setup", handleCreateAdmin);
