@@ -207,6 +207,9 @@ export const auth = {
 export const db = {
   // Get user's accounts
   async getAccounts(userId: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase
       .from("accounts")
       .select("*")
@@ -218,6 +221,9 @@ export const db = {
 
   // Get transactions for a specific account or all user accounts
   async getTransactions(userId: string, accountId?: number, limit = 50) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     let query = supabase
       .from("transactions")
       .select(
@@ -240,6 +246,9 @@ export const db = {
 
   // Get user's cards
   async getCards(userId: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase
       .from("cards")
       .select("*")
@@ -251,6 +260,9 @@ export const db = {
 
   // Get user's banking profile
   async getBankingProfile(userId: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
     const { data, error } = await supabase
       .from("banking_users")
       .select("*")
