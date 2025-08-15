@@ -146,7 +146,7 @@ export const auth = {
 
   // Get current user
   async getUser() {
-    if (!isSupabaseConfigured) {
+    if (!supabase) {
       return { user: null, error: new Error("Supabase not configured") };
     }
     const {
@@ -158,7 +158,7 @@ export const auth = {
 
   // Get current session
   async getSession() {
-    if (!isSupabaseConfigured) {
+    if (!supabase) {
       return { data: { session: null }, error: new Error("Supabase not configured") };
     }
     const { data, error } = await supabase.auth.getSession();
@@ -167,7 +167,7 @@ export const auth = {
 
   // Listen for auth state changes
   onAuthStateChange(callback: (event: string, session: any) => void) {
-    if (!isSupabaseConfigured) {
+    if (!supabase) {
       return { data: { subscription: { unsubscribe: () => {} } } };
     }
     return supabase.auth.onAuthStateChange(callback);
