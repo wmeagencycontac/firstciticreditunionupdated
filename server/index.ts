@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import { createServer as createHttpServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { getEmailService } from "./email";
@@ -143,15 +145,74 @@ export function createServer() {
   const bankingDb = getBankingDatabase();
   console.log("Banking database initialized");
 
-  // Middleware
+  // Security Middleware
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'", "ws:", "wss:"],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        mediaSrc: ["'self'"],
+        frameSrc: ["'none'"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+  }));
+
+  // Rate limiting
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: {
+      error: "Too many requests from this IP, please try again later."
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // API rate limiting (more restrictive)
+  const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 50, // limit each IP to 50 API requests per windowMs
+    message: {
+      error: "Too many API requests from this IP, please try again later."
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // Auth rate limiting (very restrictive)
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 auth attempts per windowMs
+    message: {
+      error: "Too many authentication attempts from this IP, please try again later."
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // Apply general rate limiting to all requests
+  app.use(limiter);
+
+  // Apply API rate limiting to API routes
+  app.use('/api/', apiLimiter);
+
+  // CORS Middleware
   app.use(
     cors({
       origin: process.env.FRONTEND_URL || "http://localhost:8080",
       credentials: true,
     }),
   );
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+
+  // Body parsing middleware
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // Example API routes
   app.get("/api/ping", (_req, res) => {
@@ -161,9 +222,9 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
-  // Banking API routes
-  app.post("/api/auth/login", handleLogin);
-  app.post("/api/auth/register", handleRegistration);
+  // Banking API routes with auth rate limiting
+  app.post("/api/auth/login", authLimiter, handleLogin);
+  app.post("/api/auth/register", authLimiter, handleRegistration);
   app.get("/api/auth/profile", handleProfile);
   app.post("/api/auth/logout", handleLogout);
   app.get("/api/dashboard", handleGetDashboard);
@@ -178,9 +239,9 @@ export function createServer() {
   app.get("/api/transactions", handleGetTransactions);
   app.post("/api/transactions", handleCreateTransaction);
 
-  // OTP Authentication endpoints
-  app.post("/api/otp/request-code", handleRequestOTP);
-  app.post("/api/otp/verify-code", handleVerifyOTP);
+  // OTP Authentication endpoints with auth rate limiting
+  app.post("/api/otp/request-code", authLimiter, handleRequestOTP);
+  app.post("/api/otp/verify-code", authLimiter, handleVerifyOTP);
   app.get("/api/otp/user/:userId", handleGetOTPUser);
 
   // Banking API endpoints (protected)
@@ -194,8 +255,8 @@ export function createServer() {
   app.post("/api/admin/setup", handleCreateAdmin);
   app.get("/api/admin/check", handleCheckAdminExists);
 
-  // Admin authentication endpoints
-  app.post("/api/admin/login", handleAdminLogin);
+  // Admin authentication endpoints with auth rate limiting
+  app.post("/api/admin/login", authLimiter, handleAdminLogin);
   app.post("/api/admin/logout", authenticateToken, handleAdminLogout);
   app.get("/api/admin/profile", authenticateToken, handleAdminProfile);
 
@@ -211,9 +272,9 @@ export function createServer() {
   // NEW SUPABASE ROUTES
   // ========================================
 
-  // Supabase Auth routes
-  app.post("/api/supabase/auth/signup", supabaseSignUp);
-  app.post("/api/supabase/auth/signin", supabaseSignIn);
+  // Supabase Auth routes with auth rate limiting
+  app.post("/api/supabase/auth/signup", authLimiter, supabaseSignUp);
+  app.post("/api/supabase/auth/signin", authLimiter, supabaseSignIn);
   app.post(
     "/api/supabase/auth/signout",
     supabaseAuthenticateUser,
