@@ -62,7 +62,8 @@ const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <NetworkErrorBoundary>
+      <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -165,5 +166,6 @@ export default function App() {
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
+    </NetworkErrorBoundary>
   );
 }
