@@ -64,6 +64,7 @@ import {
   handleGetAllTransactions,
   handleSendTransfer,
   handleGetCards,
+  handleCreateCard,
   handleAdminVerifyUser,
   handleGetPendingUsers,
   authenticateToken,
