@@ -274,6 +274,37 @@ export const db = {
 
     return { data, error };
   },
+
+  // Get dashboard summary
+  async getDashboardSummary(userId: string) {
+    if (!supabase) {
+      return { data: null, error: new Error("Supabase not configured") };
+    }
+    // This is a custom endpoint, so we use fetch
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        return { data: null, error: new Error("Not authenticated") };
+      }
+
+      const response = await fetch(`/api/v2/dashboard/summary/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch dashboard summary");
+      }
+
+      const data = await response.json();
+      return { data, error: null };
+    } catch (error) {
+      return { data: null, error };
+    }
+  },
 };
 
 // Export types

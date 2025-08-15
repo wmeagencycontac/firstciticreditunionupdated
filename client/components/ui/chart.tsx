@@ -74,6 +74,15 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null;
   }
 
+  const sanitizeCss = (css: string) => {
+    // A basic sanitizer allowing hex, rgb, rgba, hsl, hsla and css variables.
+    // For a real-world application, a more robust library would be better.
+    return css.replace(
+      /[^a-zA-Z0-9#(),-]/g,
+      ""
+    );
+  };
+
   return (
     <style
       dangerouslySetInnerHTML={{
@@ -86,7 +95,7 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
+    return color ? `  --color-${key}: ${sanitizeCss(color)};` : null;
   })
   .join("\n")}
 }

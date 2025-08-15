@@ -65,25 +65,10 @@ export default function Dashboard() {
     }
   }, [user]);
 
+  const [totalBalance, setTotalBalance] = useState(0);
+
   useEffect(() => {
-    if (recentTransactions.length > 0) {
-      const spending = recentTransactions
-        .filter((t) => t.type === "debit")
-        .reduce(
-          (acc, t) => {
-            const category = (t as any).category || "Other";
-            const existing = acc.find((item) => item.name === category);
-            if (existing) {
-              existing.amount += t.amount;
-            } else {
-              acc.push({ name: category, amount: t.amount });
-            }
-            return acc;
-          },
-          [] as { name: string; amount: number }[],
-        );
-      setSpendingData(spending);
-    }
+    // This effect is now empty, we can remove it.
   }, [recentTransactions]);
 
   const loadDashboardData = async (userId: string) => {
@@ -100,6 +85,13 @@ export default function Dashboard() {
         await db.getTransactions(userId, undefined, 10);
       if (transactionsError) throw transactionsError;
       setRecentTransactions(transactionsData || []);
+
+      // Load dashboard summary
+      const { data: summaryData, error: summaryError } =
+        await db.getDashboardSummary(userId);
+      if (summaryError) throw summaryError;
+      setTotalBalance(summaryData.totalBalance);
+      setSpendingData(summaryData.spendingData);
     } catch (error) {
       console.error("Error loading dashboard data:", error);
       setError("Failed to load dashboard data. Please refresh the page.");
@@ -112,15 +104,19 @@ export default function Dashboard() {
     // Subscribe to real-time transaction updates
     realtimeManager.subscribeToTransactions(userId, (payload) => {
       console.log("Real-time transaction update:", payload);
-      // Reload transactions and accounts to get fresh data
-      loadDashboardData(userId);
+      const newTransaction = payload.new as Transaction;
+      setRecentTransactions((prev) => [newTransaction, ...prev]);
     });
 
     // Subscribe to real-time account updates
     realtimeManager.subscribeToAccounts(userId, (payload) => {
       console.log("Real-time account update:", payload);
-      // Reload accounts to get updated balances
-      loadDashboardData(userId);
+      const updatedAccount = payload.new as Account;
+      setAccounts((prev) =>
+        prev.map((account) =>
+          account.id === updatedAccount.id ? updatedAccount : account,
+        ),
+      );
     });
   };
 
@@ -148,10 +144,6 @@ export default function Dashboard() {
       return <ArrowDownRight className="w-4 h-4 text-success" />;
     }
     return <ArrowUpRight className="w-4 h-4 text-destructive" />;
-  };
-
-  const calculateTotalBalance = () => {
-    return accounts.reduce((sum, account) => sum + account.balance, 0);
   };
 
   const getAccountTypeIcon = (accountType: string) => {
@@ -304,7 +296,7 @@ export default function Dashboard() {
                 <div className="flex items-center space-x-2">
                   <h1 className="text-4xl font-bold">
                     {balanceVisible
-                      ? formatCurrency(calculateTotalBalance())
+                      ? formatCurrency(totalBalance)
                       : "••••••"}
                   </h1>
                   <Button
