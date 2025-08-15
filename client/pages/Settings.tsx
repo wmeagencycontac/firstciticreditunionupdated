@@ -46,7 +46,7 @@ export default function Settings() {
   }, [bankingProfile]);
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfile({
+    setLocalProfile({
       ...profile,
       [e.target.id]: e.target.value,
     });
