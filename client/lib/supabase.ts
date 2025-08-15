@@ -3,10 +3,18 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
-// Check if Supabase is configured
-export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
+// Check if Supabase is configured with real values
+export const isSupabaseConfigured = !!(
+  supabaseUrl &&
+  supabaseAnonKey &&
+  supabaseUrl !== "https://placeholder.supabase.co" &&
+  supabaseAnonKey !== "placeholder_key"
+);
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Only create client if properly configured
+export const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 // Real-time subscription management
 export class RealtimeManager {
