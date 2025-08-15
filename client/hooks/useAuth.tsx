@@ -14,6 +14,7 @@ interface AuthContextType {
   profile: BankingUser | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  setProfile: (profile: BankingUser | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
