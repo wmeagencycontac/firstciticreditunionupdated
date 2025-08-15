@@ -87,8 +87,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Initial load
     auth.getUser().then((response) => {
-      const user = "data" in response ? response.data?.user : response.user;
-      if (user) {
+      const userData = "data" in response ? response.data : response;
+      if (userData?.user) {
         auth.getSession().then(({ data: { session } }) => {
           setData(session);
         });
