@@ -68,6 +68,10 @@ export default function Settings() {
         name: profile.name,
         email: profile.email,
         phone_number: profile.phone_number,
+        address_street: profile.address_street,
+        address_city: profile.address_city,
+        address_state: profile.address_state,
+        address_zip: profile.address_zip,
       });
 
       if (error) {
