@@ -313,25 +313,39 @@ export default function SupabaseTest() {
     if (!user) return;
     setLoading(true);
     try {
-      // Use SQLite API endpoint when Supabase is not configured
-      const endpoint = "/api/cards";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access_token || 'dev-token'}`,
-        },
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setMessage(result.message || "Card created successfully!");
+      if (!isSupabaseConfigured) {
+        // Development mode: Create a mock card
+        const newCard = {
+          id: `dev-card-${Date.now()}`,
+          user_id: user.id,
+          card_number: `****-****-****-${Math.floor(1000 + Math.random() * 9000)}`,
+          status: "active",
+          created_at: new Date().toISOString(),
+        };
+        setCards(prev => [...prev, newCard]);
+        setMessage("Card created successfully! (Development mode)");
         setMessageType("success");
-        await loadCards(user.id);
       } else {
-        const error = await response.json();
-        setMessage(error.error || "Failed to create card");
-        setMessageType("error");
+        // Use SQLite API endpoint when Supabase is not configured
+        const endpoint = "/api/cards";
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.access_token || 'dev-token'}`,
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          setMessage(result.message || "Card created successfully!");
+          setMessageType("success");
+          await loadCards(user.id);
+        } else {
+          const error = await response.json();
+          setMessage(error.error || "Failed to create card");
+          setMessageType("error");
+        }
       }
     } catch (error) {
       setMessage("Failed to create card");
