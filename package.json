@@ -33,8 +33,7 @@
     "migrate:supabase": "node -e \"require('./dist/server/migrate-to-supabase-enhanced.js').migrateDataToSupabaseEnhanced()\"",
     "netlify-dev": "netlify dev",
     "netlify-build": "npm run build:client",
-    "render-build": "npm ci && npm run build:full",
-    "postinstall": "npm run build:server || true"
+    "render-build": "npm ci && npm run build:full"
   },
   "engines": {
     "node": ">=20.0.0",
