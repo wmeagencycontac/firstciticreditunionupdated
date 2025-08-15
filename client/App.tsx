@@ -162,6 +162,7 @@ export default function App() {
 
                 {/* Development/Testing Pages */}
                 <Route path="/email-test" element={<EmailNotificationTest />} />
+                <Route path="/dev-banking" element={<DevBanking />} />
 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
