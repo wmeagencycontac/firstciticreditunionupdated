@@ -222,7 +222,7 @@ export const handleCreateCard: RequestHandler = async (req, res) => {
       success: true,
       message: "Card created successfully",
       cardId,
-      cardNumber: `****-****-****-${cardNumber.slice(-4)}` // Return masked number
+      cardNumber: `****-****-****-${cardNumber.slice(-4)}`, // Return masked number
     });
   } catch (error) {
     console.error("Create card error:", error);

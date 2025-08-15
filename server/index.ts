@@ -183,7 +183,6 @@ export function createServer() {
   app.post("/api/otp/verify-code", handleVerifyOTP);
   app.get("/api/otp/user/:userId", handleGetOTPUser);
 
-
   // Banking API endpoints (protected)
   app.get("/api/account-summary", authenticateToken, handleAccountSummary);
   app.get("/api/all-transactions", authenticateToken, handleGetAllTransactions);

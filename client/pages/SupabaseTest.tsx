@@ -92,7 +92,7 @@ export default function SupabaseTest() {
           user_id: "dev-user-1",
           account_number: "1234567890",
           account_type: "checking",
-          balance: 1500.00,
+          balance: 1500.0,
           currency: "USD",
           created_at: new Date().toISOString(),
         },
@@ -101,10 +101,10 @@ export default function SupabaseTest() {
           user_id: "dev-user-1",
           account_number: "0987654321",
           account_type: "savings",
-          balance: 5000.00,
+          balance: 5000.0,
           currency: "USD",
           created_at: new Date().toISOString(),
-        }
+        },
       ]);
 
       setCards([
@@ -114,7 +114,7 @@ export default function SupabaseTest() {
           card_number: "****-****-****-1234",
           status: "active",
           created_at: new Date().toISOString(),
-        }
+        },
       ]);
 
       setMessage("Development mode: Mock user loaded");
@@ -322,7 +322,7 @@ export default function SupabaseTest() {
           status: "active",
           created_at: new Date().toISOString(),
         };
-        setCards(prev => [...prev, newCard]);
+        setCards((prev) => [...prev, newCard]);
         setMessage("Card created successfully! (Development mode)");
         setMessageType("success");
       } else {
@@ -332,7 +332,7 @@ export default function SupabaseTest() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.access_token || 'dev-token'}`,
+            Authorization: `Bearer ${user.access_token || "dev-token"}`,
           },
         });
 

@@ -55,10 +55,14 @@ export default function DevBanking() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<"success" | "error">("success");
+  const [messageType, setMessageType] = useState<"success" | "error">(
+    "success",
+  );
 
   // Form states for account creation
-  const [newAccountType, setNewAccountType] = useState<"checking" | "savings">("checking");
+  const [newAccountType, setNewAccountType] = useState<"checking" | "savings">(
+    "checking",
+  );
 
   useEffect(() => {
     // Initialize with mock data
@@ -72,7 +76,7 @@ export default function DevBanking() {
         user_id: "dev-user",
         account_number: "1234567890",
         account_type: "checking",
-        balance: 1500.00,
+        balance: 1500.0,
         currency: "USD",
         created_at: new Date().toISOString(),
       },
@@ -81,7 +85,7 @@ export default function DevBanking() {
         user_id: "dev-user",
         account_number: "0987654321",
         account_type: "savings",
-        balance: 5000.00,
+        balance: 5000.0,
         currency: "USD",
         created_at: new Date().toISOString(),
       },
@@ -101,7 +105,7 @@ export default function DevBanking() {
       {
         id: "txn-1",
         account_id: "acc-1",
-        amount: 50.00,
+        amount: 50.0,
         type: "debit",
         description: "Coffee Shop Purchase",
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
@@ -109,7 +113,7 @@ export default function DevBanking() {
       {
         id: "txn-2",
         account_id: "acc-2",
-        amount: 1000.00,
+        amount: 1000.0,
         type: "credit",
         description: "Direct Deposit",
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
@@ -130,15 +134,19 @@ export default function DevBanking() {
       const newAccount: Account = {
         id: `acc-${Date.now()}`,
         user_id: "dev-user",
-        account_number: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
+        account_number: Math.floor(
+          1000000000 + Math.random() * 9000000000,
+        ).toString(),
         account_type: newAccountType,
-        balance: 0.00,
+        balance: 0.0,
         currency: "USD",
         created_at: new Date().toISOString(),
       };
 
-      setAccounts(prev => [...prev, newAccount]);
-      setMessage(`${newAccountType.charAt(0).toUpperCase() + newAccountType.slice(1)} account created successfully!`);
+      setAccounts((prev) => [...prev, newAccount]);
+      setMessage(
+        `${newAccountType.charAt(0).toUpperCase() + newAccountType.slice(1)} account created successfully!`,
+      );
       setMessageType("success");
     } catch (error) {
       setMessage("Failed to create account");
@@ -159,7 +167,7 @@ export default function DevBanking() {
         created_at: new Date().toISOString(),
       };
 
-      setCards(prev => [...prev, newCard]);
+      setCards((prev) => [...prev, newCard]);
       setMessage("Card created successfully!");
       setMessageType("success");
     } catch (error) {
@@ -197,7 +205,9 @@ export default function DevBanking() {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <CreditCard className="w-6 h-6 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold">Development Banking Interface</h1>
+            <h1 className="text-3xl font-bold">
+              Development Banking Interface
+            </h1>
           </div>
           <p className="text-muted-foreground">
             Test banking features without authentication (Development Mode)
@@ -223,31 +233,39 @@ export default function DevBanking() {
               <div className="flex items-center space-x-2">
                 <Wallet className="h-8 w-8 text-primary" />
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Balance</p>
-                  <p className="text-2xl font-bold">{formatCurrency(getTotalBalance())}</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Total Balance
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {formatCurrency(getTotalBalance())}
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-2">
                 <User className="h-8 w-8 text-primary" />
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Accounts</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Accounts
+                  </p>
                   <p className="text-2xl font-bold">{accounts.length}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-2">
                 <CreditCard className="h-8 w-8 text-primary" />
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Cards</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Cards
+                  </p>
                   <p className="text-2xl font-bold">{cards.length}</p>
                 </div>
               </div>
@@ -265,7 +283,9 @@ export default function DevBanking() {
                   <Plus className="h-5 w-5" />
                   Create New Account
                 </CardTitle>
-                <CardDescription>Add a new checking or savings account</CardDescription>
+                <CardDescription>
+                  Add a new checking or savings account
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -273,14 +293,22 @@ export default function DevBanking() {
                   <select
                     id="account-type"
                     value={newAccountType}
-                    onChange={(e) => setNewAccountType(e.target.value as "checking" | "savings")}
+                    onChange={(e) =>
+                      setNewAccountType(
+                        e.target.value as "checking" | "savings",
+                      )
+                    }
                     className="w-full px-3 py-2 border rounded-md"
                   >
                     <option value="checking">Checking Account</option>
                     <option value="savings">Savings Account</option>
                   </select>
                 </div>
-                <Button onClick={handleCreateAccount} disabled={loading} className="w-full">
+                <Button
+                  onClick={handleCreateAccount}
+                  disabled={loading}
+                  className="w-full"
+                >
                   {loading ? "Creating..." : "Create Account"}
                 </Button>
               </CardContent>
@@ -331,10 +359,16 @@ export default function DevBanking() {
                   <CreditCard className="h-5 w-5" />
                   Cards ({cards.length})
                 </CardTitle>
-                <CardDescription>Manage your debit/credit cards</CardDescription>
+                <CardDescription>
+                  Manage your debit/credit cards
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button onClick={handleCreateCard} disabled={loading} className="w-full">
+                <Button
+                  onClick={handleCreateCard}
+                  disabled={loading}
+                  className="w-full"
+                >
                   {loading ? "Creating..." : "Create New Card"}
                 </Button>
 
@@ -349,7 +383,9 @@ export default function DevBanking() {
                           </p>
                         </div>
                         <Badge
-                          variant={card.status === "active" ? "default" : "secondary"}
+                          variant={
+                            card.status === "active" ? "default" : "secondary"
+                          }
                         >
                           {card.status}
                         </Badge>
@@ -375,7 +411,9 @@ export default function DevBanking() {
                     <div key={transaction.id} className="p-3 border rounded-lg">
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-medium">{transaction.description}</p>
+                          <p className="font-medium">
+                            {transaction.description}
+                          </p>
                           <p className="text-sm text-muted-foreground">
                             {formatDate(transaction.timestamp)}
                           </p>
@@ -393,7 +431,9 @@ export default function DevBanking() {
                           </p>
                           <Badge
                             variant={
-                              transaction.type === "credit" ? "default" : "secondary"
+                              transaction.type === "credit"
+                                ? "default"
+                                : "secondary"
                             }
                           >
                             {transaction.type}
