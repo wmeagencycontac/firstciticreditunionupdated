@@ -1,4 +1,5 @@
 // Comprehensive monitoring and logging service for banking application
+import React from 'react';
 
 interface LogLevel {
   ERROR: 'error';
