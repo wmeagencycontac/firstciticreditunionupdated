@@ -188,6 +188,7 @@ export function createServer() {
   app.get("/api/all-transactions", authenticateToken, handleGetAllTransactions);
   app.post("/api/send-transfer", authenticateToken, handleSendTransfer);
   app.get("/api/cards", authenticateToken, handleGetCards);
+  app.post("/api/cards", authenticateToken, handleCreateCard);
 
   // Admin setup endpoints (no auth required for initial setup)
   app.post("/api/admin/setup", handleCreateAdmin);
