@@ -69,7 +69,7 @@ export const useUserProfile = () => {
       const validation = validateSchema(UserSchema, data);
       
       if (!validation.success) {
-        throw new Error(`Invalid profile data: ${validation.error}`);
+        throw new Error('Invalid profile data');
       }
       
       return validation.data;
@@ -93,7 +93,7 @@ export const useSupabaseAccounts = () => {
       return data.map(account => {
         const validation = validateSchema(AccountSchema, account);
         if (!validation.success) {
-          console.warn(`Invalid account data:`, validation.error, account);
+          console.warn('Invalid account data:', account);
           return account; // Return as-is for now, but log the issue
         }
         return validation.data;
@@ -121,7 +121,7 @@ export const useSupabaseTransactions = (accountId?: string) => {
       return data.map(transaction => {
         const validation = validateSchema(TransactionSchema, transaction);
         if (!validation.success) {
-          console.warn(`Invalid transaction data:`, validation.error, transaction);
+          console.warn('Invalid transaction data:', transaction);
           return transaction; // Return as-is for now, but log the issue
         }
         return validation.data;
@@ -143,7 +143,7 @@ export const useRecentTransactions = () => {
       return data.map(transaction => {
         const validation = validateSchema(TransactionSchema, transaction);
         if (!validation.success) {
-          console.warn(`Invalid recent transaction data:`, validation.error, transaction);
+          console.warn('Invalid recent transaction data:', transaction);
           return transaction;
         }
         return validation.data;
@@ -167,7 +167,7 @@ export const useSupabaseCards = () => {
       return data.map(card => {
         const validation = validateSchema(CardSchema, card);
         if (!validation.success) {
-          console.warn(`Invalid card data:`, validation.error, card);
+          console.warn('Invalid card data:', card);
           return card;
         }
         return validation.data;
@@ -192,7 +192,7 @@ export const useCreateSupabaseTransaction = () => {
       );
       
       if (!validation.success) {
-        throw new Error(`Invalid transaction data: ${validation.error}`);
+        throw new Error('Invalid transaction data');
       }
 
       return apiCall<any>('/transactions', {
@@ -232,7 +232,7 @@ export const useSupabaseTransfer = () => {
       const validation = validateSchema(TransferSchema, transferData);
       
       if (!validation.success) {
-        throw new Error(`Invalid transfer data: ${validation.error}`);
+        throw new Error('Invalid transfer data');
       }
 
       return apiCall<any>('/transfer', {
