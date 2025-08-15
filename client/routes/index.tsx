@@ -67,7 +67,10 @@ export function AppRoutes() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/otp-login" element={<OtpLogin />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/reset-password-confirm" element={<ResetPasswordConfirm />} />
+      <Route
+        path="/reset-password-confirm"
+        element={<ResetPasswordConfirm />}
+      />
       <Route path="/password-reset-test" element={<PasswordResetTest />} />
 
       {/* Banking Product Pages */}
@@ -99,7 +102,10 @@ export function AppRoutes() {
       <Route path="/demo-interactive" element={<InteractiveDemo />} />
 
       {/* Service Information Pages */}
-      <Route path="/mobile-deposit-service" element={<MobileDepositService />} />
+      <Route
+        path="/mobile-deposit-service"
+        element={<MobileDepositService />}
+      />
       <Route path="/instant-transfers" element={<InstantTransfers />} />
       <Route path="/smart-alerts" element={<SmartAlerts />} />
 
@@ -138,7 +144,7 @@ export function AppRoutes() {
       </Route>
 
       {/* ===== DEVELOPMENT ROUTES (only in dev mode) ===== */}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV === "development" && (
         <>
           <Route path="/test-setup" element={<TestSetup />} />
           <Route path="/debug" element={<Debug />} />

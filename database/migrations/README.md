@@ -5,6 +5,7 @@ This directory contains all database migrations for the Fusion Banking applicati
 ## Migration Workflow
 
 ### 1. Migration File Naming Convention
+
 ```
 <timestamp>_<description>.sql
 ```
@@ -12,7 +13,9 @@ This directory contains all database migrations for the Fusion Banking applicati
 Example: `20240115120000_remove_cvv_column.sql`
 
 ### 2. Migration Structure
+
 Each migration file should contain:
+
 - Up migration (changes to apply)
 - Down migration (changes to rollback) - optional but recommended
 - Clear comments explaining the changes
@@ -20,12 +23,14 @@ Each migration file should contain:
 ### 3. Creating New Migrations
 
 #### For Supabase (Production):
+
 ```bash
 # Create a new migration file
 touch database/migrations/$(date +%Y%m%d%H%M%S)_your_migration_name.sql
 ```
 
 #### For Local SQLite (Development):
+
 ```bash
 # Create a new migration file
 touch database/migrations/$(date +%Y%m%d%H%M%S)_your_migration_name_sqlite.sql
@@ -77,17 +82,19 @@ COMMIT;
 ## Running Migrations
 
 ### Supabase
+
 Migrations are automatically applied when pushed to Supabase via the dashboard or CLI.
 
 ### Local Development
+
 For local SQLite databases, migrations should be applied through the application's migration runner.
 
 ## Migration History
 
-| Migration | Date | Description | Author |
-|-----------|------|-------------|---------|
-| 001 | 2024-01-15 | Initial schema | System |
-| 002 | 2024-01-15 | Remove CVV column | Security Team |
+| Migration | Date       | Description       | Author        |
+| --------- | ---------- | ----------------- | ------------- |
+| 001       | 2024-01-15 | Initial schema    | System        |
+| 002       | 2024-01-15 | Remove CVV column | Security Team |
 
 ## Important Notes
 

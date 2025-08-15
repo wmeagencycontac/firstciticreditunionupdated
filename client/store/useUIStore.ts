@@ -12,30 +12,32 @@ interface Notification {
 interface UIState {
   // Notification state
   notifications: Notification[];
-  
+
   // Loading states for UI feedback
   dashboardLoading: boolean;
   transactionLoading: boolean;
-  
+
   // Selected/active states
   selectedAccountId: number | null;
-  
+
   // Modal/dialog states
   isTransferModalOpen: boolean;
   isTransactionModalOpen: boolean;
-  
+
   // Actions
-  addNotification: (notification: Omit<Notification, "id" | "timestamp">) => void;
+  addNotification: (
+    notification: Omit<Notification, "id" | "timestamp">,
+  ) => void;
   removeNotification: (id: string) => void;
   clearNotifications: () => void;
-  
+
   setDashboardLoading: (loading: boolean) => void;
   setTransactionLoading: (loading: boolean) => void;
   setSelectedAccount: (accountId: number | null) => void;
-  
+
   setTransferModalOpen: (open: boolean) => void;
   setTransactionModalOpen: (open: boolean) => void;
-  
+
   reset: () => void;
 }
 
@@ -78,11 +80,14 @@ export const useUIStore = create<UIState>()(
         clearNotifications: () => set({ notifications: [] }),
 
         setDashboardLoading: (dashboardLoading) => set({ dashboardLoading }),
-        setTransactionLoading: (transactionLoading) => set({ transactionLoading }),
+        setTransactionLoading: (transactionLoading) =>
+          set({ transactionLoading }),
         setSelectedAccount: (selectedAccountId) => set({ selectedAccountId }),
-        
-        setTransferModalOpen: (isTransferModalOpen) => set({ isTransferModalOpen }),
-        setTransactionModalOpen: (isTransactionModalOpen) => set({ isTransactionModalOpen }),
+
+        setTransferModalOpen: (isTransferModalOpen) =>
+          set({ isTransferModalOpen }),
+        setTransactionModalOpen: (isTransactionModalOpen) =>
+          set({ isTransactionModalOpen }),
 
         reset: () => set(initialState),
       }),

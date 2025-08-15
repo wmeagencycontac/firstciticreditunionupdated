@@ -5,11 +5,12 @@ import type { Account, Transaction, Card, BankingUser } from "@/lib/supabase";
 
 // Query Keys
 export const BANKING_QUERY_KEYS = {
-  accounts: ['accounts'] as const,
-  transactions: ['transactions'] as const,
-  transactionsByAccount: (accountId: number) => ['transactions', accountId] as const,
-  cards: ['cards'] as const,
-  user: ['banking-user'] as const,
+  accounts: ["accounts"] as const,
+  transactions: ["transactions"] as const,
+  transactionsByAccount: (accountId: number) =>
+    ["transactions", accountId] as const,
+  cards: ["cards"] as const,
+  user: ["banking-user"] as const,
 } as const;
 
 // User Queries
@@ -21,8 +22,10 @@ export const useBankingUser = () => {
         throw new Error("Supabase not configured");
       }
 
-      const { data: { user } } = await supabase!.auth.getUser();
-      
+      const {
+        data: { user },
+      } = await supabase!.auth.getUser();
+
       if (!user) return null;
 
       const { data: profile, error } = await supabase!
@@ -42,7 +45,7 @@ export const useBankingUser = () => {
 // Account Queries
 export const useAccounts = () => {
   const { data: user } = useBankingUser();
-  
+
   return useQuery({
     queryKey: BANKING_QUERY_KEYS.accounts,
     queryFn: async (): Promise<Account[]> => {
@@ -65,9 +68,9 @@ export const useAccounts = () => {
 // Transaction Queries
 export const useTransactions = (accountId?: number) => {
   const { data: user } = useBankingUser();
-  
+
   return useQuery({
-    queryKey: accountId 
+    queryKey: accountId
       ? BANKING_QUERY_KEYS.transactionsByAccount(accountId)
       : BANKING_QUERY_KEYS.transactions,
     queryFn: async (): Promise<Transaction[]> => {
@@ -75,10 +78,12 @@ export const useTransactions = (accountId?: number) => {
 
       let query = supabase!
         .from("transactions")
-        .select(`
+        .select(
+          `
           *,
           accounts!inner(user_id, account_number, account_type)
-        `)
+        `,
+        )
         .eq("accounts.user_id", user.id)
         .order("timestamp", { ascending: false })
         .limit(50);
@@ -100,7 +105,7 @@ export const useTransactions = (accountId?: number) => {
 // Card Queries
 export const useCards = () => {
   const { data: user } = useBankingUser();
-  
+
   return useQuery({
     queryKey: BANKING_QUERY_KEYS.cards,
     queryFn: async (): Promise<Card[]> => {
@@ -126,7 +131,9 @@ export const useCreateTransaction = () => {
   const addNotification = useUIStore((state) => state.addNotification);
 
   return useMutation({
-    mutationFn: async (transactionData: Omit<Transaction, "id" | "timestamp" | "created_at">) => {
+    mutationFn: async (
+      transactionData: Omit<Transaction, "id" | "timestamp" | "created_at">,
+    ) => {
       const { data, error } = await supabase!
         .from("transactions")
         .insert({
@@ -142,9 +149,11 @@ export const useCreateTransaction = () => {
     },
     onSuccess: (data) => {
       // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: BANKING_QUERY_KEYS.transactions });
+      queryClient.invalidateQueries({
+        queryKey: BANKING_QUERY_KEYS.transactions,
+      });
       queryClient.invalidateQueries({ queryKey: BANKING_QUERY_KEYS.accounts });
-      
+
       addNotification({
         type: "success",
         title: "Transaction Created",
@@ -197,9 +206,11 @@ export const useTransferFunds = () => {
     },
     onSuccess: (_, variables) => {
       // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: BANKING_QUERY_KEYS.transactions });
+      queryClient.invalidateQueries({
+        queryKey: BANKING_QUERY_KEYS.transactions,
+      });
       queryClient.invalidateQueries({ queryKey: BANKING_QUERY_KEYS.accounts });
-      
+
       addNotification({
         type: "success",
         title: "Transfer Completed",
@@ -233,6 +244,6 @@ export const useBankingTotals = () => {
 export const useSelectedAccount = () => {
   const selectedAccountId = useUIStore((state) => state.selectedAccountId);
   const { data: accounts = [] } = useAccounts();
-  
+
   return accounts.find((account) => account.id === selectedAccountId) || null;
 };

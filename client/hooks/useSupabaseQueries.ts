@@ -15,7 +15,10 @@ import {
 const API_BASE = "/api/v2";
 
 // Utility function for API calls
-async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+async function apiCall<T>(
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<T> {
   const response = await fetch(`${API_BASE}${endpoint}`, {
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +28,9 @@ async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: "Network error" }));
+    const error = await response
+      .json()
+      .catch(() => ({ message: "Network error" }));
     throw new Error(error.message || `HTTP ${response.status}`);
   }
 
@@ -34,19 +39,20 @@ async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<
 
 // Query Keys for v2 API
 export const SUPABASE_QUERY_KEYS = {
-  profile: ['v2', 'profile'] as const,
-  accounts: ['v2', 'accounts'] as const,
-  transactions: ['v2', 'transactions'] as const,
-  transactionsByAccount: (accountId: string) => ['v2', 'transactions', accountId] as const,
-  cards: ['v2', 'cards'] as const,
-  recentTransactions: ['v2', 'transactions', 'recent'] as const,
+  profile: ["v2", "profile"] as const,
+  accounts: ["v2", "accounts"] as const,
+  transactions: ["v2", "transactions"] as const,
+  transactionsByAccount: (accountId: string) =>
+    ["v2", "transactions", accountId] as const,
+  cards: ["v2", "cards"] as const,
+  recentTransactions: ["v2", "transactions", "recent"] as const,
 } as const;
 
 // ===== AUTH HOOKS =====
 
 export const useSupabaseAuth = () => {
   const { user, profile, isAuthenticated, loading } = useAuth();
-  
+
   return {
     user,
     profile,
@@ -59,19 +65,19 @@ export const useSupabaseAuth = () => {
 
 export const useUserProfile = () => {
   const { user } = useAuth();
-  
+
   return useQuery({
     queryKey: SUPABASE_QUERY_KEYS.profile,
     queryFn: async () => {
       if (!user) throw new Error("User not authenticated");
-      
+
       const data = await apiCall<any>(`/profile/${user.id}`);
       const validation = validateSchema(UserSchema, data);
-      
+
       if (!validation.success) {
-        throw new Error('Invalid profile data');
+        throw new Error("Invalid profile data");
       }
-      
+
       return validation.data;
     },
     enabled: !!user,
@@ -83,17 +89,17 @@ export const useUserProfile = () => {
 
 export const useSupabaseAccounts = () => {
   const { isAuthenticated } = useAuth();
-  
+
   return useQuery({
     queryKey: SUPABASE_QUERY_KEYS.accounts,
     queryFn: async () => {
-      const data = await apiCall<any[]>('/accounts');
-      
+      const data = await apiCall<any[]>("/accounts");
+
       // Validate each account
-      return data.map(account => {
+      return data.map((account) => {
         const validation = validateSchema(AccountSchema, account);
         if (!validation.success) {
-          console.warn('Invalid account data:', account);
+          console.warn("Invalid account data:", account);
           return account; // Return as-is for now, but log the issue
         }
         return validation.data;
@@ -108,20 +114,22 @@ export const useSupabaseAccounts = () => {
 
 export const useSupabaseTransactions = (accountId?: string) => {
   const { isAuthenticated } = useAuth();
-  
+
   return useQuery({
-    queryKey: accountId 
+    queryKey: accountId
       ? SUPABASE_QUERY_KEYS.transactionsByAccount(accountId)
       : SUPABASE_QUERY_KEYS.transactions,
     queryFn: async () => {
-      const endpoint = accountId ? `/transactions?account_id=${accountId}` : '/transactions';
+      const endpoint = accountId
+        ? `/transactions?account_id=${accountId}`
+        : "/transactions";
       const data = await apiCall<any[]>(endpoint);
-      
+
       // Validate each transaction
-      return data.map(transaction => {
+      return data.map((transaction) => {
         const validation = validateSchema(TransactionSchema, transaction);
         if (!validation.success) {
-          console.warn('Invalid transaction data:', transaction);
+          console.warn("Invalid transaction data:", transaction);
           return transaction; // Return as-is for now, but log the issue
         }
         return validation.data;
@@ -134,16 +142,16 @@ export const useSupabaseTransactions = (accountId?: string) => {
 
 export const useRecentTransactions = () => {
   const { isAuthenticated } = useAuth();
-  
+
   return useQuery({
     queryKey: SUPABASE_QUERY_KEYS.recentTransactions,
     queryFn: async () => {
-      const data = await apiCall<any[]>('/transactions/recent');
-      
-      return data.map(transaction => {
+      const data = await apiCall<any[]>("/transactions/recent");
+
+      return data.map((transaction) => {
         const validation = validateSchema(TransactionSchema, transaction);
         if (!validation.success) {
-          console.warn('Invalid recent transaction data:', transaction);
+          console.warn("Invalid recent transaction data:", transaction);
           return transaction;
         }
         return validation.data;
@@ -158,16 +166,16 @@ export const useRecentTransactions = () => {
 
 export const useSupabaseCards = () => {
   const { isAuthenticated } = useAuth();
-  
+
   return useQuery({
     queryKey: SUPABASE_QUERY_KEYS.cards,
     queryFn: async () => {
-      const data = await apiCall<any[]>('/cards');
-      
-      return data.map(card => {
+      const data = await apiCall<any[]>("/cards");
+
+      return data.map((card) => {
         const validation = validateSchema(CardSchema, card);
         if (!validation.success) {
-          console.warn('Invalid card data:', card);
+          console.warn("Invalid card data:", card);
           return card;
         }
         return validation.data;
@@ -188,24 +196,28 @@ export const useCreateSupabaseTransaction = () => {
     mutationFn: async (transactionData: any) => {
       const validation = validateSchema(
         TransactionSchema.omit({ id: true, timestamp: true, createdAt: true }),
-        transactionData
+        transactionData,
       );
-      
+
       if (!validation.success) {
-        throw new Error('Invalid transaction data');
+        throw new Error("Invalid transaction data");
       }
 
-      return apiCall<any>('/transactions', {
-        method: 'POST',
+      return apiCall<any>("/transactions", {
+        method: "POST",
         body: JSON.stringify(validation.data),
       });
     },
     onSuccess: (data) => {
       // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: SUPABASE_QUERY_KEYS.transactions });
+      queryClient.invalidateQueries({
+        queryKey: SUPABASE_QUERY_KEYS.transactions,
+      });
       queryClient.invalidateQueries({ queryKey: SUPABASE_QUERY_KEYS.accounts });
-      queryClient.invalidateQueries({ queryKey: SUPABASE_QUERY_KEYS.recentTransactions });
-      
+      queryClient.invalidateQueries({
+        queryKey: SUPABASE_QUERY_KEYS.recentTransactions,
+      });
+
       addNotification({
         type: "success",
         title: "Transaction Created",
@@ -230,22 +242,26 @@ export const useSupabaseTransfer = () => {
   return useMutation({
     mutationFn: async (transferData: any) => {
       const validation = validateSchema(TransferSchema, transferData);
-      
+
       if (!validation.success) {
-        throw new Error('Invalid transfer data');
+        throw new Error("Invalid transfer data");
       }
 
-      return apiCall<any>('/transfer', {
-        method: 'POST',
+      return apiCall<any>("/transfer", {
+        method: "POST",
         body: JSON.stringify(validation.data),
       });
     },
     onSuccess: (_, variables) => {
       // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: SUPABASE_QUERY_KEYS.transactions });
+      queryClient.invalidateQueries({
+        queryKey: SUPABASE_QUERY_KEYS.transactions,
+      });
       queryClient.invalidateQueries({ queryKey: SUPABASE_QUERY_KEYS.accounts });
-      queryClient.invalidateQueries({ queryKey: SUPABASE_QUERY_KEYS.recentTransactions });
-      
+      queryClient.invalidateQueries({
+        queryKey: SUPABASE_QUERY_KEYS.recentTransactions,
+      });
+
       addNotification({
         type: "success",
         title: "Transfer Completed",
@@ -269,14 +285,14 @@ export const useCreateSupabaseCard = () => {
 
   return useMutation({
     mutationFn: async (cardData: any) => {
-      return apiCall<any>('/cards', {
-        method: 'POST',
+      return apiCall<any>("/cards", {
+        method: "POST",
         body: JSON.stringify(cardData),
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SUPABASE_QUERY_KEYS.cards });
-      
+
       addNotification({
         type: "success",
         title: "Card Created",
@@ -302,7 +318,10 @@ export const useSupabaseBankingTotals = () => {
   const { data: recentTransactions = [] } = useRecentTransactions();
 
   return {
-    totalBalance: accounts.reduce((sum, account) => sum + (account.balance || 0), 0),
+    totalBalance: accounts.reduce(
+      (sum, account) => sum + (account.balance || 0),
+      0,
+    ),
     activeCards: cards.filter((card) => card.status === "active"),
     recentTransactions: recentTransactions.slice(0, 10),
     accountCount: accounts.length,
@@ -313,6 +332,6 @@ export const useSupabaseBankingTotals = () => {
 export const useSelectedSupabaseAccount = () => {
   const selectedAccountId = useUIStore((state) => state.selectedAccountId);
   const { data: accounts = [] } = useSupabaseAccounts();
-  
+
   return accounts.find((account) => account.id === selectedAccountId) || null;
 };

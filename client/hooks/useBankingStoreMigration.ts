@@ -5,7 +5,14 @@
  */
 
 import { useAuth } from "./useAuth";
-import { useAccounts, useTransactions, useCards, useBankingTotals, useCreateTransaction, useTransferFunds } from "./useBankingQueries";
+import {
+  useAccounts,
+  useTransactions,
+  useCards,
+  useBankingTotals,
+  useCreateTransaction,
+  useTransferFunds,
+} from "./useBankingQueries";
 import { useUIStore, useUISelectors } from "@/store/useUIStore";
 
 /**
@@ -15,13 +22,14 @@ import { useUIStore, useUISelectors } from "@/store/useUIStore";
 export const useBankingStoreMigration = () => {
   const auth = useAuth();
   const { data: accounts = [], isLoading: accountsLoading } = useAccounts();
-  const { data: transactions = [], isLoading: transactionsLoading } = useTransactions();
+  const { data: transactions = [], isLoading: transactionsLoading } =
+    useTransactions();
   const { data: cards = [] } = useCards();
   const { totalBalance, activeCards, recentTransactions } = useBankingTotals();
-  
+
   const ui = useUIStore();
   const uiSelectors = useUISelectors();
-  
+
   const createTransaction = useCreateTransaction();
   const transferFunds = useTransferFunds();
 
@@ -46,35 +54,53 @@ export const useBankingStoreMigration = () => {
     totalBalance,
     activeCards,
     recentTransactions,
-    selectedAccount: accounts.find(account => account.id === ui.selectedAccountId),
+    selectedAccount: accounts.find(
+      (account) => account.id === ui.selectedAccountId,
+    ),
     hasNotifications: uiSelectors.hasNotifications,
 
     // Actions - User
     setUser: () => {
-      console.warn("setUser is deprecated. User state is managed by useAuth hook.");
+      console.warn(
+        "setUser is deprecated. User state is managed by useAuth hook.",
+      );
     },
     setAuthenticated: () => {
-      console.warn("setAuthenticated is deprecated. Auth state is managed by useAuth hook.");
+      console.warn(
+        "setAuthenticated is deprecated. Auth state is managed by useAuth hook.",
+      );
     },
     setLoading: () => {
-      console.warn("setLoading is deprecated. Auth loading state is managed by useAuth hook.");
+      console.warn(
+        "setLoading is deprecated. Auth loading state is managed by useAuth hook.",
+      );
     },
 
     // Actions - Banking data (now mutations)
     setAccounts: () => {
-      console.warn("setAccounts is deprecated. Use TanStack Query mutations to update server state.");
+      console.warn(
+        "setAccounts is deprecated. Use TanStack Query mutations to update server state.",
+      );
     },
     setTransactions: () => {
-      console.warn("setTransactions is deprecated. Use TanStack Query mutations to update server state.");
+      console.warn(
+        "setTransactions is deprecated. Use TanStack Query mutations to update server state.",
+      );
     },
     setCards: () => {
-      console.warn("setCards is deprecated. Use TanStack Query mutations to update server state.");
+      console.warn(
+        "setCards is deprecated. Use TanStack Query mutations to update server state.",
+      );
     },
     addTransaction: () => {
-      console.warn("addTransaction is deprecated. Use useCreateTransaction mutation.");
+      console.warn(
+        "addTransaction is deprecated. Use useCreateTransaction mutation.",
+      );
     },
     updateAccountBalance: () => {
-      console.warn("updateAccountBalance is deprecated. Balance updates are handled by server and TanStack Query.");
+      console.warn(
+        "updateAccountBalance is deprecated. Balance updates are handled by server and TanStack Query.",
+      );
     },
 
     // Actions - UI state
@@ -89,19 +115,27 @@ export const useBankingStoreMigration = () => {
 
     // Actions - Data fetching (now handled by TanStack Query)
     fetchUserData: () => {
-      console.warn("fetchUserData is deprecated. User data is fetched automatically by useAuth hook.");
+      console.warn(
+        "fetchUserData is deprecated. User data is fetched automatically by useAuth hook.",
+      );
       return Promise.resolve();
     },
     fetchAccounts: () => {
-      console.warn("fetchAccounts is deprecated. Use useAccounts hook which fetches automatically.");
+      console.warn(
+        "fetchAccounts is deprecated. Use useAccounts hook which fetches automatically.",
+      );
       return Promise.resolve();
     },
     fetchTransactions: () => {
-      console.warn("fetchTransactions is deprecated. Use useTransactions hook which fetches automatically.");
+      console.warn(
+        "fetchTransactions is deprecated. Use useTransactions hook which fetches automatically.",
+      );
       return Promise.resolve();
     },
     fetchCards: () => {
-      console.warn("fetchCards is deprecated. Use useCards hook which fetches automatically.");
+      console.warn(
+        "fetchCards is deprecated. Use useCards hook which fetches automatically.",
+      );
       return Promise.resolve();
     },
 
@@ -109,17 +143,31 @@ export const useBankingStoreMigration = () => {
     createTransaction: (transactionData: any) => {
       return createTransaction.mutateAsync(transactionData);
     },
-    transferFunds: (fromAccountId: number, toAccountId: number, amount: number, description: string) => {
-      return transferFunds.mutateAsync({ fromAccountId, toAccountId, amount, description });
+    transferFunds: (
+      fromAccountId: number,
+      toAccountId: number,
+      amount: number,
+      description: string,
+    ) => {
+      return transferFunds.mutateAsync({
+        fromAccountId,
+        toAccountId,
+        amount,
+        description,
+      });
     },
 
     // Utility actions
     reset: () => {
       ui.reset();
-      console.warn("Store reset partially completed. Auth state reset requires signing out.");
+      console.warn(
+        "Store reset partially completed. Auth state reset requires signing out.",
+      );
     },
     refresh: () => {
-      console.warn("refresh is deprecated. TanStack Query handles automatic refetching.");
+      console.warn(
+        "refresh is deprecated. TanStack Query handles automatic refetching.",
+      );
       return Promise.resolve();
     },
   };
@@ -127,16 +175,16 @@ export const useBankingStoreMigration = () => {
 
 /**
  * Migration instructions for components using the old banking store:
- * 
+ *
  * OLD:
  * const { user, accounts, transactions, createTransaction } = useBankingStore();
- * 
+ *
  * NEW:
  * const { profile: user } = useAuth();
  * const { data: accounts } = useAccounts();
  * const { data: transactions } = useTransactions();
  * const createTransaction = useCreateTransaction();
- * 
+ *
  * Benefits of new approach:
  * - Better performance with automatic caching and background updates
  * - Separation of concerns (auth, server state, UI state)

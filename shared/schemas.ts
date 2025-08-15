@@ -56,7 +56,9 @@ export const AccountSchema = z.object({
   available_balance: z.number().optional(),
   pending_balance: z.number().optional(),
   daily_withdrawal_limit: z.number().optional(),
-  status: z.enum(["active", "inactive", "suspended", "closed", "frozen"]).default("active"),
+  status: z
+    .enum(["active", "inactive", "suspended", "closed", "frozen"])
+    .default("active"),
   opened_date: z.string().optional(),
   closed_date: z.string().optional(),
   last_activity_date: z.string().optional(),
@@ -76,14 +78,23 @@ export const TransactionSchema = z.object({
     "interest",
     "deposit",
     "withdrawal",
-    "mobile_deposit"
+    "mobile_deposit",
   ]),
   amount: z.number().positive("Amount must be positive"),
   description: z.string().min(1, "Description is required"),
   timestamp: z.string(),
   category: z.string().optional(),
   merchant: z.string().optional(),
-  status: z.enum(["pending", "processing", "completed", "failed", "cancelled", "reversed"]).default("completed"),
+  status: z
+    .enum([
+      "pending",
+      "processing",
+      "completed",
+      "failed",
+      "cancelled",
+      "reversed",
+    ])
+    .default("completed"),
   createdAt: z.string().optional(),
   balance_after: z.number().optional(),
   merchant_name: z.string().optional(),
@@ -104,7 +115,15 @@ export const CardSchema = z.object({
   card_number_last_four: z.string().length(4, "Last four digits required"),
   card_type: z.enum(["debit", "credit"]),
   card_brand: z.enum(["visa", "mastercard", "amex", "discover"]).optional(),
-  status: z.enum(["active", "inactive", "blocked", "expired", "lost", "stolen", "cancelled"]),
+  status: z.enum([
+    "active",
+    "inactive",
+    "blocked",
+    "expired",
+    "lost",
+    "stolen",
+    "cancelled",
+  ]),
   expiry_month: z.number().min(1).max(12),
   expiry_year: z.number().min(new Date().getFullYear()),
   created_at: z.string(),
@@ -142,49 +161,55 @@ export const LoginResponseSchema = z.object({
 });
 
 // Registration schema
-export const RegistrationRequestSchema = z.object({
-  // Personal Information
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  phoneNumber: z.string().min(10, "Invalid phone number"),
-  dateOfBirth: z.string().min(1, "Date of birth is required"),
-  ssn: z.string().min(9, "Invalid SSN"),
+export const RegistrationRequestSchema = z
+  .object({
+    // Personal Information
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().min(1, "Last name is required"),
+    email: z.string().email("Invalid email address"),
+    phoneNumber: z.string().min(10, "Invalid phone number"),
+    dateOfBirth: z.string().min(1, "Date of birth is required"),
+    ssn: z.string().min(9, "Invalid SSN"),
 
-  // Address Information
-  street: z.string().min(1, "Street address is required"),
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(2, "State is required"),
-  zipCode: z.string().min(5, "Invalid ZIP code"),
-  country: z.string().default("US"),
+    // Address Information
+    street: z.string().min(1, "Street address is required"),
+    city: z.string().min(1, "City is required"),
+    state: z.string().min(2, "State is required"),
+    zipCode: z.string().min(5, "Invalid ZIP code"),
+    country: z.string().default("US"),
 
-  // Account Selection
-  accountType: z.enum(["personal", "business", "investment"]),
-  initialDeposit: z.string().min(1, "Initial deposit is required"),
+    // Account Selection
+    accountType: z.enum(["personal", "business", "investment"]),
+    initialDeposit: z.string().min(1, "Initial deposit is required"),
 
-  // Business Information (optional)
-  businessName: z.string().optional(),
-  businessType: z.string().optional(),
-  ein: z.string().optional(),
-  businessAddress: z.string().optional(),
+    // Business Information (optional)
+    businessName: z.string().optional(),
+    businessType: z.string().optional(),
+    ein: z.string().optional(),
+    businessAddress: z.string().optional(),
 
-  // Identity Verification
-  documentType: z.enum(["drivers_license", "passport", "state_id"]),
-  documentNumber: z.string().min(1, "Document number is required"),
-  documentExpiry: z.string().min(1, "Document expiry is required"),
+    // Identity Verification
+    documentType: z.enum(["drivers_license", "passport", "state_id"]),
+    documentNumber: z.string().min(1, "Document number is required"),
+    documentExpiry: z.string().min(1, "Document expiry is required"),
 
-  // Security
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string().min(8, "Password confirmation is required"),
+    // Security
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Password confirmation is required"),
 
-  // Legal
-  agreeToTerms: z.boolean().refine(val => val === true, "You must agree to the terms"),
-  agreeToPrivacy: z.boolean().refine(val => val === true, "You must agree to the privacy policy"),
-  optInMarketing: z.boolean(),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+    // Legal
+    agreeToTerms: z
+      .boolean()
+      .refine((val) => val === true, "You must agree to the terms"),
+    agreeToPrivacy: z
+      .boolean()
+      .refine((val) => val === true, "You must agree to the privacy policy"),
+    optInMarketing: z.boolean(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 // OTP schemas
 export const OTPRequestSchema = z.object({
@@ -202,7 +227,9 @@ export const TransactionFiltersSchema = z.object({
   type: z.enum(["all", "debit", "credit", "transfer"]).optional(),
   status: z.enum(["all", "pending", "completed", "failed"]).optional(),
   category: z.string().optional(),
-  amountRange: z.enum(["all", "under-50", "50-200", "200-1000", "over-1000"]).optional(),
+  amountRange: z
+    .enum(["all", "under-50", "50-200", "200-1000", "over-1000"])
+    .optional(),
   dateFrom: z.string().optional(),
   dateTo: z.string().optional(),
   sortBy: z.enum(["date", "amount"]).optional(),
@@ -212,9 +239,11 @@ export const TransactionFiltersSchema = z.object({
 // Dashboard schemas
 export const DashboardDataSchema = z.object({
   user: BankingUserSchema,
-  accounts: z.array(AccountSchema.extend({
-    recent_transactions: z.array(TransactionSchema),
-  })),
+  accounts: z.array(
+    AccountSchema.extend({
+      recent_transactions: z.array(TransactionSchema),
+    }),
+  ),
   totalBalance: z.number(),
   recentActivity: z.array(TransactionSchema),
 });
@@ -255,16 +284,24 @@ export const EmailVerificationSchema = z.object({
 });
 
 // Enhanced registration for Supabase
-export const EnhancedRegistrationRequestSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  bio: z.string().optional(),
-  password: z.string().min(8, "Password must be at least 8 characters").optional(),
-  confirmPassword: z.string().min(8, "Password confirmation is required").optional(),
-}).refine(data => !data.password || data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+export const EnhancedRegistrationRequestSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email address"),
+    bio: z.string().optional(),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .optional(),
+    confirmPassword: z
+      .string()
+      .min(8, "Password confirmation is required")
+      .optional(),
+  })
+  .refine((data) => !data.password || data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 // Type exports for use in TypeScript
 export type User = z.infer<typeof UserSchema>;
@@ -280,15 +317,22 @@ export type OTPRequest = z.infer<typeof OTPRequestSchema>;
 export type OTPVerify = z.infer<typeof OTPVerifySchema>;
 export type TransactionFilters = z.infer<typeof TransactionFiltersSchema>;
 export type DashboardData = z.infer<typeof DashboardDataSchema>;
-export type AdminVerifyUserRequest = z.infer<typeof AdminVerifyUserRequestSchema>;
+export type AdminVerifyUserRequest = z.infer<
+  typeof AdminVerifyUserRequestSchema
+>;
 export type AdminDashboardStats = z.infer<typeof AdminDashboardStatsSchema>;
 export type ApiResponse = z.infer<typeof ApiResponseSchema>;
 export type PaginatedResponse = z.infer<typeof PaginatedResponseSchema>;
 export type EmailVerification = z.infer<typeof EmailVerificationSchema>;
-export type EnhancedRegistrationRequest = z.infer<typeof EnhancedRegistrationRequestSchema>;
+export type EnhancedRegistrationRequest = z.infer<
+  typeof EnhancedRegistrationRequestSchema
+>;
 
 // Validation helper functions
-export const validateSchema = <T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; error: string } => {
+export const validateSchema = <T>(
+  schema: z.ZodSchema<T>,
+  data: unknown,
+): { success: true; data: T } | { success: false; error: string } => {
   try {
     const result = schema.parse(data);
     return { success: true, data: result };

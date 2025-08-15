@@ -4,7 +4,11 @@ import rateLimit from "express-rate-limit";
 // Legacy Auth Routes
 import { handleLogin, handleProfile, handleLogout } from "./auth";
 import { handleRegistration } from "./registration";
-import { handleRequestOTP, handleVerifyOTP, handleGetOTPUser } from "./otp-auth";
+import {
+  handleRequestOTP,
+  handleVerifyOTP,
+  handleGetOTPUser,
+} from "./otp-auth";
 
 // Supabase Auth Routes
 import {
@@ -16,7 +20,11 @@ import {
 } from "./supabase-auth";
 
 // Admin Auth Routes
-import { handleAdminLogin, handleAdminLogout, handleAdminProfile } from "./admin-auth";
+import {
+  handleAdminLogin,
+  handleAdminLogout,
+  handleAdminProfile,
+} from "./admin-auth";
 import { handleCreateAdmin, handleCheckAdminExists } from "./admin-setup";
 
 // Auth rate limiting (very restrictive)
@@ -24,7 +32,8 @@ const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // limit each IP to 5 auth attempts per windowMs
   message: {
-    error: "Too many authentication attempts from this IP, please try again later."
+    error:
+      "Too many authentication attempts from this IP, please try again later.",
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -48,8 +57,16 @@ export function configureAuthRoutes(app: Express, authenticateToken: any) {
   // ===== SUPABASE AUTH ROUTES =====
   app.post("/api/supabase/auth/signup", authLimiter, supabaseSignUp);
   app.post("/api/supabase/auth/signin", authLimiter, supabaseSignIn);
-  app.post("/api/supabase/auth/signout", supabaseAuthenticateUser, supabaseSignOut);
-  app.get("/api/supabase/auth/profile", supabaseAuthenticateUser, supabaseGetProfile);
+  app.post(
+    "/api/supabase/auth/signout",
+    supabaseAuthenticateUser,
+    supabaseSignOut,
+  );
+  app.get(
+    "/api/supabase/auth/profile",
+    supabaseAuthenticateUser,
+    supabaseGetProfile,
+  );
 
   // ===== ADMIN AUTH ROUTES =====
   app.post("/api/admin/setup", handleCreateAdmin);

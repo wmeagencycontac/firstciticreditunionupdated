@@ -1,11 +1,14 @@
 import { Express } from "express";
 import { configureAuthRoutes } from "./auth-routes";
 import { configureBankingRoutes } from "./banking-routes";
-import { configureDevelopmentRoutes, configureUtilityRoutes } from "./development-routes";
+import {
+  configureDevelopmentRoutes,
+  configureUtilityRoutes,
+} from "./development-routes";
 import {
   configureSupabaseRoutes,
   configureLegacyDeprecationRoutes,
-  configureApiMigrationStatus
+  configureApiMigrationStatus,
 } from "./supabase-only-routes";
 import { authenticateToken } from "./banking";
 

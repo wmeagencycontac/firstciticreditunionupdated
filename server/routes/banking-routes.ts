@@ -44,12 +44,15 @@ import { authenticateUser as supabaseAuthenticateUser } from "./supabase-auth";
  */
 export function configureBankingRoutes(app: Express, authenticateToken: any) {
   // ===== LEGACY BANKING ROUTES =====
-  
+
   // Dashboard and Account Overview
   app.get("/api/dashboard", handleGetDashboard);
   app.get("/api/accounts", handleGetAccounts);
   app.get("/api/accounts/:accountId", handleGetAccountDetails);
-  app.get("/api/accounts/:accountId/transactions", handleGetAccountTransactions);
+  app.get(
+    "/api/accounts/:accountId/transactions",
+    handleGetAccountTransactions,
+  );
 
   // Transactions
   app.get("/api/transactions", handleGetTransactions);
@@ -67,23 +70,47 @@ export function configureBankingRoutes(app: Express, authenticateToken: any) {
   app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
 
   // ===== SUPABASE BANKING ROUTES =====
-  
+
   // Profile Management
   app.post("/api/supabase/auth/create-profile", createBankingProfile);
   app.get("/api/supabase/profile/:userId", getBankingProfile);
   app.put("/api/supabase/profile/:userId", updateBankingProfile);
 
   // Account Management
-  app.get("/api/supabase/accounts", supabaseAuthenticateUser, supabaseGetAccounts);
-  app.post("/api/supabase/accounts", supabaseAuthenticateUser, supabaseCreateAccount);
+  app.get(
+    "/api/supabase/accounts",
+    supabaseAuthenticateUser,
+    supabaseGetAccounts,
+  );
+  app.post(
+    "/api/supabase/accounts",
+    supabaseAuthenticateUser,
+    supabaseCreateAccount,
+  );
 
   // Transactions
-  app.get("/api/supabase/transactions", supabaseAuthenticateUser, supabaseGetTransactions);
-  app.post("/api/supabase/transactions", supabaseAuthenticateUser, supabaseCreateTransaction);
-  app.get("/api/supabase/transactions/recent", supabaseAuthenticateUser, supabaseGetRecentTransactions);
+  app.get(
+    "/api/supabase/transactions",
+    supabaseAuthenticateUser,
+    supabaseGetTransactions,
+  );
+  app.post(
+    "/api/supabase/transactions",
+    supabaseAuthenticateUser,
+    supabaseCreateTransaction,
+  );
+  app.get(
+    "/api/supabase/transactions/recent",
+    supabaseAuthenticateUser,
+    supabaseGetRecentTransactions,
+  );
 
   // Transfers
-  app.post("/api/supabase/transfer", supabaseAuthenticateUser, supabaseTransfer);
+  app.post(
+    "/api/supabase/transfer",
+    supabaseAuthenticateUser,
+    supabaseTransfer,
+  );
 
   // Cards
   app.get("/api/supabase/cards", supabaseAuthenticateUser, supabaseGetCards);

@@ -5,6 +5,7 @@ This document outlines the staged approach for updating dependencies in the Fusi
 ## Current Status (January 2024)
 
 ### Major Dependencies
+
 - React 18.3.1 ✅ (Latest stable)
 - TypeScript 5.5.3 ✅ (Latest stable)
 - Vite 6.2.2 ✅ (Latest)
@@ -15,6 +16,7 @@ This document outlines the staged approach for updating dependencies in the Fusi
 ### Dependencies Needing Updates
 
 #### Stage 1: Safe Patch/Minor Updates
+
 These are low-risk updates that should be applied immediately:
 
 ```bash
@@ -35,6 +37,7 @@ npm update @swc/core
 ```
 
 #### Stage 2: Library Updates
+
 These require testing but are generally safe:
 
 ```bash
@@ -53,6 +56,7 @@ npm update tailwind-merge
 ```
 
 #### Stage 3: Major Updates (Future)
+
 These require careful planning and testing:
 
 - Next major version updates (when available)
@@ -62,21 +66,25 @@ These require careful planning and testing:
 ## Update Schedule
 
 ### Week 1: Patch Updates
+
 - Apply all patch-level updates
 - Run full test suite
 - Monitor for issues
 
-### Week 2: Minor Updates  
+### Week 2: Minor Updates
+
 - Apply minor version updates
 - Test all critical functionality
 - Update documentation if needed
 
 ### Week 3: Testing & Validation
+
 - Comprehensive testing
 - Performance validation
 - Security audit
 
 ### Week 4: Cleanup & Documentation
+
 - Update documentation
 - Clean up deprecated code
 - Prepare for next cycle
@@ -84,19 +92,23 @@ These require careful planning and testing:
 ## Safety Procedures
 
 ### Before Each Update
+
 1. Create checkpoint/backup
 2. Run full test suite
 3. Check breaking changes in changelogs
 4. Update lockfile
 
 ### After Each Update
+
 1. Run tests again
 2. Test critical user flows
 3. Check bundle size impact
 4. Verify TypeScript compilation
 
 ### Rollback Plan
+
 If issues are discovered:
+
 1. Use git revert to rollback
 2. Document the issue
 3. Wait for fix or find alternative
@@ -105,6 +117,7 @@ If issues are discovered:
 ## Automation
 
 ### Automated Checks
+
 ```bash
 # Check for outdated dependencies
 npm outdated
@@ -117,6 +130,7 @@ npm audit fix
 ```
 
 ### CI/CD Integration
+
 - Automated dependency updates via Dependabot
 - Automated testing on updates
 - Security scanning on every commit
@@ -124,16 +138,19 @@ npm audit fix
 ## Risk Assessment
 
 ### Low Risk
+
 - Patch updates (x.x.X)
 - Development dependencies
 - Linting/formatting tools
 
-### Medium Risk  
+### Medium Risk
+
 - Minor updates (x.X.x)
 - UI library updates
 - Testing framework updates
 
 ### High Risk
+
 - Major updates (X.x.x)
 - Framework updates
 - Build tool changes
@@ -141,6 +158,7 @@ npm audit fix
 ## Emergency Updates
 
 For critical security vulnerabilities:
+
 1. Apply immediately
 2. Test critical paths only
 3. Deploy to staging first
@@ -149,6 +167,7 @@ For critical security vulnerabilities:
 ## Documentation Updates
 
 After major updates, update:
+
 - README.md
 - package.json
 - This document

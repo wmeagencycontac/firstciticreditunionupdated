@@ -5,11 +5,11 @@ interface AuthState {
   // Auth state
   isLoading: boolean;
   isAuthenticated: boolean;
-  
+
   // Actions
   setLoading: (loading: boolean) => void;
   setAuthenticated: (authenticated: boolean) => void;
-  
+
   // Utility
   reset: () => void;
 }
@@ -26,7 +26,7 @@ export const useAuthStore = create<AuthState>()(
 
       setLoading: (isLoading) => set({ isLoading }),
       setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
-      
+
       reset: () => set(initialState),
     }),
     {

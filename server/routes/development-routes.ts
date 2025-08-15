@@ -16,7 +16,7 @@ import {
 export function configureDevelopmentRoutes(app: Express) {
   // Basic demo route (available in all environments)
   app.get("/api/demo", handleDemo);
-  
+
   // Development-only routes
   if (process.env.NODE_ENV === "development") {
     // Test Setup Endpoints
@@ -31,7 +31,9 @@ export function configureDevelopmentRoutes(app: Express) {
     // Migration Endpoint
     app.post("/api/migrate-to-supabase", async (req, res) => {
       try {
-        const { migrateDataToSupabase } = await import("../migrate-to-supabase");
+        const { migrateDataToSupabase } = await import(
+          "../migrate-to-supabase"
+        );
         const result = await migrateDataToSupabase();
         res.json({ success: true, result });
       } catch (error) {
