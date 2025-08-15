@@ -27,6 +27,7 @@ import {
   Transaction,
   Card as CardType,
   BankingUser,
+  isSupabaseConfigured,
 } from "@/lib/supabase";
 
 export default function SupabaseTest() {
