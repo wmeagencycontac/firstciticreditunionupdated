@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS cards (
   card_type TEXT DEFAULT 'debit' CHECK (card_type IN ('debit', 'credit')),
   status TEXT DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'blocked')),
   expiry_date TEXT,
-  cvv TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -260,13 +259,12 @@ BEGIN
   );
   
   -- Create debit card
-  INSERT INTO cards (user_id, card_number, card_type, expiry_date, cvv)
+  INSERT INTO cards (user_id, card_number, card_type, expiry_date)
   VALUES (
     NEW.id,
     '4532' || LPAD((RANDOM() * 999999999999)::BIGINT::TEXT, 12, '0'),
     'debit',
-    TO_CHAR((NOW() + INTERVAL '4 years')::DATE, 'MM/YY'),
-    LPAD((RANDOM() * 999)::INTEGER::TEXT, 3, '0')
+    TO_CHAR((NOW() + INTERVAL '4 years')::DATE, 'MM/YY')
   );
   
   RETURN NEW;

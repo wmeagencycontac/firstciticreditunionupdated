@@ -69,16 +69,19 @@ export default function Dashboard() {
     if (recentTransactions.length > 0) {
       const spending = recentTransactions
         .filter((t) => t.type === "debit")
-        .reduce((acc, t) => {
-          const category = t.category || "Other";
-          const existing = acc.find((item) => item.name === category);
-          if (existing) {
-            existing.amount += t.amount;
-          } else {
-            acc.push({ name: category, amount: t.amount });
-          }
-          return acc;
-        }, [] as { name: string; amount: number }[]);
+        .reduce(
+          (acc, t) => {
+            const category = (t as any).category || "Other";
+            const existing = acc.find((item) => item.name === category);
+            if (existing) {
+              existing.amount += t.amount;
+            } else {
+              acc.push({ name: category, amount: t.amount });
+            }
+            return acc;
+          },
+          [] as { name: string; amount: number }[],
+        );
       setSpendingData(spending);
     }
   }, [recentTransactions]);
@@ -248,7 +251,9 @@ export default function Dashboard() {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Welcome, {bankingProfile?.name?.split(" ")[0]}!</h1>
+          <h1 className="text-3xl font-bold">
+            Welcome, {bankingProfile?.name?.split(" ")[0]}!
+          </h1>
           <div className="flex space-x-2">
             <Button asChild>
               <Link to="/transfers">

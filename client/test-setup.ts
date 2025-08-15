@@ -1,74 +1,66 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
-import { afterEach, beforeAll, afterAll } from "vitest";
+import { afterEach, beforeAll, afterAll, vi } from "vitest";
 import { setupServer } from "msw/node";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 
 // Mock server for API calls
 export const server = setupServer(
   // Mock Supabase auth endpoints
-  rest.post("*/auth/v1/token", (req, res, ctx) => {
-    return res(
-      ctx.json({
-        access_token: "fake-access-token",
-        token_type: "bearer",
-        expires_in: 3600,
-        refresh_token: "fake-refresh-token",
-        user: {
-          id: "fake-user-id",
-          email: "test@example.com",
-          created_at: new Date().toISOString(),
-        },
-      }),
-    );
+  http.post("*/auth/v1/token", () => {
+    return HttpResponse.json({
+      access_token: "fake-access-token",
+      token_type: "bearer",
+      expires_in: 3600,
+      refresh_token: "fake-refresh-token",
+      user: {
+        id: "fake-user-id",
+        email: "test@example.com",
+        created_at: new Date().toISOString(),
+      },
+    });
   }),
 
   // Mock banking API endpoints
-  rest.get("/api/accounts", (req, res, ctx) => {
-    return res(
-      ctx.json([
-        {
-          id: 1,
-          user_id: "fake-user-id",
-          account_number: "1234567890",
-          account_type: "checking",
-          balance: 1000.0,
-          currency: "USD",
-          routing_number: "123456789",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ]),
-    );
+  http.get("/api/accounts", () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        user_id: "fake-user-id",
+        account_number: "1234567890",
+        account_type: "checking",
+        balance: 1000.0,
+        currency: "USD",
+        routing_number: "123456789",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ]);
   }),
 
-  rest.get("/api/transactions", (req, res, ctx) => {
-    return res(
-      ctx.json([
-        {
-          id: 1,
-          account_id: 1,
-          type: "credit",
-          amount: 100.0,
-          description: "Test deposit",
-          timestamp: new Date().toISOString(),
-        },
-      ]),
-    );
+  http.get("/api/transactions", () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        account_id: 1,
+        type: "credit",
+        amount: 100.0,
+        description: "Test deposit",
+        timestamp: new Date().toISOString(),
+      },
+    ]);
   }),
 
-  rest.get("/api/cards", (req, res, ctx) => {
-    return res(
-      ctx.json([
-        {
-          id: 1,
-          user_id: "fake-user-id",
-          card_number: "****1234",
-          status: "active",
-          created_at: new Date().toISOString(),
-        },
-      ]),
-    );
+  http.get("/api/cards", () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        user_id: "fake-user-id",
+        card_number: "****1234",
+        status: "active",
+        created_at: new Date().toISOString(),
+      },
+    ]);
   }),
 );
 

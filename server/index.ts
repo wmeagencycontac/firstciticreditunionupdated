@@ -1,79 +1,13 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import { createServer as createHttpServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { getEmailService } from "./email";
-import { handleDemo } from "./routes/demo";
-import { handleLogin, handleProfile, handleLogout } from "./routes/auth";
-import { handleRegistration } from "./routes/registration";
-import {
-  handleGetAccounts,
-  handleGetAccountDetails,
-  handleGetTransactions as handleGetAccountTransactions,
-} from "./routes/accounts";
-import { handleGetDashboard } from "./routes/dashboard";
-import {
-  handleGetTransactions,
-  handleCreateTransaction,
-} from "./routes/transactions";
-import {
-  handleCreateAdmin,
-  handleCheckAdminExists,
-} from "./routes/admin-setup";
-import {
-  handleAdminLogin,
-  handleAdminLogout,
-  handleAdminProfile,
-} from "./routes/admin-auth";
-import {
-  handleCreateTestUser,
-  handleGetTestUserInfo,
-} from "./routes/test-setup";
 import { getBankingDatabase } from "./banking-database";
-import { supabaseAdmin } from "./supabase";
-import {
-  signUp as supabaseSignUp,
-  signIn as supabaseSignIn,
-  signOut as supabaseSignOut,
-  getProfile as supabaseGetProfile,
-  authenticateUser as supabaseAuthenticateUser,
-} from "./routes/supabase-auth";
-import {
-  createBankingProfile,
-  getBankingProfile,
-  updateBankingProfile,
-} from "./routes/supabase-profile";
-import {
-  getAccounts as supabaseGetAccounts,
-  createAccount as supabaseCreateAccount,
-  getTransactions as supabaseGetTransactions,
-  createTransaction as supabaseCreateTransaction,
-  transfer as supabaseTransfer,
-  getCards as supabaseGetCards,
-  createCard as supabaseCreateCard,
-  getRecentTransactions as supabaseGetRecentTransactions,
-} from "./routes/supabase-banking";
-import {
-  handleRequestOTP,
-  handleVerifyOTP,
-  handleGetOTPUser,
-} from "./routes/otp-auth";
-import {
-  handleAccountSummary,
-  handleGetAllTransactions,
-  handleSendTransfer,
-  handleGetCards,
-  handleCreateCard,
-  handleAdminVerifyUser,
-  handleGetPendingUsers,
-  authenticateToken,
-} from "./routes/banking";
-import {
-  testTransactionEmail,
-  testProfileUpdateEmail,
-  testAllNotifications,
-} from "./routes/test-email-notifications";
+import { configureRoutes } from "./routes";
 
 // Global Socket.IO server instance
 export let io: SocketIOServer;
@@ -143,147 +77,80 @@ export function createServer() {
   const bankingDb = getBankingDatabase();
   console.log("Banking database initialized");
 
-  // Middleware
+  // Security Middleware
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'"],
+          imgSrc: ["'self'", "data:", "https:"],
+          connectSrc: ["'self'", "ws:", "wss:"],
+          fontSrc: ["'self'"],
+          objectSrc: ["'none'"],
+          mediaSrc: ["'self'"],
+          frameSrc: ["'none'"],
+        },
+      },
+      crossOriginEmbedderPolicy: false,
+    }),
+  );
+
+  // Rate limiting
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: {
+      error: "Too many requests from this IP, please try again later.",
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // API rate limiting (more restrictive)
+  const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 50, // limit each IP to 50 API requests per windowMs
+    message: {
+      error: "Too many API requests from this IP, please try again later.",
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // Auth rate limiting (very restrictive)
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 auth attempts per windowMs
+    message: {
+      error:
+        "Too many authentication attempts from this IP, please try again later.",
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // Apply general rate limiting to all requests
+  app.use(limiter);
+
+  // Apply API rate limiting to API routes
+  app.use("/api/", apiLimiter);
+
+  // CORS Middleware
   app.use(
     cors({
       origin: process.env.FRONTEND_URL || "http://localhost:8080",
       credentials: true,
     }),
   );
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
 
-  // Example API routes
-  app.get("/api/ping", (_req, res) => {
-    const ping = process.env.PING_MESSAGE ?? "ping";
-    res.json({ message: ping });
-  });
+  // Body parsing middleware
+  app.use(express.json({ limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-  app.get("/api/demo", handleDemo);
-
-  // Banking API routes
-  app.post("/api/auth/login", handleLogin);
-  app.post("/api/auth/register", handleRegistration);
-  app.get("/api/auth/profile", handleProfile);
-  app.post("/api/auth/logout", handleLogout);
-  app.get("/api/dashboard", handleGetDashboard);
-  app.get("/api/accounts", handleGetAccounts);
-  app.get("/api/accounts/:accountId", handleGetAccountDetails);
-  app.get(
-    "/api/accounts/:accountId/transactions",
-    handleGetAccountTransactions,
-  );
-
-  // All transactions endpoints
-  app.get("/api/transactions", handleGetTransactions);
-  app.post("/api/transactions", handleCreateTransaction);
-
-  // OTP Authentication endpoints
-  app.post("/api/otp/request-code", handleRequestOTP);
-  app.post("/api/otp/verify-code", handleVerifyOTP);
-  app.get("/api/otp/user/:userId", handleGetOTPUser);
-
-  // Banking API endpoints (protected)
-  app.get("/api/account-summary", authenticateToken, handleAccountSummary);
-  app.get("/api/all-transactions", authenticateToken, handleGetAllTransactions);
-  app.post("/api/send-transfer", authenticateToken, handleSendTransfer);
-  app.get("/api/cards", authenticateToken, handleGetCards);
-  app.post("/api/cards", authenticateToken, handleCreateCard);
-
-  // Admin setup endpoints (no auth required for initial setup)
-  app.post("/api/admin/setup", handleCreateAdmin);
-  app.get("/api/admin/check", handleCheckAdminExists);
-
-  // Admin authentication endpoints
-  app.post("/api/admin/login", handleAdminLogin);
-  app.post("/api/admin/logout", authenticateToken, handleAdminLogout);
-  app.get("/api/admin/profile", authenticateToken, handleAdminProfile);
-
-  // Admin banking endpoints
-  app.get("/api/admin/users-pending", authenticateToken, handleGetPendingUsers);
-  app.post("/api/admin/verify-users", authenticateToken, handleAdminVerifyUser);
-
-  // Test setup endpoints (for development/testing)
-  app.post("/api/test-setup/create", handleCreateTestUser);
-  app.get("/api/test-setup/info", handleGetTestUserInfo);
-
-  // ========================================
-  // NEW SUPABASE ROUTES
-  // ========================================
-
-  // Supabase Auth routes
-  app.post("/api/supabase/auth/signup", supabaseSignUp);
-  app.post("/api/supabase/auth/signin", supabaseSignIn);
-  app.post(
-    "/api/supabase/auth/signout",
-    supabaseAuthenticateUser,
-    supabaseSignOut,
-  );
-  app.get(
-    "/api/supabase/auth/profile",
-    supabaseAuthenticateUser,
-    supabaseGetProfile,
-  );
-
-  // Banking Profile routes
-  app.post("/api/supabase/auth/create-profile", createBankingProfile);
-  app.get("/api/supabase/profile/:userId", getBankingProfile);
-  app.put("/api/supabase/profile/:userId", updateBankingProfile);
-
-  // Supabase Banking routes
-  app.get(
-    "/api/supabase/accounts",
-    supabaseAuthenticateUser,
-    supabaseGetAccounts,
-  );
-  app.post(
-    "/api/supabase/accounts",
-    supabaseAuthenticateUser,
-    supabaseCreateAccount,
-  );
-  app.get(
-    "/api/supabase/transactions",
-    supabaseAuthenticateUser,
-    supabaseGetTransactions,
-  );
-  app.post(
-    "/api/supabase/transactions",
-    supabaseAuthenticateUser,
-    supabaseCreateTransaction,
-  );
-  app.post(
-    "/api/supabase/transfer",
-    supabaseAuthenticateUser,
-    supabaseTransfer,
-  );
-  app.get("/api/supabase/cards", supabaseAuthenticateUser, supabaseGetCards);
-  app.post("/api/supabase/cards", supabaseAuthenticateUser, supabaseCreateCard);
-  app.get(
-    "/api/supabase/transactions/recent",
-    supabaseAuthenticateUser,
-    supabaseGetRecentTransactions,
-  );
-
-  // Test email notification endpoints (development only)
-  if (process.env.NODE_ENV === "development") {
-    app.post("/api/test-email/transaction", testTransactionEmail);
-    app.post("/api/test-email/profile", testProfileUpdateEmail);
-    app.post("/api/test-email/all", testAllNotifications);
-  }
-
-  // Migration endpoint (development only)
-  if (process.env.NODE_ENV === "development") {
-    app.post("/api/migrate-to-supabase", async (req, res) => {
-      try {
-        const { migrateDataToSupabase } = await import("./migrate-to-supabase");
-        const result = await migrateDataToSupabase();
-        res.json({ success: true, result });
-      } catch (error) {
-        console.error("Migration error:", error);
-        res.status(500).json({ error: "Migration failed", details: error });
-      }
-    });
-  }
+  // Configure all application routes
+  configureRoutes(app);
 
   return { app, httpServer, io };
 }

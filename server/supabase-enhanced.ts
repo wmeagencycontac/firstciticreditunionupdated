@@ -133,7 +133,6 @@ export interface Card {
   account_id: string;
   card_number_encrypted: string;
   card_number_last_four: string;
-  cvv_encrypted: string;
   card_type: "debit" | "credit";
   card_brand: "visa" | "mastercard" | "amex" | "discover";
   nickname?: string;

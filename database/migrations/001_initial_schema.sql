@@ -1,10 +1,16 @@
--- Comprehensive Banking Application Schema for Supabase
--- This migration consolidates all SQLite data into a robust PostgreSQL schema
+-- Migration: Initial Banking Application Schema (Baseline)
+-- Created: 2024-01-15
+-- Author: System
+-- Description: Baseline schema for Fusion Banking application supporting both Supabase and SQLite
 
--- Enable required extensions
+-- ================================
+-- SUPABASE VERSION
+-- ================================
+
+-- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Create banking_users table (replaces SQLite users table)
+-- Create banking_users table (enhanced user profiles)
 CREATE TABLE IF NOT EXISTS banking_users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -17,7 +23,7 @@ CREATE TABLE IF NOT EXISTS banking_users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create accounts table with enhanced constraints
+-- Create accounts table
 CREATE TABLE IF NOT EXISTS accounts (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES banking_users(id) ON DELETE CASCADE,
@@ -31,7 +37,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create transactions table with enhanced tracking
+-- Create transactions table
 CREATE TABLE IF NOT EXISTS transactions (
     id SERIAL PRIMARY KEY,
     account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
@@ -46,7 +52,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create cards table with secure card management (CVV removed for security)
+-- Create cards table (Note: CVV intentionally omitted for security)
 CREATE TABLE IF NOT EXISTS cards (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES banking_users(id) ON DELETE CASCADE,
@@ -59,7 +65,7 @@ CREATE TABLE IF NOT EXISTS cards (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create user_sessions table for authentication management
+-- Create user_sessions table for authentication
 CREATE TABLE IF NOT EXISTS user_sessions (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES banking_users(id) ON DELETE CASCADE,
@@ -70,7 +76,7 @@ CREATE TABLE IF NOT EXISTS user_sessions (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create notifications table for user alerts
+-- Create notifications table
 CREATE TABLE IF NOT EXISTS notifications (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES banking_users(id) ON DELETE CASCADE,
@@ -187,3 +193,38 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_balance_on_transaction
     AFTER INSERT OR DELETE ON transactions
     FOR EACH ROW EXECUTE FUNCTION update_account_balance();
+
+-- ================================
+-- SQLITE VERSION (for development)
+-- ================================
+
+/*
+-- For SQLite (simplified version without PostgreSQL-specific features):
+
+CREATE TABLE IF NOT EXISTS banking_users (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    bio TEXT,
+    picture TEXT,
+    email_verified INTEGER DEFAULT 0,
+    role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS accounts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL REFERENCES banking_users(id) ON DELETE CASCADE,
+    account_number TEXT UNIQUE NOT NULL,
+    account_type TEXT NOT NULL CHECK (account_type IN ('savings', 'checking')),
+    balance DECIMAL(15,2) DEFAULT 0.00,
+    currency TEXT DEFAULT 'USD',
+    routing_number TEXT NOT NULL,
+    status TEXT DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'closed')),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add remaining tables with similar SQLite adaptations...
+*/

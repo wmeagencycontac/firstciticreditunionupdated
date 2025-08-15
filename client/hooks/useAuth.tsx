@@ -7,12 +7,15 @@ import {
 } from "react";
 import { auth, db, BankingUser, isSupabaseConfigured } from "@/lib/supabase";
 import { Session, User } from "@supabase/supabase-js";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useUIStore } from "@/store/useUIStore";
 
 interface AuthContextType {
   session: Session | null;
   user: User | null;
   profile: BankingUser | null;
   loading: boolean;
+  isAuthenticated: boolean;
   signOut: () => Promise<void>;
   setProfile: (profile: BankingUser | null) => void;
 }
@@ -24,6 +27,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<BankingUser | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Sync with auth store
+  const { setLoading: setAuthLoading, setAuthenticated } = useAuthStore();
+  const { addNotification } = useUIStore();
 
   useEffect(() => {
     // If Supabase is not configured, don't try to authenticate
@@ -37,21 +44,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (session?.user) {
         setUser(session.user);
         setSession(session);
-        const { data: profileData, error } = await db.getBankingProfile(
-          session.user.id,
-        );
-        if (error) {
-          console.error("Error fetching banking profile:", error);
-          setProfile(null);
-        } else {
-          setProfile(profileData);
+        setAuthenticated(true);
+
+        try {
+          const { data: profileData, error } = await db.getBankingProfile(
+            session.user.id,
+          );
+          if (error) {
+            console.error("Error fetching banking profile:", error);
+            setProfile(null);
+            addNotification({
+              type: "warning",
+              title: "Profile Error",
+              message: "Could not load user profile",
+            });
+          } else {
+            setProfile(profileData);
+          }
+        } catch (error) {
+          console.error("Profile fetch error:", error);
+          addNotification({
+            type: "error",
+            title: "Authentication Error",
+            message: "Failed to load user data",
+          });
         }
       } else {
         setUser(null);
         setSession(null);
         setProfile(null);
+        setAuthenticated(false);
       }
       setLoading(false);
+      setAuthLoading(false);
     };
 
     const { data: authListener } = auth.onAuthStateChange(
@@ -61,9 +86,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
 
     // Initial load
-    auth.getUser().then((response) => {
-      const user = "data" in response ? response.data?.user : response.user;
-      if (user) {
+    auth.getUser().then((response: any) => {
+      const userData = "data" in response ? response.data : response;
+      if (userData?.user) {
         auth.getSession().then(({ data: { session } }) => {
           setData(session);
         });
@@ -78,10 +103,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
-    await auth.signOut();
-    setUser(null);
-    setSession(null);
-    setProfile(null);
+    try {
+      await auth.signOut();
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+      setAuthenticated(false);
+
+      addNotification({
+        type: "info",
+        title: "Signed Out",
+        message: "You have been successfully signed out",
+      });
+    } catch (error) {
+      console.error("Sign out error:", error);
+      addNotification({
+        type: "error",
+        title: "Sign Out Error",
+        message: "Failed to sign out completely",
+      });
+    }
   };
 
   const value = {
@@ -91,6 +132,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loading,
     signOut,
     setProfile,
+    isAuthenticated: !!session?.user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
