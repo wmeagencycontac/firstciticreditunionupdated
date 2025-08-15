@@ -138,9 +138,14 @@ export const useBankingStore = create<BankingState>()(
         
         // Data fetching actions
         fetchUserData: async () => {
+          if (!isSupabaseConfigured) {
+            console.warn("Supabase not configured - skipping user data fetch");
+            set({ isLoading: false, isAuthenticated: false, user: null });
+            return;
+          }
           try {
             set({ isLoading: true });
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data: { user } } = await supabase!.auth.getUser();
             
             if (user) {
               const { data: profile } = await supabase
