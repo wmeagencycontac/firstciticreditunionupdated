@@ -15,7 +15,9 @@ const PrivateRoute = () => {
 
   // If Supabase is not configured, allow access for development
   if (!isSupabaseConfigured) {
-    console.warn("Development mode: Supabase not configured, bypassing authentication");
+    console.warn(
+      "Development mode: Supabase not configured, bypassing authentication",
+    );
     return <Outlet />;
   }
 

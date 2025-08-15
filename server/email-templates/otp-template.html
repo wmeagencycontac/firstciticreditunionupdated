@@ -1,116 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Login Code - Fusion Bank</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00754a;
-            margin-bottom: 10px;
-        }
-        .otp-code {
-            background-color: #f5f5f5;
-            padding: 20px;
-            text-align: center;
-            margin: 20px 0;
-            border-radius: 6px;
-            border: 2px dashed #00754a;
-        }
-        .otp-number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #00754a;
-            letter-spacing: 4px;
-            font-family: 'Courier New', monospace;
-        }
-        .warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 4px;
-            padding: 15px;
-            margin: 20px 0;
-            color: #856404;
-        }
-        .footer {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #999;
-        }
-        .security-notice {
-            background-color: #e8f4f8;
-            border-left: 4px solid #00754a;
-            padding: 15px;
-            margin: 20px 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      .container {
+        background-color: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #00754a;
+        margin-bottom: 10px;
+      }
+      .otp-code {
+        background-color: #f5f5f5;
+        padding: 20px;
+        text-align: center;
+        margin: 20px 0;
+        border-radius: 6px;
+        border: 2px dashed #00754a;
+      }
+      .otp-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #00754a;
+        letter-spacing: 4px;
+        font-family: "Courier New", monospace;
+      }
+      .warning {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 4px;
+        padding: 15px;
+        margin: 20px 0;
+        color: #856404;
+      }
+      .footer {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #999;
+      }
+      .security-notice {
+        background-color: #e8f4f8;
+        border-left: 4px solid #00754a;
+        padding: 15px;
+        margin: 20px 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <div class="logo">🏦 Fusion Bank</div>
-            <h1 style="color: #333; margin: 0;">Your Secure Login Code</h1>
+      <div class="header">
+        <div class="logo">🏦 Fusion Bank</div>
+        <h1 style="color: #333; margin: 0">Your Secure Login Code</h1>
+      </div>
+
+      <p style="font-size: 16px; color: #555">
+        Hello! We received a request to sign in to your Fusion Bank account. Use
+        the code below to complete your login:
+      </p>
+
+      <div class="otp-code">
+        <div style="font-size: 14px; color: #666; margin-bottom: 10px">
+          Your Login Code:
         </div>
-        
-        <p style="font-size: 16px; color: #555;">
-            Hello! We received a request to sign in to your Fusion Bank account. 
-            Use the code below to complete your login:
+        <div class="otp-number">{{OTP_CODE}}</div>
+      </div>
+
+      <div class="security-notice">
+        <h3 style="margin-top: 0; color: #00754a">🔒 Security Information</h3>
+        <ul style="margin: 10px 0; padding-left: 20px">
+          <li>This code expires in <strong>5 minutes</strong></li>
+          <li>Never share this code with anyone</li>
+          <li>Fusion Bank will never ask for this code via phone or email</li>
+        </ul>
+      </div>
+
+      <div class="warning">
+        <strong>⚠️ Didn't request this code?</strong><br />
+        If you didn't try to sign in, please ignore this email and consider
+        changing your password for security.
+        <a href="#" style="color: #856404">Contact Support</a>
+      </div>
+
+      <p style="color: #666">
+        Having trouble? Our support team is here to help you 24/7.
+        <a href="mailto:support@fusionbank.com" style="color: #00754a"
+          >support@fusionbank.com</a
+        >
+      </p>
+
+      <div class="footer">
+        <p>Fusion Bank - Secure Digital Banking</p>
+        <p>
+          This is an automated security message. Please do not reply to this
+          email.
         </p>
-        
-        <div class="otp-code">
-            <div style="font-size: 14px; color: #666; margin-bottom: 10px;">Your Login Code:</div>
-            <div class="otp-number">{{OTP_CODE}}</div>
-        </div>
-        
-        <div class="security-notice">
-            <h3 style="margin-top: 0; color: #00754a;">🔒 Security Information</h3>
-            <ul style="margin: 10px 0; padding-left: 20px;">
-                <li>This code expires in <strong>5 minutes</strong></li>
-                <li>Never share this code with anyone</li>
-                <li>Fusion Bank will never ask for this code via phone or email</li>
-            </ul>
-        </div>
-        
-        <div class="warning">
-            <strong>⚠️ Didn't request this code?</strong><br>
-            If you didn't try to sign in, please ignore this email and consider changing your password for security.
-            <a href="#" style="color: #856404;">Contact Support</a>
-        </div>
-        
-        <p style="color: #666;">
-            Having trouble? Our support team is here to help you 24/7.
-            <a href="mailto:support@fusionbank.com" style="color: #00754a;">support@fusionbank.com</a>
-        </p>
-        
-        <div class="footer">
-            <p>Fusion Bank - Secure Digital Banking</p>
-            <p>This is an automated security message. Please do not reply to this email.</p>
-            <p>&copy; 2024 Fusion Bank. All rights reserved.</p>
-        </div>
+        <p>&copy; 2024 Fusion Bank. All rights reserved.</p>
+      </div>
     </div>
-</body>
+  </body>
 </html>

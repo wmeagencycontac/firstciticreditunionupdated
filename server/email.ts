@@ -16,8 +16,11 @@ class EmailService {
 
   constructor() {
     // Skip email configuration if credentials are not provided
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS ||
-        process.env.EMAIL_USER === "test@example.com") {
+    if (
+      !process.env.EMAIL_USER ||
+      !process.env.EMAIL_PASS ||
+      process.env.EMAIL_USER === "test@example.com"
+    ) {
       console.log("📧 Email service disabled - no valid credentials provided");
       this.transporter = null;
       return;
@@ -40,8 +43,12 @@ class EmailService {
     }
 
     try {
-      const templatePath = path.join(__dirname, 'email-templates', `${templateName}.html`);
-      const template = fs.readFileSync(templatePath, 'utf-8');
+      const templatePath = path.join(
+        __dirname,
+        "email-templates",
+        `${templateName}.html`,
+      );
+      const template = fs.readFileSync(templatePath, "utf-8");
       this.templateCache.set(templateName, template);
       return template;
     } catch (error) {
@@ -62,10 +69,13 @@ class EmailService {
     `;
   }
 
-  private renderTemplate(template: string, variables: Record<string, string>): string {
+  private renderTemplate(
+    template: string,
+    variables: Record<string, string>,
+  ): string {
     let rendered = template;
     for (const [key, value] of Object.entries(variables)) {
-      const regex = new RegExp(`{{${key}}}`, 'g');
+      const regex = new RegExp(`{{${key}}}`, "g");
       rendered = rendered.replace(regex, value);
     }
     return rendered;
@@ -77,7 +87,7 @@ class EmailService {
       return false;
     }
     try {
-      const template = this.loadTemplate('otp-template');
+      const template = this.loadTemplate("otp-template");
       const htmlContent = this.renderTemplate(template, {
         OTP_CODE: otp,
       });
@@ -112,7 +122,10 @@ class EmailService {
     },
   ): Promise<boolean> {
     if (!this.transporter) {
-      console.log("📧 Email disabled - transaction notification would be sent to:", to);
+      console.log(
+        "📧 Email disabled - transaction notification would be sent to:",
+        to,
+      );
       return false;
     }
     try {
@@ -252,7 +265,10 @@ class EmailService {
     },
   ): Promise<boolean> {
     if (!this.transporter) {
-      console.log("📧 Email disabled - profile update notification would be sent to:", to);
+      console.log(
+        "📧 Email disabled - profile update notification would be sent to:",
+        to,
+      );
       return false;
     }
     try {

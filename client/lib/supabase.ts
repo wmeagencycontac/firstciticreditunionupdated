@@ -159,7 +159,10 @@ export const auth = {
   // Get current session
   async getSession() {
     if (!supabase) {
-      return { data: { session: null }, error: new Error("Supabase not configured") };
+      return {
+        data: { session: null },
+        error: new Error("Supabase not configured"),
+      };
     }
     const { data, error } = await supabase.auth.getSession();
     return { data, error };
