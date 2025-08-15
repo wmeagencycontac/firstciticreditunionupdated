@@ -148,7 +148,7 @@ export const useBankingStore = create<BankingState>()(
             const { data: { user } } = await supabase!.auth.getUser();
             
             if (user) {
-              const { data: profile } = await supabase
+              const { data: profile } = await supabase!
                 .from('banking_users')
                 .select('*')
                 .eq('id', user.id)
