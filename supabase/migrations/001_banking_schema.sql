@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create cards table with full card management
+-- Create cards table with secure card management (CVV removed for security)
 CREATE TABLE IF NOT EXISTS cards (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES banking_users(id) ON DELETE CASCADE,
@@ -55,7 +55,6 @@ CREATE TABLE IF NOT EXISTS cards (
     status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'blocked', 'expired')),
     expiry_month INTEGER CHECK (expiry_month BETWEEN 1 AND 12),
     expiry_year INTEGER CHECK (expiry_year >= EXTRACT(YEAR FROM NOW())),
-    cvv VARCHAR(4),
     daily_limit DECIMAL(10,2) DEFAULT 1000.00,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
