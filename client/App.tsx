@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import AdminRoute from "./components/auth/AdminRoute";
+import NetworkErrorBoundary from "./components/NetworkErrorBoundary";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import OtpLogin from "./pages/OtpLogin";
