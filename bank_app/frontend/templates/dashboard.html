@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome to your Dashboard, {{ user.username }}!</h2>
+    <p>This is your personal banking dashboard. More features coming soon!</p>
+    <p>Your account balance is: $1,000,000 (Just kidding!)</p>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

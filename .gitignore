@@ -25,3 +25,15 @@ dist-ssr
 
 .config/
 !.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Database
+*.db
+*.sqlite3
+
+# Local files
+cookies.txt
+bank_app.log

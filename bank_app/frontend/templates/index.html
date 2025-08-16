@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Bank</title>
+</head>
+<body>
+    <h1>Welcome to the Bank</h1>
+
+    {% if current_user.is_authenticated %}
+        <p>Hello, {{ current_user.username }}! <a href="{{ url_for('dashboard') }}">Go to Dashboard</a></p>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Login</a> or <a href="{{ url_for('register') }}">Register</a></p>
+    {% endif %}
+</body>
+</html>
